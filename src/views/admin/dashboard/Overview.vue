@@ -123,7 +123,7 @@ export default class Overview extends Vue {
   private modalLoading = false;
   private declineReason = '';
 
-  async mounted (): void {
+  async mounted (): Promise<void> {
     const service = feathersClient.service('tuv-forms');
     const res = await service.find({
       query: {
@@ -134,7 +134,7 @@ export default class Overview extends Vue {
     (res.data as TuvFormData[]).forEach((form: TuvFormData) => {
       const newForm = form;
       if (newForm.firstRegistry !== null) {
-        newForm.firstRegistry = (new Date(form.firstRegistry)).toDateString();
+        newForm.firstRegistry = (new Date(form.firstRegistry as string)).toDateString();
       }
       this.responses.push(newForm);
     });
