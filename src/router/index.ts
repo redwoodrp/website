@@ -52,6 +52,7 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "dashboard" */ '../views/dashboard/Overview.vue'),
     meta: {
       adminOnly: true,
+      requiresAuth: true,
     },
   },
   {

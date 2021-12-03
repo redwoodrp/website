@@ -287,7 +287,6 @@ export default class Form extends Vue {
               break;
           }
         } else if (!component.valid) valid = false;
-        valid = false;
       }));
     });
 

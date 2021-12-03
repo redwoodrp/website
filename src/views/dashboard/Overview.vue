@@ -13,18 +13,26 @@
         <thead>
         <tr>
           <th>Actions</th>
-          <th v-for="header in headers" :key="header">{{ header }}</th>
+          <th
+            v-for="(header, i) in Object.keys(headerRelationMap).filter((_, i) => i !== 0)"
+            :key="i">
+            <span v-if="header !== null">{{ header }}</span>
+          </th>
         </tr>
         </thead>
         <tbody>
-        <tr v-for="response in responses" :key="response.name.length * Math.random()">
+        <tr v-for="(response, i) in responses" :key="i">
           <td>
             <button class="btn bg-green-600 hover:bg-green-900" @click="approve()">Approve</button>
             <button class="btn bg-red-500 hover:bg-red-800" @click="declineDialog = true">Decline
             </button>
             <button class="btn bg-blue-500 hover:bg-blue-800">Inspection queue</button>
           </td>
-          <td v-for="header in headers" :key="header">{{ response[convertToProp(header)] }}</td>
+          <td
+            v-for="(header, i) in Object.keys(headerRelationMap).filter((_, i) => i !== 0)"
+            :key="i">
+            {{ response[headerRelationMap[header]] }}
+          </td>
         </tr>
         </tbody>
       </table>
@@ -62,7 +70,8 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import Modal from '@/components/Modal.vue';
-import { User } from '@/helpers/feathers-client';
+import feathersClient, { User } from '@/helpers/feathers-client';
+import { TuvFormData } from '@/helpers/generic';
 
 @Component({
   components: {
@@ -90,40 +99,47 @@ export default class Overview extends Vue {
     'Year',
     'Additions',
   ];
-  private responses = [
-    {
-      id: '123as-as2dhs-dasdasa-asdasd',
-      name: 'JustMe',
-      timestamp: '11/28/2021',
-      licensePlate: 'SPEEED',
-      firstRegistry: '1/21/2021',
-      brand: 'Soliad',
-      model: 'Wendover',
-      engineType: 'v8',
-      hp: '600',
-      ccm: '1500',
-      fuelType: 'Gas',
-      transmission: '5-speed manual',
-      bodyType: 'Hatchback',
-      color: 'Orange',
-      weight: '1500kg',
-      seats: 1,
-      year: 1999,
-      additions: 'Spoiler',
-      approved: false,
-      inGameWaitList: false,
-    },
-  ];
+  private headerRelationMap = {
+    owner: 'owner',
+    Name: 'discordName',
+    'License Pl.': 'licensePlate',
+    '1st registry': 'firstRegistry',
+    Brand: 'vehicleBrand',
+    Model: 'vehicleModel',
+    Engine: 'engineType',
+    hp: 'engineHorsepower',
+    ccm: 'engineCCM',
+    Fuel: 'fuelType',
+    Transmission: 'transmission',
+    Body: 'bodyType',
+    Color: 'vehicleColor',
+    Weight: 'vehicleWeight',
+    Seats: 'vehicleSeatsAmount',
+    Year: 'vehicleYear',
+    'Additional Infos': 'additionalInfos',
+  };
+  private responses: TuvFormData[] = [];
   private declineDialog = false;
   private modalLoading = false;
   private declineReason = '';
 
-  mounted (): void {
-    // ...
-  }
+  async mounted (): void {
+    const service = feathersClient.service('tuv-forms');
+    const res = await service.find({
+      query: {
+        $limit: 50,
+      },
+    });
 
-  private convertToProp (inp: string): string {
-    return (inp[0].toLowerCase() + inp.substr(1)).replace(' ', '');
+    (res.data as TuvFormData[]).forEach((form: TuvFormData) => {
+      const newForm = form;
+      if (newForm.firstRegistry !== null) {
+        newForm.firstRegistry = (new Date(form.firstRegistry)).toDateString();
+      }
+      this.responses.push(newForm);
+    });
+
+    console.log(this.responses);
   }
 
   private approve (id: string): void {

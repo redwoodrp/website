@@ -13,7 +13,7 @@ import {
   NewField, NumberInputComponent, RadioButtonComponent, TextInputComponent,
 } from '@/helpers/formFields';
 import Form from '@/components/Form.vue';
-import hasOwn from '@/helpers/generic';
+import { hasOwn, TuvFormData } from '@/helpers/generic';
 import feathersClient from '@/helpers/feathers-client';
 
 interface SaveData {
@@ -22,26 +22,6 @@ interface SaveData {
   value?: string;
   values?: string[];
   selected?: string;
-}
-
-interface TuvFormData {
-  owner: string;
-  discordName: string;
-  licensePlate: string;
-  firstRegistry: string;
-  vehicleBrand: string;
-  vehicleModel: string;
-  engineType: string;
-  engineHorsepower: number;
-  engineCCM: number;
-  fuelType: string;
-  transmission: string;
-  bodyType: string;
-  vehicleColor: string;
-  vehicleWeight: number;
-  vehicleSeatsAmount: number;
-  vehicleYear: string;
-  additionalInfos: string;
 }
 
 @Component({
@@ -408,6 +388,11 @@ export default class TuvForm extends Vue {
 
     if (!formValid) return;
 
+    let firstRegistryDate: Date | string | null = new Date((this.form.fields[2].components[0] as DateInputComponent).values.join('/'));
+    if (typeof firstRegistryDate === 'string') {
+      firstRegistryDate = null;
+    }
+
     const { user } = await feathersClient.get('authentication');
     const service = feathersClient.service('tuv-forms');
 
@@ -415,7 +400,7 @@ export default class TuvForm extends Vue {
       owner: user.discordId,
       discordName: (this.form.fields[0].components[0] as TextInputComponent).value,
       licensePlate: (this.form.fields[1].components[0] as TextInputComponent).value,
-      firstRegistry: (new Date((this.form.fields[2].components[0] as DateInputComponent).values.join('/'))).toISOString(),
+      firstRegistry: firstRegistryDate,
       vehicleBrand: (this.form.fields[3].components[0] as TextInputComponent).value,
       vehicleModel: (this.form.fields[4].components[0] as TextInputComponent).value,
       engineType: (this.form.fields[5].components[0] as TextInputComponent).value,
