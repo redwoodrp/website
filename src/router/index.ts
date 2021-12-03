@@ -40,7 +40,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/admin/forms/builder',
     name: 'form builder',
-    component: () => import('@/views/me/forms/FormBuilder.vue'),
+    component: () => import('@/views/admin/FormBuilder.vue'),
     meta: {
       adminOnly: true,
       requiresAuth: true,
@@ -49,7 +49,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/admin/dashboard',
     name: 'dashboard',
-    component: () => import(/* webpackChunkName: "dashboard" */ '../views/dashboard/Overview.vue'),
+    component: () => import(/* webpackChunkName: "dashboard" */ '../views/admin/dashboard/Overview.vue'),
     meta: {
       adminOnly: true,
       requiresAuth: true,

@@ -1,6 +1,6 @@
 <template>
-  <div>
-    Home
+  <div class="flex h-full justify-center items-center text-gray-800 font-bold text-3xl">
+    Under construction
   </div>
 </template>
 
