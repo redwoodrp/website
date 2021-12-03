@@ -22,5 +22,8 @@ module.exports = {
     'class-methods-use-this': 'off',
     'lines-between-class-members': 'off',
     'no-plusplus': 'off',
+    'indent': 'off',
+    'no-shadow': 'off',
+    '@typescript-eslint/no-shadow': ['error'],
   },
 };
