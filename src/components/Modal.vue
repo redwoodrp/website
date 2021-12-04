@@ -1,27 +1,38 @@
 <template>
   <div v-show="active">
-    <div class="overlay"/>
-    <div class="fixed rounded-lg size bg-white p-4">
-      <slot/>
+    <div class="overlay" id="modal-overlay" />
+    <div class="fixed rounded-lg size bg-white p-4" :style="`max-width: ${maxWidth};`">
+      <slot />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import {
-  Component,
+  Component, Prop,
   VModel,
   Vue,
-  Watch,
 } from 'vue-property-decorator';
 
 @Component
 export default class Modal extends Vue {
   @VModel({ type: Boolean }) private active!: boolean;
+  @Prop() private maxWidth: string | undefined;
+  @Prop({ default: false, type: Boolean }) private closeOutside: boolean | undefined;
+  @Prop({ default: false, type: Boolean }) private closeEsc: boolean | undefined;
 
-  @Watch('active')
-  private watcher (): void {
-    // ...
+  mounted (): void {
+    window.addEventListener('click', (event) => {
+      if ((event.target as HTMLDivElement).id === 'modal-overlay' && this.closeOutside) {
+        this.active = false;
+      }
+    });
+
+    window.addEventListener('keyup', (event: KeyboardEvent) => {
+      if (event.key.toLowerCase() === 'escape' && this.closeEsc) {
+        this.active = false;
+      }
+    });
   }
 }
 </script>

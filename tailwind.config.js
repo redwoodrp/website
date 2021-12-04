@@ -15,6 +15,9 @@ module.exports = {
     extend: {
       width: ['focus'],
       boxShadow: ['active'],
+      textOverflow: ['hover'],
+      overflow: ['hover'],
+      whitespace: ['hover'],
     },
   },
   plugins: [],

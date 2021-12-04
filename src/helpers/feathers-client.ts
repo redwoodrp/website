@@ -3,6 +3,7 @@ import socketio from '@feathersjs/socketio-client';
 import feathers from '@feathersjs/feathers';
 import auth from '@feathersjs/authentication-client';
 import config from '../../config';
+import User from '@/helpers/interfaces/user';
 
 const socket = io(config.backend, { transports: ['websocket'] });
 
@@ -11,23 +12,9 @@ const feathersClient = feathers();
 feathersClient.configure(socketio(socket, { timeout: 30000 }));
 feathersClient.configure(auth());
 
-export interface User {
-  id: number;
-  createdAt: string;
-  updatedAt: string;
-
-  username: string;
-  email: string;
-  discordId: string;
-  avatarURI: string;
-  verified: boolean;
-  mfaEnabled: boolean;
-  discriminator: string;
-  locale: string;
-}
-
 export interface AuthObject {
   user: User;
+  accessToken: string;
 }
 
 export async function isLoggedIn (): Promise<boolean> {

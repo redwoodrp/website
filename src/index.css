@@ -16,4 +16,12 @@ html, body, #app {
     .btn {
         @apply transition-colors p-2 cursor-pointer rounded mr-2 text-white;
     }
+
+    .modal-title {
+        @apply font-bold text-gray-800 text-xl;
+    }
+
+    .modal-description {
+        @apply font-medium text-gray-600;
+    }
 }

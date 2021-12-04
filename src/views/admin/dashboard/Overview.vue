@@ -31,7 +31,7 @@
           <td
             v-for="(header, i) in Object.keys(headerRelationMap).filter((_, i) => i !== 0)"
             :key="i">
-            {{ response[headerRelationMap[header]] }}
+            {{ response[headerRelationMap[header]] === '' ? '-' : response[headerRelationMap[header]] }}
           </td>
         </tr>
         </tbody>
@@ -39,9 +39,9 @@
     </div>
 
     <Modal v-model="declineDialog">
-      <div class="font-bold text-gray-800 text-xl">Decline reasoning</div>
-      <div class="font-medium text-gray-600">Please state the reason for declining the request
-        here:
+      <div class="modal-title">Decline reasoning</div>
+      <div class="modal-description">
+        Please state the reason for declining the request here:
       </div>
       <textarea
         class="border-2 border-black rounded w-full resize-y mt-1 mb-3 p-0.5 px-1 max-h-36 min-h-14 h-14"
@@ -70,8 +70,9 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import Modal from '@/components/Modal.vue';
-import feathersClient, { User } from '@/helpers/feathers-client';
+import feathersClient from '@/helpers/feathers-client';
 import { TuvFormData } from '@/helpers/generic';
+import User from '@/helpers/interfaces/user';
 
 @Component({
   components: {

@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import Home from '../views/Home.vue';
-import feathersClient from '@/helpers/feathers-client';
+import feathersClient, { AuthObject } from '@/helpers/feathers-client';
+import User, { UserPermissions } from '@/helpers/interfaces/user';
 
 Vue.use(VueRouter);
 
@@ -34,6 +35,7 @@ const routes: Array<RouteConfig> = [
     name: 'me forms tuv',
     component: () => import('@/views/me/forms/TuvForm.vue'),
     meta: {
+      requiredPermissions: [UserPermissions.ACCESS_FORM],
       requiresAuth: true,
     },
   },
@@ -42,7 +44,7 @@ const routes: Array<RouteConfig> = [
     name: 'form builder',
     component: () => import('@/views/admin/FormBuilder.vue'),
     meta: {
-      adminOnly: true,
+      requiredPermissions: [UserPermissions.ACCESS_FORM],
       requiresAuth: true,
     },
   },
@@ -51,7 +53,16 @@ const routes: Array<RouteConfig> = [
     name: 'dashboard',
     component: () => import(/* webpackChunkName: "dashboard" */ '../views/admin/dashboard/Overview.vue'),
     meta: {
-      adminOnly: true,
+      requiredPermissions: [UserPermissions.MANAGE_FORM_RESPONSES, UserPermissions.VIEW_FORM_RESPONSES],
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/admin/users',
+    name: 'admin users',
+    component: () => import(/* webpackChunkName: "dashboard" */ '../views/admin/Users.vue'),
+    meta: {
+      requiredPermissions: [UserPermissions.MANAGE_USERS],
       requiresAuth: true,
     },
   },
@@ -73,26 +84,42 @@ const router = new VueRouter({
   routes,
 });
 
-const isAdmin = true;
-
-router.beforeEach((to, from, next) => {
-  if (to.meta && to.meta.requiresAuth) {
-      feathersClient.authenticate().then(() => {
+router.beforeEach(async (to, from, next) => {
+  if ((to.meta && to.meta.requiresAuth)) {
+    await feathersClient.authenticate()
+      .then(() => {
         // Success
         console.log('[Auth] Successfully authenticated!');
-      }).catch(() => {
+      })
+      .catch(() => {
         // Error
         console.log('[Auth] Not logged in.');
-        next({ path: '/login/', query: { redirect: encodeURIComponent(to.path) } });
+        next({
+          path: '/login/',
+          query: { redirect: encodeURIComponent(to.path) },
+        });
       });
   }
 
-  if (to.matched.some((record) => record.meta.adminOnly)) {
-    console.log('[Router] Admin only page. Checking access');
+  if (to.meta && to.meta.requiredPermissions) {
+    console.log('[Router] Checking access...');
+    if (!to.meta.requiresAuth) {
+      console.error('Admin pages have to have the meta requiresAuth flag set to true!');
+      next({ path: '/error/500' });
+      return;
+    }
 
-    if (!isAdmin) {
-      console.log('[Router] 403 Insufficient permissions. Redirecting to error page!');
-      next({ path: '/error/403' });
+    const auth: AuthObject = await feathersClient.get('authentication');
+    if (auth) {
+      (to.meta.requiredPermissions as UserPermissions[]).forEach((permission) => {
+        if (!(auth.user.permissions as unknown as string).split(',').includes(permission.toString())) {
+          console.log((auth.user.permissions as unknown as string).split(','), permission.toString());
+          console.log('[Router] 403 Insufficient permissions. Redirecting to error page!');
+          next({ path: '/error/403' });
+        }
+      });
+      next();
+      return;
     }
     next();
   }

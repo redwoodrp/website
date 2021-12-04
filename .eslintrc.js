@@ -25,5 +25,7 @@ module.exports = {
     'indent': 'off',
     'no-shadow': 'off',
     '@typescript-eslint/no-shadow': ['error'],
+    'semi': 'off',
+    '@typescript-eslint/semi': ['error'],
   },
 };
