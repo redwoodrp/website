@@ -393,11 +393,11 @@ export default class TuvForm extends Vue {
       firstRegistryDate = null;
     }
 
-    const { user } = await feathersClient.get('authentication');
+    const { user }: AuthObject = await feathersClient.get('authentication');
     const service = feathersClient.service('tuv-forms');
 
     service.create({
-      owner: user.discordId.toString(),
+      owner: user.discordId,
       discordName: (this.form.fields[0].components[0] as TextInputComponent).value,
       licensePlate: (this.form.fields[1].components[0] as TextInputComponent).value,
       firstRegistry: firstRegistryDate,

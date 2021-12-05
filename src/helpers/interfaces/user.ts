@@ -21,7 +21,7 @@ export default interface User {
   id: number;
   createdAt: string;
   updatedAt: string;
-  discordId: number;
+  discordId: string;
 
   username: string,
   email: string,
