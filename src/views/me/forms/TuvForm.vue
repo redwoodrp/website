@@ -14,7 +14,7 @@ import {
 } from '@/helpers/formFields';
 import Form from '@/components/Form.vue';
 import { hasOwn, TuvFormData } from '@/helpers/generic';
-import feathersClient from '@/helpers/feathers-client';
+import feathersClient, { AuthObject } from '@/helpers/feathers-client';
 
 interface SaveData {
   field: number,
@@ -349,7 +349,7 @@ export default class TuvForm extends Vue {
       localStorage.removeItem(this.saveKey);
     }
 
-    const { user } = await feathersClient.get('authentication');
+    const { user }: AuthObject = await feathersClient.get('authentication');
     (this.form.fields[0].components[0] as TextInputComponent).value = `${user.username}#${user.discriminator}`;
   }
 
@@ -397,7 +397,7 @@ export default class TuvForm extends Vue {
     const service = feathersClient.service('tuv-forms');
 
     service.create({
-      owner: user.discordId,
+      owner: user.discordId.toString(),
       discordName: (this.form.fields[0].components[0] as TextInputComponent).value,
       licensePlate: (this.form.fields[1].components[0] as TextInputComponent).value,
       firstRegistry: firstRegistryDate,
