@@ -390,7 +390,7 @@ export default class TuvForm extends Vue {
     if (!formValid) return;
 
     let firstRegistryDate: Date | string | null = new Date((this.form.fields[2].components[0] as DateInputComponent).values.join('/'));
-    if (typeof firstRegistryDate === 'string') {
+    if (typeof firstRegistryDate as string | Date === 'string') {
       firstRegistryDate = null;
     }
 
