@@ -20,4 +20,5 @@ export interface TuvFormData {
   vehicleSeatsAmount: number;
   vehicleYear: string;
   additionalInfos: string | null;
+  tid: string;
 }

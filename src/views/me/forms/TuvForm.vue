@@ -7,6 +7,7 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
+import { v4 as uuidv4 } from 'uuid';
 import {
   Components,
   ComponentType, DateInputComponent, Fields,
@@ -414,6 +415,7 @@ export default class TuvForm extends Vue {
       vehicleSeatsAmount: parseInt((this.form.fields[13].components[0] as RadioButtonComponent).selected, 10),
       vehicleYear: (this.form.fields[14].components[0] as NumberInputComponent).value,
       additionalInfos: (this.form.fields[15].components[0] as TextInputComponent).value,
+      tid: uuidv4(),
     } as TuvFormData);
   }
 }
