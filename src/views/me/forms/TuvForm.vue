@@ -1,7 +1,24 @@
 <template>
-  <div class="mt-8 w-2/5 flex justify-center items-center flex-col">
+  <div class="container" v-if="!formSubmitted">
     <Form v-model="form" ref="formElement" />
     <button class="submit mt-5 mb-96" @click="submitForm">Submit (can't be edited)</button>
+  </div>
+
+  <div v-else class="container h-full mb-24">
+    <div>
+      <div class="text-5xl text-gray-800 font-bold">Thanks!</div>
+      <div class="text-gray-700 text-lg font-medium mt-2">
+        You will receive an answer per Discord in 1-7 work days. If you don't receive a message in
+        the
+        given time, you won't have to pay for the TÜV. Please remember: Driving without a <span
+        class="font-semibold">valid</span> TÜV is <span class="font-semibold">illegal</span>! Even
+        if
+        you have submitted one.
+      </div>
+      <button @click="resetForm(); formSubmitted = false"
+              class="btn bg-indigo-500 hover:bg-indigo-700 mt-4">Back to form
+      </button>
+    </div>
   </div>
 </template>
 
@@ -322,8 +339,13 @@ export default class TuvForm extends Vue {
     ],
   };
   private saveKey = 'forms-tuv-save-data';
+  private formSubmitted = false;
 
   async mounted (): Promise<void> {
+    const { user }: AuthObject = await feathersClient.get('authentication');
+    console.log(user);
+    (this.form.fields[0].components[0] as TextInputComponent).value = `${user.username}#${user.discriminator}`;
+
     try {
       const storedSaved = localStorage.getItem(this.saveKey);
       if (!storedSaved) return;
@@ -349,9 +371,6 @@ export default class TuvForm extends Vue {
       console.log('Error loading save data: ', err);
       localStorage.removeItem(this.saveKey);
     }
-
-    const { user }: AuthObject = await feathersClient.get('authentication');
-    (this.form.fields[0].components[0] as TextInputComponent).value = `${user.username}#${user.discriminator}`;
   }
 
   @Watch('form', { deep: true })
@@ -382,6 +401,11 @@ export default class TuvForm extends Vue {
     localStorage.setItem(this.saveKey, JSON.stringify(saveData));
   }
 
+  private resetForm (): void {
+    localStorage.removeItem(this.saveKey);
+    window.location.reload();
+  }
+
   async submitForm (): Promise<void> {
     const formElement = (this.$refs.formElement as Form);
     const formValid = formElement.validateEverything();
@@ -397,7 +421,7 @@ export default class TuvForm extends Vue {
     const { user }: AuthObject = await feathersClient.get('authentication');
     const service = feathersClient.service('tuv-forms');
 
-    service.create({
+    await service.create({
       owner: user.discordId,
       discordName: (this.form.fields[0].components[0] as TextInputComponent).value,
       licensePlate: (this.form.fields[1].components[0] as TextInputComponent).value,
@@ -417,6 +441,8 @@ export default class TuvForm extends Vue {
       additionalInfos: (this.form.fields[15].components[0] as TextInputComponent).value,
       tid: uuidv4(),
     } as TuvFormData);
+
+    this.formSubmitted = true;
   }
 }
 </script>
@@ -429,5 +455,9 @@ export default class TuvForm extends Vue {
   border-left: 1px solid theme('colors.green.500') !important;
   border-bottom: 1px solid theme('colors.green.500') !important;
   border-top: 4px solid theme('colors.green.500') !important;
+}
+
+.container {
+  @apply mt-8 w-2/5 flex justify-center items-center flex-col;
 }
 </style>

@@ -47,14 +47,6 @@ export default class App extends Vue {
         });
     }
 
-    window.addEventListener('keyup', (event: KeyboardEvent) => {
-      if (event.key === ' ') {
-        const el = (this.$refs.toast as Toast);
-        if (!el) return;
-        el.show('Lorum ipsum dolor sit amet. Lorum ipsum dolor sit amet. Lorum ipsum dolor set amet.', { timeout: 60000 });
-      }
-    });
-
     // Register toast global
     const el = (this.$refs.toast as Toast);
     if (!el) return;
