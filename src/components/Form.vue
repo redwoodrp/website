@@ -307,7 +307,7 @@ export default class Form extends Vue {
     const component = field.components[componentIndex] as NumberInputComponent;
     if (component.type !== ComponentType.NumberInputComponent) return;
 
-    if (!this.digitRegex.test(component.value)) {
+    if (Number.isNaN(parseInt(component.value, 10))) {
       component.valid = false;
       component.failHint = 'Input can only consist of numeric values.';
       return;
