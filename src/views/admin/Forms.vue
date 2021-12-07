@@ -46,7 +46,7 @@
         <tr v-for="(response, i) in responses" :key="i">
           <td>
             <button class="btn bg-green-600 hover:bg-green-900 text-xs ml-0.5"
-                    @click="approve(response.id, response.owner); populate()">
+                    @click="approve(response.id, response.owner);">
               Approve
             </button>
             <button class="btn bg-red-500 hover:bg-red-800 text-xs mr-0.5"
@@ -199,38 +199,29 @@ export default class Overview extends Vue {
   private async approve (id: number, owner: string): Promise<void> {
     console.log('approve', this.user);
     if (!this.user) return;
-    await feathersClient.service('tuv-forms')
-      .patch(id, {
-        checked: true,
-        approved: true,
-        inspector: `${this.user.username}#${this.user.discriminator}`,
-      });
 
     await feathersClient.service('approve-tuv')
       .create({
         userId: owner,
         dbId: id,
       });
+
+    await this.populate();
   }
 
   private async decline (id: number, owner: string): Promise<void> {
     if (!this.user) return;
     if (!this.declineReason) this.declineReason = 'No reason specified.';
 
-    await feathersClient.service('tuv-forms')
-      .patch(id, {
-        checked: true,
-        approved: false,
-        inspector: `${this.user.username}#${this.user.discriminator}`,
-        declineReason: this.declineReason,
-      });
-
     await feathersClient.service('approve-tuv')
       .remove(id, {
         query: {
           userId: owner,
+          declineReason: this.declineReason,
         },
       });
+
+    await this.populate();
   }
 }
 </script>
