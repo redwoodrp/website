@@ -1,13 +1,13 @@
 <template>
   <div id="app">
     <ul
-      class="bg-gray-800 rounded-b-lg h-16 shadow-2xl font-medium text-gray-200 text-lg px-4 flex flex-row items-center nav">
-      <li class="text-gray-100 font-bold">RedwoodAdmin</li>
-      <li>Approve</li>
-      <li>Approved</li>
-      <li>Overview</li>
-      <li>All</li>
-      <li>Check</li>
+      class="bg-gray-800 h-16 shadow-xl font-medium text-gray-200 text-lg px-4 flex flex-row items-center nav">
+      <li class="text-gray-100 font-bold">
+        <router-link :to="{ name: 'home' }">RedwoodRP</router-link>
+      </li>
+      <li v-for="(item, i) in nav" :key="i" class="hover:font-bold">
+        <router-link :to="item.to">{{ item.name }}</router-link>
+      </li>
     </ul>
 
     <div class="flex flex-col items-center max-w-full height">
@@ -20,8 +20,21 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { RawLocation } from 'vue-router';
 import feathersClient from '@/helpers/feathers-client';
 import Toast from '@/components/Toast.vue';
+import { UserPermissions } from '@/helpers/interfaces/user';
+
+interface NavItem {
+  name: string;
+  to: RawLocation;
+  requiredPermissions: UserPermissions[];
+
+  /**
+   * Default is true
+   */
+  requiresAuth?: boolean;
+}
 
 @Component({
   components: {
@@ -30,6 +43,78 @@ import Toast from '@/components/Toast.vue';
 })
 export default class App extends Vue {
   private feathersClient = feathersClient;
+  private nav: NavItem[] = [
+    {
+      name: 'About',
+      to: {
+        name: 'home',
+        hash: 'about',
+      },
+      requiredPermissions: [],
+      requiresAuth: false,
+    },
+    {
+      name: 'Rules',
+      to: {
+        name: 'home',
+        hash: 'rules',
+      },
+      requiredPermissions: [],
+      requiresAuth: false,
+    },
+    {
+      name: 'Tutorial',
+      to: {
+        name: 'home',
+        hash: 'tutorial',
+      },
+      requiredPermissions: [],
+      requiresAuth: false,
+    },
+    {
+      name: 'Make TÜV',
+      to: {
+        name: 'me forms tuv',
+      },
+      requiredPermissions: [UserPermissions.ACCESS_FORM, UserPermissions.CREATE_RESPONSE],
+    },
+    {
+      name: 'My TÜVs',
+      to: {
+        name: 'tuvs overview',
+      },
+      requiredPermissions: [],
+    },
+    {
+      name: 'Check TÜV',
+      to: {
+        name: 'check tuv',
+      },
+      requiredPermissions: [],
+      requiresAuth: false,
+    },
+    {
+      name: 'Manage TÜVs',
+      to: {
+        name: 'admin tuvs',
+      },
+      requiredPermissions: [UserPermissions.VIEW_FORM_RESPONSES, UserPermissions.MANAGE_FORM_RESPONSES],
+    },
+    {
+      name: 'Manage Users',
+      to: {
+        name: 'admin users',
+      },
+      requiredPermissions: [UserPermissions.MANAGE_USERS],
+    },
+    {
+      name: 'Form builder',
+      to: {
+        name: 'form builder',
+      },
+      requiredPermissions: [UserPermissions.VIEW_FORM_RESPONSES],
+    },
+  ];
 
   mounted (): void {
     // Authenticate

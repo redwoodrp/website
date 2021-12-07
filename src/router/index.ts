@@ -71,8 +71,8 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
-    path: '/admin/dashboard',
-    name: 'dashboard',
+    path: '/admin/tuvs',
+    name: 'admin tuvs',
     component: () => import(/* webpackChunkName: "dashboard" */ '../views/admin/Forms.vue'),
     meta: {
       requiredPermissions: [UserPermissions.MANAGE_FORM_RESPONSES, UserPermissions.VIEW_FORM_RESPONSES],

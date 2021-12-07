@@ -18,6 +18,7 @@ module.exports = {
       textOverflow: ['hover'],
       overflow: ['hover'],
       whitespace: ['hover'],
+      fontWeight: ['hover', 'focus'],
     },
   },
   plugins: [],
