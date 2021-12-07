@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import Home from '../views/Home.vue';
 import feathersClient, { AuthObject } from '@/helpers/feathers-client';
-import User, { UserPermissions } from '@/helpers/interfaces/user';
+import { UserPermissions } from '@/helpers/interfaces/user';
 
 Vue.use(VueRouter);
 
@@ -26,6 +26,14 @@ const routes: Array<RouteConfig> = [
     path: '/me',
     name: 'me overview',
     component: () => import('@/views/me/Overview.vue'),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/me/tuvs',
+    name: 'tuvs overview',
+    component: () => import('@/views/me/Tuvs.vue'),
     meta: {
       requiresAuth: true,
     },

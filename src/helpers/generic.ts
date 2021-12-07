@@ -3,6 +3,13 @@ export function hasOwn (thisArg: unknown, prop: string): boolean {
 }
 
 export interface TuvFormData {
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+
+  approved: boolean | null;
+  inspector: string | null;
+
   owner: string;
   discordName: string;
   licensePlate: string;

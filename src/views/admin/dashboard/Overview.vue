@@ -9,7 +9,7 @@
       </span>
     </div>
     <div class="mt-5">
-      <table class="table-auto border-collapse border border-green-800">
+      <table class="table-auto border-collapse border border-green-800 text-sm">
         <thead>
         <tr>
           <th>Actions</th>
@@ -23,7 +23,9 @@
         <tbody>
         <tr v-for="(response, i) in responses" :key="i">
           <td>
-            <button class="btn bg-green-600 hover:bg-green-900" @click="approve()">Approve</button>
+            <button class="btn bg-green-600 hover:bg-green-900"
+                    @click="approve(response.id, response.owner)">Approve
+            </button>
             <button class="btn bg-red-500 hover:bg-red-800" @click="declineDialog = true">Decline
             </button>
             <button class="btn bg-blue-500 hover:bg-blue-800">Inspection queue</button>
@@ -31,7 +33,9 @@
           <td
             v-for="(header, i) in Object.keys(headerRelationMap).filter((_, i) => i !== 0)"
             :key="i">
-            {{ response[headerRelationMap[header]] === '' ? '-' : response[headerRelationMap[header]] }}
+            {{
+              !response[headerRelationMap[header]] ? '-' : response[headerRelationMap[header]]
+            }}
           </td>
         </tr>
         </tbody>
@@ -70,7 +74,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import Modal from '@/components/Modal.vue';
-import feathersClient from '@/helpers/feathers-client';
+import feathersClient, { AuthObject } from '@/helpers/feathers-client';
 import { TuvFormData } from '@/helpers/generic';
 import User from '@/helpers/interfaces/user';
 
@@ -81,25 +85,6 @@ import User from '@/helpers/interfaces/user';
 })
 export default class Overview extends Vue {
   private user: User | null = null;
-  private headers = [
-    'Name',
-    'Timestamp',
-    'License Plate',
-    'First Registry',
-    'Brand',
-    'Model',
-    'Engine Type',
-    'hp',
-    'ccm',
-    'Fuel Type',
-    'Transmission',
-    'Body Type',
-    'Color',
-    'Weight',
-    'Seats',
-    'Year',
-    'Additions',
-  ];
   private headerRelationMap = {
     owner: 'owner',
     Name: 'discordName',
@@ -118,6 +103,8 @@ export default class Overview extends Vue {
     Seats: 'vehicleSeatsAmount',
     Year: 'vehicleYear',
     'Additional Infos': 'additionalInfos',
+    Approved: 'approved',
+    Inspector: 'inspector',
   };
   private responses: TuvFormData[] = [];
   private declineDialog = false;
@@ -125,6 +112,8 @@ export default class Overview extends Vue {
   private declineReason = '';
 
   async mounted (): Promise<void> {
+    this.user = (await feathersClient.get('authentication') as AuthObject).user;
+
     const service = feathersClient.service('tuv-forms');
     const res = await service.find({
       query: {
@@ -143,8 +132,20 @@ export default class Overview extends Vue {
     console.log(this.responses);
   }
 
-  private approve (id: string): void {
-    // Send server to approve TÜV
+  private async approve (id: number, owner: string): void {
+    console.log('approve', this.user);
+    if (!this.user) return;
+    await feathersClient.service('approve-tuv')
+      .create({
+        userId: owner,
+        dbId: id,
+      });
+
+    await feathersClient.service('tuv-forms')
+      .patch(id, {
+        approved: true,
+        inspector: `${this.user.username}#${this.user.discriminator}`,
+      });
   }
 }
 </script>

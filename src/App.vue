@@ -29,6 +29,8 @@ import Toast from '@/components/Toast.vue';
   },
 })
 export default class App extends Vue {
+  private feathersClient = feathersClient;
+
   mounted (): void {
     // Authenticate
     const { hash } = this.$route;
