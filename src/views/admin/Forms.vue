@@ -24,9 +24,12 @@
         <tr v-for="(response, i) in responses" :key="i">
           <td>
             <button class="btn bg-green-600 hover:bg-green-900"
-                    @click="approve(response.id, response.owner)">Approve
+                    @click="approve(response.id, response.owner)">
+              Approve
             </button>
-            <button class="btn bg-red-500 hover:bg-red-800" @click="declineDialog = true">Decline
+            <button class="btn bg-red-500 hover:bg-red-800"
+                    @click="declineDialog.id = response.id; declineDialog.owner = response.owner; declineDialog.show = true">
+              Decline
             </button>
             <button class="btn bg-blue-500 hover:bg-blue-800">Inspection queue</button>
           </td>
@@ -42,7 +45,7 @@
       </table>
     </div>
 
-    <Modal v-model="declineDialog">
+    <Modal v-model="declineDialog.show">
       <div class="modal-title">Decline reasoning</div>
       <div class="modal-description">
         Please state the reason for declining the request here:
@@ -52,19 +55,13 @@
         placeholder="Description" v-model="declineReason" />
       <div class="flex flex-row space-x-2">
         <button class="btn bg-gray-400 hover:bg-gray-700"
-                @click="declineDialog = false; modalLoading = false;">Cancel
+                @click="declineDialog.show = false;">
+          Cancel
         </button>
-        <button class="btn bg-green-600 w-full flex flex-row justify-center items-center"
-                :class="{'hover:bg-green-900' : !modalLoading}"
-                :disabled="modalLoading" @click="modalLoading = true" ref="modalSendBtn">
-          <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
-               fill="none" viewBox="0 0 24 24" v-show="modalLoading">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                    stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-          </svg>
-          <span v-show="!modalLoading">Send</span>
+        <button
+          class="btn bg-green-600 w-full flex flex-row justify-center items-center hover:bg-green-900"
+          @click="decline(declineDialog.id, declineDialog.owner);">
+          Send
         </button>
       </div>
     </Modal>
@@ -107,8 +104,11 @@ export default class Overview extends Vue {
     Inspector: 'inspector',
   };
   private responses: TuvFormData[] = [];
-  private declineDialog = false;
-  private modalLoading = false;
+  private declineDialog = {
+    show: false,
+    id: -1,
+    owner: '',
+  };
   private declineReason = '';
 
   async mounted (): Promise<void> {
@@ -135,16 +135,35 @@ export default class Overview extends Vue {
   private async approve (id: number, owner: string): Promise<void> {
     console.log('approve', this.user);
     if (!this.user) return;
+    await feathersClient.service('tuv-forms')
+      .patch(id, {
+        approved: true,
+        inspector: `${this.user.username}#${this.user.discriminator}`,
+      });
+
     await feathersClient.service('approve-tuv')
       .create({
         userId: owner,
         dbId: id,
       });
+  }
+
+  private async decline (id: number, owner: string): Promise<void> {
+    if (!this.user) return;
+    if (!this.declineReason) this.declineReason = 'No reason specified.';
 
     await feathersClient.service('tuv-forms')
       .patch(id, {
         approved: true,
         inspector: `${this.user.username}#${this.user.discriminator}`,
+        declineReason: this.declineReason,
+      });
+
+    await feathersClient.service('approve-tuv')
+      .remove(id, {
+        query: {
+          userId: owner,
+        },
       });
   }
 }
