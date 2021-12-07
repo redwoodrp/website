@@ -7,8 +7,9 @@ export interface TuvFormData {
   createdAt: string;
   updatedAt: string;
 
-  approved: boolean | null;
   inspector: string | null;
+  approved: boolean | null;
+  declineReason: string | null;
 
   owner: string;
   discordName: string;
