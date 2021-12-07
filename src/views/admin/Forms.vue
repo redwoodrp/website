@@ -30,7 +30,7 @@
            placeholder="Search..." v-model="search" @blur="populate" @keydown.enter="populate"
            v-show="filters.showSearchBar">
 
-    <div class="mt-5">
+    <div class="mt-5 overflow-x-auto">
       <table class="table-auto border-collapse border border-green-800 text-sm">
         <thead>
         <tr>

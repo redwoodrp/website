@@ -1,17 +1,11 @@
 <template>
   <div id="app">
-    <ul
-      class="bg-gray-800 h-16 shadow-xl font-medium text-gray-200 text-lg px-4 flex flex-row items-center nav">
-      <li class="text-gray-100 font-bold">
-        <router-link :to="{ name: 'home' }">RedwoodRP</router-link>
-      </li>
-      <li v-for="(item, i) in nav" :key="i" class="hover:font-bold">
-        <router-link :to="item.to">{{ item.name }}</router-link>
-      </li>
-    </ul>
+    <Navbar :items="items" />
 
-    <div class="flex flex-col items-center max-w-full height">
-      <router-view />
+    <div class="flex flex-col items-center height mx-3 md:mx-0">
+      <router-view
+        :class="$route.name === 'admin users' || $route.name === 'admin tuvs' ? 'md:max-w-7/8' : 'md:max-w-2/5 md:w-2/5'"
+        class="w-full" />
     </div>
 
     <Toast ref="toast" />
@@ -20,30 +14,20 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { RawLocation } from 'vue-router';
 import feathersClient from '@/helpers/feathers-client';
 import Toast from '@/components/Toast.vue';
 import { UserPermissions } from '@/helpers/interfaces/user';
-
-interface NavItem {
-  name: string;
-  to: RawLocation;
-  requiredPermissions: UserPermissions[];
-
-  /**
-   * Default is true
-   */
-  requiresAuth?: boolean;
-}
+import Navbar, { NavbarItem } from '@/components/Navbar.vue';
 
 @Component({
   components: {
+    Navbar,
     Toast,
   },
 })
 export default class App extends Vue {
   private feathersClient = feathersClient;
-  private nav: NavItem[] = [
+  private items: NavbarItem[] = [
     {
       name: 'About',
       to: {
@@ -115,6 +99,8 @@ export default class App extends Vue {
       requiredPermissions: [UserPermissions.VIEW_FORM_RESPONSES],
     },
   ];
+  private menuOpen = false;
+  private showItems = false;
 
   mounted (): void {
     // Authenticate
@@ -147,11 +133,6 @@ html,
 #app,
 body {
   scroll-behavior: smooth;
-}
-
-.nav > *:not(:last-child):after {
-  content: "|";
-  @apply text-gray-400 font-bold mx-6;
 }
 
 .height {

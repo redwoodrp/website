@@ -458,6 +458,6 @@ export default class TuvForm extends Vue {
 }
 
 .container {
-  @apply mt-8 w-2/5 flex justify-center items-center flex-col;
+  @apply mt-8 flex justify-center items-center flex-col;
 }
 </style>

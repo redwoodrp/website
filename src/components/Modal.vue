@@ -1,7 +1,7 @@
 <template>
   <div v-show="active">
     <div class="overlay" id="modal-overlay" />
-    <div class="fixed rounded-lg size bg-white p-4" :style="`max-width: ${maxWidth};`">
+    <div class="fixed rounded-lg size bg-white p-4" :style="`max-width: ${maxWidth}; width: ${width === null ? 'auto': width}`">
       <slot />
     </div>
   </div>
@@ -18,6 +18,7 @@ import {
 export default class Modal extends Vue {
   @VModel({ type: Boolean }) private active!: boolean;
   @Prop() private maxWidth: string | undefined;
+  @Prop() private width: string | undefined;
   @Prop({ default: false, type: Boolean }) private closeOutside: boolean | undefined;
   @Prop({ default: false, type: Boolean }) private closeEsc: boolean | undefined;
 

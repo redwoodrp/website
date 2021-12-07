@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-8 flex flex-col w-2/5">
+  <div class="mt-8 flex flex-col">
     <div class="text-4xl text-gray-800 font-bold">License Plate Check</div>
     <div class="text-gray-600">Check license plates for valid tuvs.</div>
 

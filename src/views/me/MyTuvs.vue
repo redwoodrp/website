@@ -1,5 +1,5 @@
 <template>
-  <div class="w-2/5 flex justify-center flex-col mt-8">
+  <div class="flex justify-center flex-col mt-8">
     <div class="text-5xl text-gray-800 font-bold">My TÜVs</div>
     <input type="search"
            class="transition-all duration-300 mt-6 rounded-full px-6 py-3 border hover:shadow-lg focus:shadow-lg border-gray-300 bg-white text-lg mb-4"

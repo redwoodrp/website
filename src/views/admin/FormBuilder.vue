@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-8 w-2/5 flex justify-center items-center flex-col">
+  <div class="mt-8 flex justify-center items-center flex-col">
     <span class="mt-5 mb-2 text-2xl font-bold text-gray-800 flex justify-center self-center">
       Form Builder
     </span>
