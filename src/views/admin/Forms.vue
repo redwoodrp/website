@@ -1,13 +1,14 @@
 <template>
-  <div>
-    <div class="text-xl text-gray-800 font-medium">
-      <span v-if="user && user.username">
-        Welcome, {{ user.username }}!
-      </span>
-      <span v-else>
-        Welcome!
-      </span>
+  <div v-if="user">
+    <div class="text-4xl text-gray-800 mt-8 mb-1 font-bold">
+      Approve/Decline incoming TÜV
     </div>
+
+    <div class="flex flex-row items-center mt-3 mb-1">
+      <button class="btn bg-blue-400 hover:bg-blue-600 text-xs mr-2" @click="$toast.show('Refreshed!'); populate()">Refresh</button>
+      <div class="text-gray-400">Last Updated: {{ lastUpdated }}</div>
+    </div>
+
     <div class="mt-5">
       <table class="table-auto border-collapse border border-green-800 text-sm">
         <thead>
@@ -23,15 +24,14 @@
         <tbody>
         <tr v-for="(response, i) in responses" :key="i">
           <td>
-            <button class="btn bg-green-600 hover:bg-green-900"
-                    @click="approve(response.id, response.owner)">
+            <button class="btn bg-green-600 hover:bg-green-900 text-xs ml-0.5"
+                    @click="approve(response.id, response.owner); populate()">
               Approve
             </button>
-            <button class="btn bg-red-500 hover:bg-red-800"
+            <button class="btn bg-red-500 hover:bg-red-800 text-xs mr-0.5"
                     @click="declineDialog.id = response.id; declineDialog.owner = response.owner; declineDialog.show = true">
               Decline
             </button>
-            <button class="btn bg-blue-500 hover:bg-blue-800">Inspection queue</button>
           </td>
           <td
             v-for="(header, i) in Object.keys(headerRelationMap).filter((_, i) => i !== 0)"
@@ -60,7 +60,7 @@
         </button>
         <button
           class="btn bg-green-600 w-full flex flex-row justify-center items-center hover:bg-green-900"
-          @click="decline(declineDialog.id, declineDialog.owner);">
+          @click="decline(declineDialog.id, declineDialog.owner); populate()">
           Send
         </button>
       </div>
@@ -111,10 +111,14 @@ export default class Overview extends Vue {
     owner: '',
   };
   private declineReason = '';
+  private lastUpdated = '';
 
   async mounted (): Promise<void> {
     this.user = (await feathersClient.get('authentication') as AuthObject).user;
+    await this.populate();
+  }
 
+  async populate (): Promise<void> {
     const service = feathersClient.service('tuv-forms');
     const res = await service.find({
       query: {
@@ -122,6 +126,7 @@ export default class Overview extends Vue {
       },
     });
 
+    this.responses = [];
     (res.data as TuvFormData[]).forEach((form: TuvFormData) => {
       const newForm = form;
       if (newForm.firstRegistry !== null) {
@@ -130,7 +135,14 @@ export default class Overview extends Vue {
       this.responses.push(newForm);
     });
 
-    console.log(this.responses);
+    const d = new Date();
+    this.lastUpdated = d.toLocaleString('en-US', {
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: !!new Intl.DateTimeFormat([], { hour: 'numeric' })
+        .format(0)
+        .match(/\s/),
+    });
   }
 
   private async approve (id: number, owner: string): Promise<void> {
