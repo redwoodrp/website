@@ -81,7 +81,7 @@
         </button>
         <button
           class="btn bg-green-600 w-full flex flex-row justify-center items-center hover:bg-green-900"
-          @click="decline(declineDialog.id, declineDialog.owner); populate()">
+          @click="decline(declineDialog.id, declineDialog.owner);">
           Send
         </button>
       </div>
