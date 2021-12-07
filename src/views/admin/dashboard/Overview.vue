@@ -132,7 +132,7 @@ export default class Overview extends Vue {
     console.log(this.responses);
   }
 
-  private async approve (id: number, owner: string): void {
+  private async approve (id: number, owner: string): Promise<void> {
     console.log('approve', this.user);
     if (!this.user) return;
     await feathersClient.service('approve-tuv')

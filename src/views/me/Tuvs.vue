@@ -42,7 +42,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import feathersClient, { AuthObject } from '@/helpers/feathers-client';
+import feathersClient from '@/helpers/feathers-client';
 import { TuvFormData } from '@/helpers/generic';
 import User from '@/helpers/interfaces/user';
 import config from '../../../config';
@@ -68,13 +68,13 @@ export default class Tuvs extends Vue {
     Inspector: 'inspector',
   };
 
-  async mounted (): void {
+  async mounted (): Promise<void> {
     this.user = await feathersClient.get('authentication');
 
-    this.searchQuery();
+    await this.searchQuery();
   }
 
-  private async searchQuery (): void {
+  private async searchQuery (): Promise<void> {
     if (!this.user) return;
 
     const q = `%${this.search}%`;
@@ -93,7 +93,7 @@ export default class Tuvs extends Vue {
 
     this.tuvs = res.data.map((d: TuvFormData) => {
       const newData = d;
-      newData.firstRegistry = new Date(d.firstRegistry).toDateString();
+      newData.firstRegistry = new Date(d.firstRegistry as unknown as string).toDateString();
       return newData;
     });
   }
