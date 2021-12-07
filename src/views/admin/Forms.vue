@@ -100,6 +100,7 @@ export default class Overview extends Vue {
     Seats: 'vehicleSeatsAmount',
     Year: 'vehicleYear',
     'Additional Infos': 'additionalInfos',
+    Checked: 'checked',
     Approved: 'approved',
     Inspector: 'inspector',
   };
@@ -137,6 +138,7 @@ export default class Overview extends Vue {
     if (!this.user) return;
     await feathersClient.service('tuv-forms')
       .patch(id, {
+        checked: true,
         approved: true,
         inspector: `${this.user.username}#${this.user.discriminator}`,
       });
@@ -154,7 +156,8 @@ export default class Overview extends Vue {
 
     await feathersClient.service('tuv-forms')
       .patch(id, {
-        approved: true,
+        checked: true,
+        approved: false,
         inspector: `${this.user.username}#${this.user.discriminator}`,
         declineReason: this.declineReason,
       });
