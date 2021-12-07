@@ -5,7 +5,10 @@
     </div>
 
     <div class="flex flex-row items-center mt-3 mb-1">
-      <button class="btn bg-blue-400 hover:bg-blue-600 text-xs mr-2" @click="$toast.show('Refreshed!'); populate()">Refresh</button>
+      <button class="btn bg-blue-400 hover:bg-blue-600 text-xs mr-2"
+              @click="$toast.show('Refreshed!'); populate()">
+        Refresh
+      </button>
       <div class="text-gray-400">Last Updated: {{ lastUpdated }}</div>
     </div>
 
@@ -37,7 +40,7 @@
             v-for="(header, i) in Object.keys(headerRelationMap).filter((_, i) => i !== 0)"
             :key="i">
             {{
-              !response[headerRelationMap[header]] ? '-' : response[headerRelationMap[header]]
+              response[headerRelationMap[header]] === null || response[headerRelationMap[header]] === undefined ? '-' : tryFormatBool(headerRelationMap[header], response[headerRelationMap[header]])
             }}
           </td>
         </tr>
@@ -143,6 +146,17 @@ export default class Overview extends Vue {
         .format(0)
         .match(/\s/),
     });
+  }
+
+  private tryFormatBool (field: string, val: string): string {
+    switch (field) {
+      case 'approved':
+      case 'checked':
+        return Boolean(val);
+
+      default:
+        return val;
+    }
   }
 
   private async approve (id: number, owner: string): Promise<void> {
