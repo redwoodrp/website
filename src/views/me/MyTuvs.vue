@@ -39,7 +39,7 @@ export default class Tuvs extends Vue {
         query: {
           owner: this.user?.discordId,
           tid: this.tid,
-          approved: true,
+          checked: true,
         },
       });
 
@@ -54,7 +54,7 @@ export default class Tuvs extends Vue {
       .find({
         query: {
           owner: this.user.discordId,
-          approved: true,
+          checked: true,
           $or: {
             vehicleModel: { $like: q },
             vehicleBrand: { $like: q },

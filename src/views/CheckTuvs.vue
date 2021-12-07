@@ -32,6 +32,7 @@ export default class CheckTuvs extends Vue {
       .find({
         query: {
           approved: true,
+          checked: true,
           licensePlate: { $like: q },
         },
       });
