@@ -23,6 +23,11 @@ const routes: Array<RouteConfig> = [
     component: () => import('@/views/oauth/Done.vue'),
   },
   {
+    path: '/check/tuv',
+    name: 'check tuv',
+    component: () => import('@/views/CheckTuvs.vue'),
+  },
+  {
     path: '/me',
     name: 'me overview',
     component: () => import('@/views/me/Overview.vue'),
@@ -33,7 +38,16 @@ const routes: Array<RouteConfig> = [
   {
     path: '/me/tuvs',
     name: 'tuvs overview',
-    component: () => import('@/views/me/Tuvs.vue'),
+    component: () => import('@/views/me/MyTuvs.vue'),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/me/tuvs/:tid',
+    name: 'tuvs view specific',
+    props: true,
+    component: () => import('@/views/me/MyTuvs.vue'),
     meta: {
       requiresAuth: true,
     },

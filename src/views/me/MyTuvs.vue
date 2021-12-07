@@ -12,8 +12,10 @@
 
         <div class="text-xl text-gray-700 font-semibold p-3">
           {{
-            `${tuv.vehicleBrand} ${tuv.vehicleModel} (${tuv.engineHorsepower} hp; ${tuv.engineCCM} ccm)`
+            `${tuv.vehicleBrand} ${tuv.vehicleModel} (${tuv.engineHorsepower} hp; ${tuv.engineCCM} ccm; `
           }}
+          <a :href="`/me/tuvs/${tuv.tid}`"
+             class="text-blue-500 hover:text-blue-700 transition-all underline">link</a>)
         </div>
 
         <div class="mx-3 mb-3 flex flex-row justify-between">
@@ -41,7 +43,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import feathersClient from '@/helpers/feathers-client';
 import { TuvFormData } from '@/helpers/generic';
 import User from '@/helpers/interfaces/user';
@@ -49,6 +51,7 @@ import config from '../../../config';
 
 @Component
 export default class Tuvs extends Vue {
+  @Prop() private tid: string | undefined;
   private search = '';
   private tuvs: TuvFormData[] = [];
   private user: User | null = null;
@@ -71,7 +74,20 @@ export default class Tuvs extends Vue {
   async mounted (): Promise<void> {
     this.user = await feathersClient.get('authentication');
 
-    await this.searchQuery();
+    if (!this.tid) {
+      await this.searchQuery();
+      return;
+    }
+    const res = await feathersClient.service('tuv-forms')
+      .find({
+        query: {
+          owner: this.user?.discordId,
+          tid: this.tid,
+          approved: true,
+        },
+      });
+
+    this.tuvs = res.data as TuvFormData[];
   }
 
   private async searchQuery (): Promise<void> {
