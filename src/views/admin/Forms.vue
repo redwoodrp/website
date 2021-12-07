@@ -12,6 +12,24 @@
       <div class="text-gray-400">Last Updated: {{ lastUpdated }}</div>
     </div>
 
+    <div class="border border-gray-400 rounded-lg my-2 mt-5 p-2 flex flex-row justify-around">
+      <div>
+        <input type="checkbox" v-model="filters.showChecked" @change="populate"
+               id="filter-show-approved" class="w-8">
+        <label for="filter-show-approved">Show done/checked</label>
+      </div>
+
+      <div>
+        <input type="checkbox" v-model="filters.showSearchBar" id="filter-show-search" class="w-8" @change="search = ''">
+        <label for="filter-show-search">Show search bar</label>
+      </div>
+    </div>
+
+    <input type="search"
+           class="transition-all duration-300 mt-6 rounded-full px-6 py-3 border hover:shadow-lg focus:shadow-lg border-gray-300 bg-white text-lg mb-4 w-full"
+           placeholder="Search..." v-model="search" @blur="populate" @keydown.enter="populate"
+           v-show="filters.showSearchBar">
+
     <div class="mt-5">
       <table class="table-auto border-collapse border border-green-800 text-sm">
         <thead>
@@ -115,6 +133,11 @@ export default class Overview extends Vue {
   };
   private declineReason = '';
   private lastUpdated = '';
+  private filters = {
+    showChecked: false,
+    showSearchBar: false,
+  };
+  private search = '';
 
   async mounted (): Promise<void> {
     this.user = (await feathersClient.get('authentication') as AuthObject).user;
@@ -122,12 +145,25 @@ export default class Overview extends Vue {
   }
 
   async populate (): Promise<void> {
-    const service = feathersClient.service('tuv-forms');
-    const res = await service.find({
+    const q = { $like: `%${this.search}%` };
+    const params = {
       query: {
         $limit: 50,
+        checked: this.filters.showChecked,
+        $or: {
+          vehicleBrand: q,
+          vehicleModel: q,
+          vehicleColor: q,
+          vehicleYear: q,
+          owner: q,
+          licensePlate: q,
+          tid: q,
+        },
       },
-    });
+    };
+
+    const service = feathersClient.service('tuv-forms');
+    const res = await service.find(params);
 
     this.responses = [];
     (res.data as TuvFormData[]).forEach((form: TuvFormData) => {
@@ -152,7 +188,8 @@ export default class Overview extends Vue {
     switch (field) {
       case 'approved':
       case 'checked':
-        return Boolean(val);
+        return Boolean(val)
+          .toString();
 
       default:
         return val;
