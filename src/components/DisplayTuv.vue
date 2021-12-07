@@ -13,25 +13,15 @@
            class="text-blue-500 hover:text-blue-700 transition-all underline">link</a>)
       </div>
 
-      <div class="mx-3 mb-3 flex flex-row justify-between">
-        <div>
-          <div v-for="(category, i) in Object.keys(tuv)" :key="i">
-              <span>{{
-                  Object.keys(headerMap)[Object.values(headerMap)
-                                               .findIndex(c => c === category)]
-                }}</span>
-          </div>
-        </div>
-
-        <div>
-          <div v-for="(category, i) in Object.keys(tuv)" :key="i">
-              <span v-show="Object.values(headerMap).includes(category)">{{
-                  tuv[Object.values(headerMap)
-                            .find((c) => c === category)]
-                }}</span>
-          </div>
-        </div>
-      </div>
+      <table class="table-fixed rounded-lg w-full">
+        <tbody>
+        <tr :class="{'bg-gray-200': i % 2 === 0}" v-for="(val, key, i) in headerMap"
+            :key="i" v-show="headerMap[key]">
+          <td class="py-1 px-3">{{ val }}</td>
+          <td>{{ tuv[key] }}</td>
+        </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
@@ -46,18 +36,18 @@ export default class DisplayTuv extends Vue {
   @Prop({ required: true }) private readonly data!: TuvFormData[];
   private config = config;
   private headerMap = {
-    'License Pl.': 'licensePlate',
-    '1st registry': 'firstRegistry',
-    Engine: 'engineType',
-    Fuel: 'fuelType',
-    Transmission: 'transmission',
-    Body: 'bodyType',
-    Color: 'vehicleColor',
-    Weight: 'vehicleWeight',
-    Seats: 'vehicleSeatsAmount',
-    Year: 'vehicleYear',
-    'Additional Infos': 'additionalInfos',
-    Inspector: 'inspector',
+    additionalInfos: 'Additional Infos',
+    bodyType: 'Body',
+    engineType: 'Engine',
+    firstRegistry: '1st registry',
+    fuelType: 'Fuel',
+    inspector: 'Inspector',
+    licensePlate: 'License Pl.',
+    transmission: 'Transmission',
+    vehicleColor: 'Color',
+    vehicleSeatsAmount: 'Seats',
+    vehicleWeight: 'Weight',
+    vehicleYear: 'Year',
   };
 }
 </script>
