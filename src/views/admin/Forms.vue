@@ -72,7 +72,7 @@
         Please state the reason for declining the request here:
       </div>
       <textarea
-        class="border-2 border-black rounded w-full resize-y mt-1 mb-3 p-0.5 px-1 max-h-36 min-h-14 h-14"
+        class="textarea"
         placeholder="Description" v-model="declineReason" />
       <div class="flex flex-row space-x-2">
         <button class="btn bg-gray-400 hover:bg-gray-700"

@@ -62,6 +62,14 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
+    path: '/me/feedback',
+    name: 'feedback',
+    component: () => import('@/views/me/Feedback.vue'),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
     path: '/admin/forms/builder',
     name: 'form builder',
     component: () => import('@/views/admin/FormBuilder.vue'),

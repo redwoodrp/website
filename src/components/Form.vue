@@ -422,11 +422,6 @@ export default class Form extends Vue {
   @apply text-red-500;
 }
 
-.text-input {
-  @apply border-b-2 border-gray-300 focus:border-blue-500 outline-none mt-1 h-8 p-1.5 w-1/2 focus:w-3/4;
-  transition: all 180ms ease-in-out;
-}
-
 @keyframes widthTransition {
   from {
     width: initial;

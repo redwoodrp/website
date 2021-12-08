@@ -29,6 +29,14 @@ export default class App extends Vue {
   private feathersClient = feathersClient;
   private items: NavbarItem[] = [
     {
+      name: 'Feedback',
+      to: {
+        name: 'feedback',
+      },
+      requiredPermissions: [],
+      requiresAuth: true,
+    },
+    {
       name: 'About',
       to: {
         name: 'home',
