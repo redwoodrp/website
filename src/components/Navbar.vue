@@ -1,16 +1,18 @@
 <template>
-  <div>
+  <div v-if="user !== null">
     <div
       class="bg-gray-800 h-16 shadow-xl font-medium text-gray-200 text-lg px-4 flex flex-row items-center nav justify-between">
       <div class="flex flex-row">
-        <router-link class="text-gray-100 font-bold mr-6" :to="{ name: 'home' }">
+        <router-link class="text-gray-100 font-bold mr-8" :to="{ name: 'home' }">
           RedwoodRP
         </router-link>
         <div v-for="(item, i) in items" :key="i"
              class="hover:font-bold transition-all cursor-pointer" v-show="showItems">
+          <span v-show="hasPermissions(item.requiredPermissions)">
           <router-link :to="item.to">{{ item.name }}</router-link>
           <span class="text-gray-400 font-bold mx-6 select-none"
                 v-show="i !== items.length - 1">|</span>
+          </span>
         </div>
       </div>
 
@@ -29,12 +31,13 @@
 
     </div>
 
-    <Modal v-model="menuOpen" :close-esc="true" :close-outside="true" max-width="400px" width="400px" @click="menuOpen = false">
+    <Modal v-model="menuOpen" :close-esc="true" :close-outside="true" max-width="400px"
+           width="400px" @click="menuOpen = false">
       <div class="flex flex-col space-y-0.5 w-full">
-      <button class="btn bg-indigo-500 hover:bg-indigo-800 w-full" v-for="(item, i) in items"
-              :key="i" @click="menuOpen = false; navigateTo(item.to)">
-        {{ item.name }}
-      </button>
+        <button class="btn bg-indigo-500 hover:bg-indigo-800 w-full" v-for="(item, i) in items"
+                :key="i" @click="menuOpen = false; navigateTo(item.to)">
+          {{ item.name }}
+        </button>
       </div>
     </Modal>
   </div>
@@ -43,9 +46,10 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { RawLocation } from 'vue-router';
-import { UserPermissions } from '@/helpers/interfaces/user';
+import User, { UserPermissions } from '@/helpers/interfaces/user';
 import { debounce } from '@/helpers/generic';
 import Modal from '@/components/Modal.vue';
+import feathersClient, { AuthObject } from '@/helpers/feathers-client';
 
 export interface NavbarItem {
   name: string;
@@ -72,12 +76,36 @@ export default class Navbar extends Vue {
   }) private readonly minSize!: number;
   private showItems = false;
   private menuOpen = false;
+  private user: User | null = null;
 
-  mounted (): void {
+  async mounted (): Promise<void> {
+    const interval = setInterval(async () => {
+      if (feathersClient) {
+        const { user }: AuthObject = await feathersClient.get('authentication');
+        console.log(user);
+        this.user = user;
+        clearInterval(interval);
+      }
+    }, 100);
+
     this.showItems = window.innerWidth > this.minSize;
     window.addEventListener('resize', debounce(() => {
       this.showItems = window.innerWidth > this.minSize;
     }, 300));
+  }
+
+  private hasPermissions (permissions: UserPermissions[]): boolean {
+    console.log(!!this.user);
+    if (!this.user && permissions.length === 0) return false;
+
+    let hasPermission = true;
+    permissions.forEach((p) => {
+      if (this.user && !this.user.permissions.includes(p)) {
+        hasPermission = false;
+      }
+    });
+
+    return hasPermission;
   }
 
   private navigateTo (rawLocation: RawLocation): void {
