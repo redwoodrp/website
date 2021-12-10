@@ -18,7 +18,7 @@ const routes: Array<RouteConfig> = [
     component: () => import('@/views/oauth/Login.vue'),
   },
   {
-    path: '/oauth/done',
+    path: '/login/done',
     name: 'oauth done',
     component: () => import('@/views/oauth/Done.vue'),
   },
