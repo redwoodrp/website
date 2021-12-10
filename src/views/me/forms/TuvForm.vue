@@ -413,10 +413,13 @@ export default class TuvForm extends Vue {
 
     if (!formValid) return;
 
-    let firstRegistryDate: Date | string | null = new Date((this.form.fields[2].components[0] as DateInputComponent).values.join('/'));
-    if (typeof firstRegistryDate as string | Date === 'string') {
-      firstRegistryDate = null;
+    let firstRegistryDate: string | Date | null = new Date((this.form.fields[2].components[0] as DateInputComponent).values.join('/'));
+    if (Number.isNaN(firstRegistryDate.getTime())) {
+      firstRegistryDate = new Date().toISOString();
+    } else {
+      firstRegistryDate = new Date(firstRegistryDate).toISOString();
     }
+    console.log(firstRegistryDate);
 
     const { user }: AuthObject = await feathersClient.get('authentication');
     const service = feathersClient.service('tuv-forms');
@@ -443,6 +446,10 @@ export default class TuvForm extends Vue {
     } as TuvFormData);
 
     this.formSubmitted = true;
+  }
+
+  private isValidDate (d: Date | string | number): boolean {
+    return d instanceof Date && !Number.isNaN(d);
   }
 }
 </script>
