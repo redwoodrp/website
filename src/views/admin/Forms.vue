@@ -20,7 +20,8 @@
       </div>
 
       <div>
-        <input type="checkbox" v-model="filters.showSearchBar" id="filter-show-search" class="w-8" @change="search = ''">
+        <input type="checkbox" v-model="filters.showSearchBar" id="filter-show-search" class="w-8"
+               @change="search = ''">
         <label for="filter-show-search">Show search bar</label>
       </div>
     </div>
@@ -149,7 +150,7 @@ export default class Overview extends Vue {
     const params = {
       query: {
         $limit: 50,
-        checked: this.filters.showChecked,
+        checked: { $or: [this.filters.showChecked, null] },
         $or: {
           vehicleBrand: q,
           vehicleModel: q,
