@@ -98,7 +98,7 @@ export default class Navbar extends Vue {
 
   private hasPermissions (permissions: UserPermissions[]): boolean {
     console.log(!!this.user);
-    if (!this.user && permissions.length === 0) return false;
+    if (!this.user && permissions.length === 0) return true;
 
     let hasPermission = true;
     permissions.forEach((p) => {
