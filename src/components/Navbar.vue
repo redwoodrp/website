@@ -1,5 +1,5 @@
 <template>
-  <div v-if="user !== null">
+  <div>
     <div
       class="bg-gray-800 h-16 shadow-xl font-medium text-gray-200 text-lg px-4 flex flex-row items-center nav justify-between">
       <div class="flex flex-row">
