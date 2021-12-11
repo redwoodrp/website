@@ -34,10 +34,12 @@ export default class Tuvs extends Vue {
       await this.searchQuery();
       return;
     }
+
+    if (!this.user) return;
     const res = await feathersClient.service('tuv-forms')
       .find({
         query: {
-          owner: this.user?.discordId,
+          owner: this.user.discordId,
           tid: this.tid,
           checked: true,
         },

@@ -81,9 +81,10 @@ export default class Navbar extends Vue {
   async mounted (): Promise<void> {
     const interval = setInterval(async () => {
       if (feathersClient) {
-        const { user }: AuthObject = await feathersClient.get('authentication');
-        console.log(user);
-        this.user = user;
+        const authObject: AuthObject = await feathersClient.get('authentication');
+        if (!authObject) return;
+        console.log(authObject.user);
+        this.user = authObject.user;
         clearInterval(interval);
       }
     }, 100);
