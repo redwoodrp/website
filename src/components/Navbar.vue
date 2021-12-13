@@ -17,11 +17,15 @@
         </div>
       </div>
 
-      <button class="bg-gray-600 btn hover:bg-gray-700 shadow-lg" v-show="user !== null"
-              title="logout" @click="logout">
+      <button class="bg-gray-600 btn hover:bg-gray-700 shadow-lg -mr-1.5"
+              title="logout" @click="user === null ? login() : logout()">
         <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" fill="white">
           <path
-            d="M17 8l-1.41 1.41L17.17 11H9v2h8.17l-1.58 1.58L17 16l4-4-4-4zM5 5h7V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h7v-2H5V5z" />
+            d="M17 8l-1.41 1.41L17.17 11H9v2h8.17l-1.58 1.58L17 16l4-4-4-4zM5 5h7V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h7v-2H5V5z"
+            v-if="user !== null" />
+          <path
+            d="M10 17v-3H3v-4h7V7l5 5-5 5m0-15h9a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2h-9a2 2 0 0 1-2-2v-2h2v2h9V4h-9v2H8V4a2 2 0 0 1 2-2z"
+            v-else />
         </svg>
       </button>
 
@@ -48,8 +52,9 @@
                 v-show="hasPermissions(item.requiredPermissions)">
           {{ item.name }}
         </button>
-        <button class="wb-1 btn bg-red-500 hover:bg-red-800 w-full" v-show="user !== null"
-                @click="logout">Logout
+        <button class="wb-1 btn bg-red-500 hover:bg-red-800 w-full"
+                @click="user === null ? login() : logout()">
+          {{ user === null ? 'Login' : 'Logout' }}
         </button>
       </div>
     </Modal>
@@ -131,6 +136,15 @@ export default class Navbar extends Vue {
   @Watch('item')
   private cleanItems (): void {
     this.cleanedItems = this.items.filter((it) => this.hasPermissions(it.requiredPermissions));
+  }
+
+  private login (): void {
+    this.$router.push({
+      name: 'login',
+      query: {
+        redirect: encodeURIComponent(window.location.pathname),
+      },
+    });
   }
 
   private async logout (): Promise<void> {
