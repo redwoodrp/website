@@ -345,7 +345,8 @@ export default class Form extends Vue {
     const component = field.components[componentIndex] as DateInputComponent;
     if (component.type !== ComponentType.DateInput) return;
 
-    if (!this.digitRegex.test(component.values[valueIndex])) {
+    if (Number.isNaN(parseInt(component.values[valueIndex], 10)) && component.values[valueIndex] !== '') {
+      console.log(component.values[valueIndex]);
       component.valid = false;
       component.failHint = `Input can only consist of numeric values. (${valueIndex})`;
       return;
