@@ -28,6 +28,13 @@ const routes: Array<RouteConfig> = [
     component: () => import('@/views/CheckTuvs.vue'),
   },
   {
+    path: '/invite',
+    alias: ['/discord', '/i', '/quickinvite'],
+    beforeEnter () {
+      window.location.href = 'https://discord.gg/gV8NbGgw';
+    },
+  },
+  {
     path: '/me',
     name: 'me overview',
     component: () => import('@/views/me/Overview.vue'),
@@ -142,7 +149,8 @@ router.beforeEach(async (to, from, next) => {
     const auth: AuthObject = await feathersClient.get('authentication');
     if (auth) {
       (to.meta.requiredPermissions as UserPermissions[]).forEach((permission) => {
-        if (!(auth.user.permissions as unknown as string).split(',').includes(permission.toString())) {
+        if (!(auth.user.permissions as unknown as string).split(',')
+          .includes(permission.toString())) {
           console.log((auth.user.permissions as unknown as string).split(','), permission.toString());
           console.log('[Router] 403 Insufficient permissions. Redirecting to error page!');
           next({ path: '/error/403' });
