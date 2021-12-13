@@ -447,10 +447,6 @@ export default class TuvForm extends Vue {
 
     this.formSubmitted = true;
   }
-
-  private isValidDate (d: Date | string | number): boolean {
-    return d instanceof Date && !Number.isNaN(d);
-  }
 }
 </script>
 
