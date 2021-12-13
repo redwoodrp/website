@@ -6,17 +6,27 @@
         <router-link class="text-gray-100 font-bold mr-8" :to="{ name: 'home' }">
           RedwoodRP
         </router-link>
-        <div v-for="(item, i) in items" :key="i"
+
+        <div v-for="(item, i) in cleanedItems" :key="i"
              class="hover:font-bold transition-all cursor-pointer" v-show="showItems">
           <span v-show="hasPermissions(item.requiredPermissions)">
           <router-link :to="item.to">{{ item.name }}</router-link>
           <span class="text-gray-400 font-bold mx-6 select-none"
-                v-show="i !== items.length - 1">|</span>
+                v-show="i !== cleanedItems.length - 1">|</span>
           </span>
         </div>
       </div>
 
+      <button class="bg-gray-600 btn hover:bg-gray-700 shadow-lg" v-show="user !== null"
+              title="logout" @click="logout">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" fill="white">
+          <path
+            d="M17 8l-1.41 1.41L17.17 11H9v2h8.17l-1.58 1.58L17 16l4-4-4-4zM5 5h7V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h7v-2H5V5z" />
+        </svg>
+      </button>
+
       <div class="rounded bg-gray-700 w-10 h-10 flex justify-center items-center cursor-pointer"
+           :class="{ 'hidden': showItems }"
            @click="menuOpen = !menuOpen">
         <svg style="width:24px;height:24px" viewBox="0 0 24 24"
              v-if="!menuOpen">
@@ -28,15 +38,18 @@
                 d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
         </svg>
       </div>
-
     </div>
 
     <Modal v-model="menuOpen" :close-esc="true" :close-outside="true" max-width="400px"
            width="400px" @click="menuOpen = false">
       <div class="flex flex-col space-y-0.5 w-full">
         <button class="btn bg-indigo-500 hover:bg-indigo-800 w-full" v-for="(item, i) in items"
-                :key="i" @click="menuOpen = false; navigateTo(item.to)">
+                :key="i" @click="menuOpen = false; navigateTo(item.to)"
+                v-show="hasPermissions(item.requiredPermissions)">
           {{ item.name }}
+        </button>
+        <button class="wb-1 btn bg-red-500 hover:bg-red-800 w-full" v-show="user !== null"
+                @click="logout">Logout
         </button>
       </div>
     </Modal>
@@ -44,7 +57,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import {
+  Component,
+  Prop,
+  Vue,
+  Watch,
+} from 'vue-property-decorator';
 import { RawLocation } from 'vue-router';
 import User, { UserPermissions } from '@/helpers/interfaces/user';
 import { debounce } from '@/helpers/generic';
@@ -77,8 +95,20 @@ export default class Navbar extends Vue {
   private showItems = false;
   private menuOpen = false;
   private user: User | null = null;
+  private loggedIn = true;
+  private cleanedItems: NavbarItem[] = [];
 
   async mounted (): Promise<void> {
+    this.cleanItems();
+
+    try {
+      await feathersClient.authenticate();
+    } catch (e) {
+      if (e.code === 401) {
+        this.loggedIn = false;
+      }
+    }
+
     const interval = setInterval(async () => {
       if (feathersClient) {
         const authObject: AuthObject = await feathersClient.get('authentication');
@@ -90,14 +120,25 @@ export default class Navbar extends Vue {
       }
     }, 100);
 
+    if (!this.loggedIn) clearInterval(interval);
+
     this.showItems = window.innerWidth > this.minSize;
     window.addEventListener('resize', debounce(() => {
       this.showItems = window.innerWidth > this.minSize;
     }, 300));
   }
 
+  @Watch('item')
+  private cleanItems (): void {
+    this.cleanedItems = this.items.filter((it) => this.hasPermissions(it.requiredPermissions));
+  }
+
+  private async logout (): Promise<void> {
+    await feathersClient.logout();
+    window.location.reload();
+  }
+
   private hasPermissions (permissions: UserPermissions[]): boolean {
-    console.log(!!this.user);
     if (permissions.length === 0) return true;
     if (!this.user) return false;
 

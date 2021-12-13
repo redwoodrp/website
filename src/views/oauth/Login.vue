@@ -52,10 +52,10 @@ export default class Login extends Vue {
         if (this.interval) clearInterval(this.interval);
 
         if (this.$route.query && this.$route.query.redirect) {
-          this.$router.push(decodeURIComponent(this.$route.query.redirect as string));
+          window.location.href = decodeURIComponent(this.$route.query.redirect as string);
           return;
         }
-        this.$router.push('/');
+        window.location.href = '/';
       })
       .catch((e) => {
         console.log('[Auth] Authentication failure: ', e);
