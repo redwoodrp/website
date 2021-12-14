@@ -17,11 +17,11 @@ declare module 'vue/types/vue' {
   }
 }
 
-Vue.use(VueGtag, {
-  config: {
-    id: 'G-6X6140N67D',
-  },
-});
+// Vue.use(VueGtag, {
+//   config: {
+//     id: 'G-6X6140N67D',
+//   },
+// });
 
 new Vue({
   router,
