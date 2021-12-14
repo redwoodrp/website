@@ -203,6 +203,7 @@ export default class Overview extends Vue {
 
     await feathersClient.service('approve-tuv')
       .create({
+        inspector: this.user.discordId,
         userId: owner,
         dbId: id,
       });
@@ -212,11 +213,12 @@ export default class Overview extends Vue {
 
   private async decline (id: number, owner: string): Promise<void> {
     if (!this.user) return;
-    if (!this.declineReason) this.declineReason = 'No reason specified.';
+    if (this.declineReason.length === 0) this.declineReason = 'No reason specified.';
 
     await feathersClient.service('approve-tuv')
       .remove(id, {
         query: {
+          inspector: this.user.discordId,
           userId: owner,
           declineReason: this.declineReason,
         },
