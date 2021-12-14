@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import VueGtag from 'vue-gtag';
 import App from './App.vue';
 import router from './router';
 import './index.css';
@@ -15,6 +16,12 @@ declare module 'vue/types/vue' {
     $toast: Toast,
   }
 }
+
+Vue.use(VueGtag, {
+  config: {
+    id: 'G-6X6140N67D',
+  },
+});
 
 new Vue({
   router,
