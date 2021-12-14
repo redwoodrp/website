@@ -9,7 +9,7 @@
 
         <div v-for="(item, i) in cleanedItems" :key="i"
              class="hover:font-bold transition-all cursor-pointer" v-show="showItems">
-          <span v-show="hasPermissions(item.requiredPermissions)">
+          <span v-if="hasPermissions(item.requiredPermissions)">
           <router-link :to="item.to">{{ item.name }}</router-link>
           <span class="text-gray-400 font-bold mx-6 select-none"
                 v-show="i !== cleanedItems.length - 1">|</span>
@@ -49,8 +49,10 @@
       <div class="flex flex-col space-y-0.5 w-full">
         <button class="btn bg-indigo-500 hover:bg-indigo-800 w-full" v-for="(item, i) in items"
                 :key="i" @click="menuOpen = false; navigateTo(item.to)"
-                v-show="hasPermissions(item.requiredPermissions)">
-          {{ item.name }}
+        >
+          <span v-if="hasPermissions(item.requiredPermissions)">
+            {{ item.name }}
+          </span>
         </button>
         <button class="wb-1 btn bg-red-500 hover:bg-red-800 w-full"
                 @click="user === null ? login() : logout()">
@@ -104,8 +106,6 @@ export default class Navbar extends Vue {
   private cleanedItems: NavbarItem[] = [];
 
   async mounted (): Promise<void> {
-    this.cleanItems();
-
     try {
       await feathersClient.authenticate();
     } catch (e) {
@@ -131,10 +131,18 @@ export default class Navbar extends Vue {
     window.addEventListener('resize', debounce(() => {
       this.showItems = window.innerWidth > this.minSize;
     }, 300));
+
+    this.cleanItems();
+  }
+
+  @Watch('user')
+  private userUpdate (): void {
+    this.cleanItems();
   }
 
   @Watch('item')
   private cleanItems (): void {
+    if (!this.user) return;
     this.cleanedItems = this.items.filter((it) => this.hasPermissions(it.requiredPermissions));
   }
 
@@ -155,14 +163,16 @@ export default class Navbar extends Vue {
   private hasPermissions (permissions: UserPermissions[]): boolean {
     if (permissions.length === 0) return true;
     if (!this.user) return false;
+    const userPermissions = (this.user.permissions as unknown as string).split(',');
 
     let hasPermission = true;
     permissions.forEach((p) => {
-      if (this.user && !this.user.permissions.includes(p)) {
+      if (this.user && !userPermissions.includes(p.toString())) {
         hasPermission = false;
       }
     });
 
+    console.log('hasPerm', hasPermission);
     return hasPermission;
   }
 
