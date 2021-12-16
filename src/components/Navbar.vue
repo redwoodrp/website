@@ -17,40 +17,44 @@
         </div>
       </div>
 
-      <button class="bg-gray-600 btn hover:bg-gray-700 shadow-lg -mr-1.5"
-              title="logout" @click="user === null ? login() : logout()">
-        <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" fill="white">
-          <path
-            d="M17 8l-1.41 1.41L17.17 11H9v2h8.17l-1.58 1.58L17 16l4-4-4-4zM5 5h7V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h7v-2H5V5z"
-            v-if="user !== null" />
-          <path
-            d="M10 17v-3H3v-4h7V7l5 5-5 5m0-15h9a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2h-9a2 2 0 0 1-2-2v-2h2v2h9V4h-9v2H8V4a2 2 0 0 1 2-2z"
-            v-else />
-        </svg>
-      </button>
+      <div class="flex flex-row">
+        <button class="bg-gray-700 btn hover:bg-gray-900 shadow-lg"
+                :class="{'-mr-1.5': showItems}"
+                title="logout" @click="user === null ? login() : logout()">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" fill="white">
+            <path
+              d="M17 8l-1.41 1.41L17.17 11H9v2h8.17l-1.58 1.58L17 16l4-4-4-4zM5 5h7V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h7v-2H5V5z"
+              v-if="user !== null" />
+            <path
+              d="M10 17v-3H3v-4h7V7l5 5-5 5m0-15h9a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2h-9a2 2 0 0 1-2-2v-2h2v2h9V4h-9v2H8V4a2 2 0 0 1 2-2z"
+              v-else />
+          </svg>
+        </button>
+        <div class="rounded bg-gray-700 w-10 h-10 flex justify-center items-center cursor-pointer"
+             :class="{ 'hidden': showItems }"
+             @click="menuOpen = !menuOpen">
+          <svg style="width:24px;height:24px" viewBox="0 0 24 24"
+               v-if="!menuOpen">
+            <path fill="currentColor" d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" />
+          </svg>
 
-      <div class="rounded bg-gray-700 w-10 h-10 flex justify-center items-center cursor-pointer"
-           :class="{ 'hidden': showItems }"
-           @click="menuOpen = !menuOpen">
-        <svg style="width:24px;height:24px" viewBox="0 0 24 24"
-             v-if="!menuOpen">
-          <path fill="currentColor" d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" />
-        </svg>
-
-        <svg style="width:24px;height:24px" viewBox="0 0 24 24" v-else>
-          <path fill="currentColor"
-                d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-        </svg>
+          <svg style="width:24px;height:24px" viewBox="0 0 24 24" v-else>
+            <path fill="currentColor"
+                  d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+          </svg>
+        </div>
       </div>
     </div>
 
     <Modal v-model="menuOpen" :close-esc="true" :close-outside="true" max-width="400px"
            width="400px" @click="menuOpen = false">
       <div class="flex flex-col space-y-0.5 w-full">
-        <button class="btn bg-indigo-500 hover:bg-indigo-800 w-full" v-for="(item, i) in items"
+        <button class="btn hover:bg-gray-800 w-full" :class="`${generateColors(true, true)}`"
+                v-for="(item, i) in items"
                 :key="i" @click="menuOpen = false; navigateTo(item.to)"
+                v-show="hasPermissions(item.requiredPermissions)"
         >
-          <span v-if="hasPermissions(item.requiredPermissions)">
+          <span>
             {{ item.name }}
           </span>
         </button>
@@ -104,6 +108,8 @@ export default class Navbar extends Vue {
   private user: User | null = null;
   private loggedIn = true;
   private cleanedItems: NavbarItem[] = [];
+  private colors = ['red', 'blue', 'green', 'indigo', 'yellow', 'purple', 'pink'];
+  private colorBrightness = ['300', '400', '500', '600', '700', '800'];
 
   async mounted (): Promise<void> {
     try {
@@ -135,6 +141,26 @@ export default class Navbar extends Vue {
     this.cleanItems();
   }
 
+  generateColors (bg: boolean, text: boolean): string {
+    const range = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
+    const color = {
+      name: this.colors[range(0, this.colors.length - 1)],
+      brightness: this.colorBrightness[range(0, this.colorBrightness.length - 1)],
+    };
+    const colorString = `${color.name}-${color.brightness}`;
+
+    let res = bg ? `bg-${colorString}` : '';
+    if (text) {
+      if (parseInt(color.brightness, 10) <= 400) {
+        res += ' text-black';
+        return res;
+      }
+      res += ' text-white';
+      return res;
+    }
+    return res;
+  }
+
   @Watch('user')
   private userUpdate (): void {
     this.cleanItems();
@@ -142,7 +168,6 @@ export default class Navbar extends Vue {
 
   @Watch('item')
   private cleanItems (): void {
-    if (!this.user) return;
     this.cleanedItems = this.items.filter((it) => this.hasPermissions(it.requiredPermissions));
   }
 
