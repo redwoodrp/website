@@ -63,6 +63,42 @@
                :minlength="component.minLength"
                :maxlength="component.maxLength" />
 
+        <!--   FileInput   -->
+        <div v-if="component.type === ComponentType.FileUpload" class="flex flex-row">
+          <label :for="`file-upload-${i}-${componentIndex}`"
+                 class="custom-file-upload flex flex-row justify-between text-gray-400 border-gray-300 border-b-2 pb-1 mt-1 h-8 w-1/2">
+            <div class="flex flex-row">
+              <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                <path fill="currentColor"
+                      d="M16.5,6V17.5A4,4 0 0,1 12.5,21.5A4,4 0 0,1 8.5,17.5V5A2.5,2.5 0 0,1 11,2.5A2.5,2.5 0 0,1 13.5,5V15.5A1,1 0 0,1 12.5,16.5A1,1 0 0,1 11.5,15.5V6H10V15.5A2.5,2.5 0
+                    0,0 12.5,18A2.5,2.5 0 0,0 15,15.5V5A4,4 0 0,0 11,1A4,4 0 0,0 7,5V17.5A5.5,5.5 0 0,0 12.5,23A5.5,5.5 0 0,0 18,17.5V6H16.5Z" />
+              </svg>
+
+              <span v-if="component.files.length === 0">{{ component.placeholder }}</span>
+              <span v-else class="text-gray-500">
+                <span v-for="(file, i) in component.files" :key="i">
+                  {{ file.name }}
+                  <span v-show="i !== component.files.length - 1">, </span>
+                </span>
+              </span>
+            </div>
+
+            <span class="transition-colors cursor-pointer hover:text-red-400 text-gray-300" @click.prevent="component.files = []">
+              <svg style="width:24px; height:24px" viewBox="0 0 24 24">
+                  <path fill="currentColor"
+                        d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+              </svg>
+            </span>
+          </label>
+          <input
+            type="file"
+            class="hidden"
+            :id="`file-upload-${i}-${componentIndex}`"
+            :accepts="component.accepts"
+            @change="fileUploadChange(i, componentIndex, $event)"
+          />
+        </div>
+
         <!--   NumberInput     -->
         <input type="text"
                :placeholder="component.placeholder"
@@ -209,6 +245,7 @@ import {
   ComponentType,
   DateInputComponent,
   Fields,
+  FileUploadComponent,
   NewField,
   NumberInputComponent,
   RadioButtonComponent,
@@ -352,6 +389,16 @@ export default class Form extends Vue {
       return;
     }
     component.valid = true;
+  }
+
+  private fileUploadChange (index: number, componentIndex: number, event: Event): void {
+    const component = this.form.fields[index].components[componentIndex] as FileUploadComponent;
+    if (component.type !== ComponentType.FileUpload) return;
+
+    const { files } = event.target as HTMLInputElement;
+    if (!files) return;
+
+    component.files = [...files];
   }
 
   private deleteField (index: number) {

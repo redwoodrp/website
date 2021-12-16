@@ -5,6 +5,7 @@ export enum ComponentType {
   RadioButton,
   TextArea,
   NumberInputComponent,
+  FileUpload,
 }
 
 export interface BaseComponent {
@@ -36,6 +37,12 @@ export interface NumberInputComponent extends BaseComponent {
   rules: ((val: string) => boolean | string)[];
 }
 
+export interface FileUploadComponent extends BaseComponent {
+  files: File[];
+  placeholder: string;
+  accepts: string;
+}
+
 export enum DateAutoFillType {
   None = 0,
   Day,
@@ -60,7 +67,7 @@ export interface RadioButtonComponent extends BaseComponent {
   labels: string[];
 }
 
-export type Components = CheckboxComponent | TextInputComponent | NumberInputComponent | DateInputComponent | RadioButtonComponent;
+export type Components = CheckboxComponent | TextInputComponent | NumberInputComponent | DateInputComponent | RadioButtonComponent | FileUploadComponent;
 
 export interface NewField {
   title: string;

@@ -29,6 +29,7 @@ import {
   Components,
   ComponentType, DateInputComponent, Fields,
   NewField, NumberInputComponent, RadioButtonComponent, TextInputComponent,
+  FileUploadComponent,
 } from '@/helpers/formFields';
 import Form from '@/components/Form.vue';
 import { hasOwn, TuvFormData } from '@/helpers/generic';
