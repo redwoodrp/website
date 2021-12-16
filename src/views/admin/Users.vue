@@ -122,7 +122,7 @@ export default class Users extends Vue {
     this.permissions = Object.values(UserPermissions) as unknown as string[];
     console.log(Object.values(UserPermissions));
 
-    (res.data as User[]).forEach((user: User) => {
+    (res as User[]).forEach((user: User) => {
       const newUser: UserMod = {
         ...user,
         strPermissions: [],

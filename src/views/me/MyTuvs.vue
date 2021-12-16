@@ -45,7 +45,7 @@ export default class Tuvs extends Vue {
         },
       });
 
-    this.tuvs = res.data as TuvFormData[];
+    this.tuvs = res as TuvFormData[];
   }
 
   private async searchQuery (): Promise<void> {
@@ -65,7 +65,7 @@ export default class Tuvs extends Vue {
         },
       });
 
-    this.tuvs = res.data.map((d: TuvFormData) => {
+    this.tuvs = res.map((d: TuvFormData) => {
       const newData = d;
       newData.firstRegistry = new Date(d.firstRegistry as unknown as string).toDateString();
       return newData;

@@ -39,7 +39,7 @@ export default class CheckTuvs extends Vue {
 
     console.log(res);
 
-    this.tuvs = res.data.map((d: TuvFormData) => {
+    this.tuvs = res.map((d: TuvFormData) => {
       const newData = d;
       newData.firstRegistry = new Date(d.firstRegistry as unknown as string).toDateString();
       return newData;

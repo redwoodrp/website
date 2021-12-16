@@ -167,7 +167,7 @@ export default class Overview extends Vue {
     const res = await service.find(params);
 
     this.responses = [];
-    (res.data as TuvFormData[]).forEach((form: TuvFormData) => {
+    (res as TuvFormData[]).forEach((form: TuvFormData) => {
       const newForm = form;
       if (newForm.firstRegistry !== null) {
         newForm.firstRegistry = (new Date(form.firstRegistry as string)).toDateString();
