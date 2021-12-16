@@ -66,7 +66,7 @@
         <!--   FileInput   -->
         <div v-if="component.type === ComponentType.FileUpload" class="flex flex-row">
           <label :for="`file-upload-${i}-${componentIndex}`"
-                 class="custom-file-upload flex flex-row justify-between text-gray-400 border-gray-300 border-b-2 pb-1 mt-1 h-8 w-1/2">
+                 class="custom-file-upload flex flex-row justify-between text-gray-400 border-gray-300 border-b-2 pb-1 mt-1 h-8 w-1/2 cursor-pointer">
             <div class="flex flex-row">
               <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                 <path fill="currentColor"
@@ -83,7 +83,8 @@
               </span>
             </div>
 
-            <span class="transition-colors cursor-pointer hover:text-red-400 text-gray-300" @click.prevent="component.files = []">
+            <span class="transition-colors cursor-pointer hover:text-red-400 text-gray-300"
+                  @click.prevent="component.files = []">
               <svg style="width:24px; height:24px" viewBox="0 0 24 24">
                   <path fill="currentColor"
                         d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
@@ -95,7 +96,7 @@
             class="hidden"
             :id="`file-upload-${i}-${componentIndex}`"
             :accepts="component.accepts"
-            @change="fileUploadChange(i, componentIndex, $event)"
+            @change="fileUploadChange(i, componentIndex, $event);"
           />
         </div>
 
@@ -319,6 +320,19 @@ export default class Form extends Vue {
               }
               break;
 
+            case ComponentType.FileUpload:
+              if (!this.validateFileInput(i, componentIndex)) {
+                valid = false;
+                component.valid = false;
+                component.failHint = 'Wrong filetype';
+              } else if ((component as FileUploadComponent).files.length === 0) {
+                valid = false;
+                component.valid = false;
+                component.failHint = 'This is a required field.';
+              }
+
+              break;
+
             default:
               valid = false;
               break;
@@ -395,10 +409,39 @@ export default class Form extends Vue {
     const component = this.form.fields[index].components[componentIndex] as FileUploadComponent;
     if (component.type !== ComponentType.FileUpload) return;
 
-    const { files } = event.target as HTMLInputElement;
-    if (!files) return;
+    const fileList = (event.target as HTMLInputElement).files;
+    if (!fileList) return;
 
+    const files = [...fileList];
+
+    const valid = this.validateFileInput(index, componentIndex, files);
+
+    if (!valid) {
+      component.valid = false;
+      component.failHint = 'Wrong filetype!';
+      component.files = [];
+      return;
+    }
     component.files = [...files];
+    component.valid = true;
+    component.failHint = '';
+  }
+
+  private validateFileInput (index: number, componentIndex: number, files?: File[]): boolean {
+    const component = this.form.fields[index].components[componentIndex] as FileUploadComponent;
+    if (component.type !== ComponentType.FileUpload) return false;
+
+    let valid = true;
+    (files || component.files).forEach((file) => {
+      console.log(file);
+      const splitFile = file.name.split('.');
+      const endsWith = `.${splitFile[splitFile.length - 1]}`;
+      if (!component.accepts.includes(endsWith)) valid = false;
+    });
+
+    console.log('valid', valid);
+
+    return valid;
   }
 
   private deleteField (index: number) {

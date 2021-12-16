@@ -337,6 +337,20 @@ export default class TuvForm extends Vue {
           },
         ],
       },
+      {
+        title: 'Upload vehicle file',
+        required: true,
+        components: [
+          {
+            type: ComponentType.FileUpload,
+            files: [],
+            placeholder: 'Upload file',
+            accepts: '.pc',
+            valid: true,
+            failHint: '',
+          } as FileUploadComponent,
+        ],
+      },
     ],
   };
   private saveKey = 'forms-tuv-save-data';
