@@ -117,11 +117,7 @@ export default class Users extends Vue {
 
   async mounted (): Promise<void> {
     const service = feathersClient.service('users');
-    const res = await service.find({
-      query: {
-        $paginate: false,
-      },
-    });
+    const res = await service.find();
 
     this.permissions = Object.values(UserPermissions) as unknown as string[];
     console.log(Object.values(UserPermissions));
