@@ -12,6 +12,14 @@ const feathersClient = feathers();
 feathersClient.configure(socketio(socket, { timeout: 30000 }));
 feathersClient.configure(auth());
 
+export interface FeathersError {
+  message: string;
+  name: string;
+  code: number;
+  className: string;
+  data?: unknown;
+}
+
 export interface AuthObject {
   user: User;
   accessToken: string;

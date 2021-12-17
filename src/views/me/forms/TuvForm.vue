@@ -4,6 +4,28 @@
     <button class="submit mt-5 mb-96" @click="submitForm">Submit (can't be edited)</button>
   </div>
 
+  <div v-else-if="illegal.show" class="container h-full mb-24">
+    <div>
+      <div class="text-5xl text-gray-800 font-bold">Error</div>
+      <div class="text-xl text-gray-400 font-medium">
+        Something went wrong trying to upload your TÜV form.
+      </div>
+      <div class="text-gray-700 text-lg font-medium mt-2">
+        {{ illegal.error.message }} (Code: {{ illegal.error.code }})
+      </div>
+
+      <button @click="formSubmitted = false"
+              class="btn bg-purple-500 hover:bg-purple-800 mt-4">
+        Back to form (without resetting)
+      </button>
+
+      <button @click="resetForm(); formSubmitted = false"
+              class="btn bg-indigo-500 hover:bg-indigo-800 mt-4">
+        Back to form (reset)
+      </button>
+    </div>
+  </div>
+
   <div v-else class="container h-full mb-24">
     <div>
       <div class="text-5xl text-gray-800 font-bold">Thanks!</div>
@@ -15,8 +37,14 @@
         if
         you have submitted one.
       </div>
+
+      <button @click="formSubmitted = false"
+              class="btn bg-gray-200 text-gray-600 hover:bg-gray-500 hover:text-gray-200 mt-4">
+        Back to form (without resetting)
+      </button>
       <button @click="resetForm(); formSubmitted = false"
-              class="btn bg-indigo-500 hover:bg-indigo-700 mt-4">Back to form
+              class="btn bg-indigo-500 hover:bg-indigo-700 mt-4">
+        Back to form (reset)
       </button>
     </div>
   </div>
@@ -33,7 +61,7 @@ import {
 } from '@/helpers/formFields';
 import Form from '@/components/Form.vue';
 import { hasOwn, TuvFormData } from '@/helpers/generic';
-import feathersClient, { AuthObject } from '@/helpers/feathers-client';
+import feathersClient, { AuthObject, FeathersError } from '@/helpers/feathers-client';
 
 interface SaveData {
   field: number,
@@ -41,6 +69,11 @@ interface SaveData {
   value?: string;
   values?: string[];
   selected?: string;
+}
+
+interface Illegal {
+  show: boolean;
+  error: FeathersError | null;
 }
 
 @Component({
@@ -355,6 +388,10 @@ export default class TuvForm extends Vue {
   };
   private saveKey = 'forms-tuv-save-data';
   private formSubmitted = false;
+  private illegal: Illegal = {
+    show: false,
+    error: null,
+  };
 
   async mounted (): Promise<void> {
     const { user }: AuthObject = await feathersClient.get('authentication');
@@ -439,28 +476,55 @@ export default class TuvForm extends Vue {
     const { user }: AuthObject = await feathersClient.get('authentication');
     const service = feathersClient.service('tuv-forms');
 
+    interface TuvFormDataServer extends TuvFormData {
+      fileData: string;
+    }
+
+    const fileData = await this.readFile((this.form.fields[16].components[0] as FileUploadComponent).files[0]);
+
     await service.create({
-      owner: user.discordId,
-      discordName: (this.form.fields[0].components[0] as TextInputComponent).value,
-      licensePlate: (this.form.fields[1].components[0] as TextInputComponent).value,
-      firstRegistry: firstRegistryDate,
-      vehicleBrand: (this.form.fields[3].components[0] as TextInputComponent).value,
-      vehicleModel: (this.form.fields[4].components[0] as TextInputComponent).value,
-      engineType: (this.form.fields[5].components[0] as TextInputComponent).value,
-      engineHorsepower: parseInt((this.form.fields[6].components[0] as NumberInputComponent).value, 10),
-      engineCCM: parseInt((this.form.fields[7].components[0] as NumberInputComponent).value, 10),
-      fuelType: (this.form.fields[8].components[0] as RadioButtonComponent).selected,
-      transmission: (this.form.fields[9].components[0] as TextInputComponent).value,
-      bodyType: (this.form.fields[10].components[0] as RadioButtonComponent).selected,
-      vehicleColor: (this.form.fields[11].components[0] as TextInputComponent).value,
-      vehicleWeight: parseInt((this.form.fields[12].components[0] as NumberInputComponent).value, 10),
-      vehicleSeatsAmount: parseInt((this.form.fields[13].components[0] as RadioButtonComponent).selected, 10),
-      vehicleYear: (this.form.fields[14].components[0] as NumberInputComponent).value,
-      additionalInfos: (this.form.fields[15].components[0] as TextInputComponent).value,
-      tid: uuidv4(),
-    } as TuvFormData);
+        owner: user.discordId,
+        discordName: (this.form.fields[0].components[0] as TextInputComponent).value,
+        licensePlate: (this.form.fields[1].components[0] as TextInputComponent).value,
+        firstRegistry: firstRegistryDate,
+        vehicleBrand: (this.form.fields[3].components[0] as TextInputComponent).value,
+        vehicleModel: (this.form.fields[4].components[0] as TextInputComponent).value,
+        engineType: (this.form.fields[5].components[0] as TextInputComponent).value,
+        engineHorsepower: parseInt((this.form.fields[6].components[0] as NumberInputComponent).value, 10),
+        engineCCM: parseInt((this.form.fields[7].components[0] as NumberInputComponent).value, 10),
+        fuelType: (this.form.fields[8].components[0] as RadioButtonComponent).selected,
+        transmission: (this.form.fields[9].components[0] as TextInputComponent).value,
+        bodyType: (this.form.fields[10].components[0] as RadioButtonComponent).selected,
+        vehicleColor: (this.form.fields[11].components[0] as TextInputComponent).value,
+        vehicleWeight: parseInt((this.form.fields[12].components[0] as NumberInputComponent).value, 10),
+        vehicleSeatsAmount: parseInt((this.form.fields[13].components[0] as RadioButtonComponent).selected, 10),
+        vehicleYear: (this.form.fields[14].components[0] as NumberInputComponent).value,
+        additionalInfos: (this.form.fields[15].components[0] as TextInputComponent).value,
+        tid: uuidv4(),
+        fileData,
+      } as TuvFormDataServer)
+      .catch((e: FeathersError) => {
+        console.log('error while trying to create tuv: ', e.code);
+        if (e.code === 1000) {
+          this.illegal = {
+            show: true,
+            error: e,
+          };
+        }
+      });
 
     this.formSubmitted = true;
+  }
+
+  private async readFile (f: File): Promise<string | Error> {
+    return new Promise<string | Error>((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = (e) => resolve(e.target?.result?.toString() || '');
+      reader.onerror = (e) => reject(e);
+
+      reader.readAsText(f);
+    });
   }
 }
 </script>
