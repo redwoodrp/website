@@ -15,7 +15,7 @@
             <div class="title">Total</div>
           </div>
 
-          <div class="flex flex-col">
+          <div class="flex flex-col w-44">
             <div class="value" v-if="wallet">${{
                 wallet.bank ? formatBalance(wallet.bank || 0) : '-'
               }}
