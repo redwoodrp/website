@@ -41,3 +41,12 @@ export interface TuvFormData {
   additionalInfos: string | null;
   tid: string;
 }
+
+export interface Ad {
+  show: boolean;
+  business: number;
+  title: string;
+  description: string;
+  imageSource: string;
+  to: string;
+}

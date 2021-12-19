@@ -49,7 +49,7 @@
     <Modal v-model="menuOpen" :close-esc="true" :close-outside="true" max-width="400px"
            width="400px" @click="menuOpen = false">
       <div class="flex flex-col space-y-0.5 w-full">
-        <button class="btn hover:bg-gray-800 w-full" :class="`${generateColors(true, true)}`"
+        <button class="btn hover:bg-gray-800 w-full text-white bg-yellow-500"
                 v-for="(item, i) in items"
                 :key="i" @click="menuOpen = false; navigateTo(item.to)"
                 v-show="hasPermissions(item.requiredPermissions)"
@@ -108,8 +108,6 @@ export default class Navbar extends Vue {
   private user: User | null = null;
   private loggedIn = true;
   private cleanedItems: NavbarItem[] = [];
-  private colors = ['red', 'blue', 'green', 'indigo', 'yellow', 'purple', 'pink'];
-  private colorBrightness = ['300', '400', '500', '600', '700', '800'];
 
   async mounted (): Promise<void> {
     try {
@@ -139,26 +137,6 @@ export default class Navbar extends Vue {
     }, 300));
 
     this.cleanItems();
-  }
-
-  generateColors (bg: boolean, text: boolean): string {
-    const range = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
-    const color = {
-      name: this.colors[range(0, this.colors.length - 1)],
-      brightness: this.colorBrightness[range(0, this.colorBrightness.length - 1)],
-    };
-    const colorString = `${color.name}-${color.brightness}`;
-
-    let res = bg ? `bg-${colorString}` : '';
-    if (text) {
-      if (parseInt(color.brightness, 10) <= 400) {
-        res += ' text-black';
-        return res;
-      }
-      res += ' text-white';
-      return res;
-    }
-    return res;
   }
 
   @Watch('user')

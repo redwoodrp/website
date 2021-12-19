@@ -12,6 +12,9 @@ module.exports = {
       '11/12': '91.6%',
     },
     extend: {
+      height: {
+        18: '4.3rem',
+      },
       minHeight: {
         '1/4': '25%',
         '1/2': '50%',

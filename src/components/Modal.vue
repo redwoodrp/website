@@ -1,7 +1,7 @@
 <template>
   <div v-show="active">
     <div class="overlay" id="modal-overlay" />
-    <div class="fixed rounded-lg size bg-white p-4" :style="`max-width: ${maxWidth}; width: ${width === null ? 'auto': width}`">
+    <div class="fixed rounded-lg size bg-white p-4 z-50" :style="`max-width: ${maxWidth}; width: ${width === null ? 'auto': width}`">
       <slot />
     </div>
   </div>
