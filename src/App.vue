@@ -4,7 +4,7 @@
 
     <div class="flex flex-col items-center height mx-3 md:mx-0">
       <router-view
-        :class="$route.name === 'admin users' || $route.name === 'admin tuvs' ? 'md:max-w-7/8' : 'md:max-w-3/4 md:w-3/4 xl:max-w-2/5 xl:w-2/5'"
+        :class="$route.name === 'admin users' || $route.name === 'admin tuvs' ? 'md:max-w-7/8' : 'md:max-w-3/4 md:w-3/4 lg:max-w-7/12 lg:w-7/12 2xl:max-w-2/5 2xl:w-2/5'"
         class="w-full" />
     </div>
 
