@@ -26,6 +26,9 @@ const routes: Array<RouteConfig> = [
     path: '/check/tuv',
     name: 'check tuv',
     component: () => import('@/views/CheckTuvs.vue'),
+    meta: {
+      title: 'check TÜV',
+    },
   },
   {
     path: '/invite',
@@ -39,6 +42,7 @@ const routes: Array<RouteConfig> = [
     name: 'me overview',
     component: () => import('@/views/me/Overview.vue'),
     meta: {
+      title: 'user dashboard',
       requiresAuth: true,
     },
   },
@@ -47,6 +51,7 @@ const routes: Array<RouteConfig> = [
     name: 'tuvs overview',
     component: () => import('@/views/me/MyTuvs.vue'),
     meta: {
+      title: 'my TÜVs',
       requiresAuth: true,
     },
   },
@@ -56,6 +61,7 @@ const routes: Array<RouteConfig> = [
     props: true,
     component: () => import('@/views/me/MyTuvs.vue'),
     meta: {
+      title: 'my TÜVs',
       requiresAuth: true,
     },
   },
@@ -64,6 +70,7 @@ const routes: Array<RouteConfig> = [
     name: 'me forms tuv',
     component: () => import('@/views/me/forms/TuvForm.vue'),
     meta: {
+      title: 'create TÜV',
       requiredPermissions: [UserPermissions.ACCESS_FORM],
       requiresAuth: true,
     },
@@ -90,6 +97,7 @@ const routes: Array<RouteConfig> = [
     name: 'admin tuvs',
     component: () => import(/* webpackChunkName: "dashboard" */ '../views/admin/Forms.vue'),
     meta: {
+      title: 'manage TÜVs',
       requiredPermissions: [UserPermissions.MANAGE_FORM_RESPONSES, UserPermissions.VIEW_FORM_RESPONSES],
       requiresAuth: true,
     },
@@ -99,6 +107,7 @@ const routes: Array<RouteConfig> = [
     name: 'admin users',
     component: () => import(/* webpackChunkName: "dashboard" */ '../views/admin/Users.vue'),
     meta: {
+      title: 'manage Users',
       requiredPermissions: [UserPermissions.MANAGE_USERS],
       requiresAuth: true,
     },
@@ -162,6 +171,17 @@ router.beforeEach(async (to, from, next) => {
     next();
   }
   next();
+});
+
+router.afterEach((to) => {
+  const capitalize = (s: string) => {
+    if (s.length <= 0) return '';
+    return s[0].toUpperCase() + s.substr(1);
+  };
+
+  Vue.nextTick(() => {
+    document.title = `RedwoodRP | ${capitalize(to.meta?.title || to.name || 'Unknown')}`;
+  });
 });
 
 export default router;
