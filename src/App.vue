@@ -29,82 +29,54 @@ export default class App extends Vue {
   private feathersClient = feathersClient;
   private items: NavbarItem[] = [
     {
-      name: 'Feedback',
-      to: {
-        name: 'feedback',
-      },
-      requiredPermissions: [],
-      requiresAuth: true,
-    },
-    {
       name: 'About',
-      to: {
-        name: 'home',
-        hash: 'about',
-      },
+      to: '/#about',
       requiredPermissions: [],
       requiresAuth: false,
     },
     {
       name: 'Rules',
-      to: {
-        name: 'home',
-        hash: 'rules',
-      },
+      to: '/#rules',
       requiredPermissions: [],
       requiresAuth: false,
     },
     {
-      name: 'Tutorial',
-      to: {
-        name: 'home',
-        hash: 'tutorial',
-      },
+      name: 'Dashboard',
+      to: '/me',
       requiredPermissions: [],
       requiresAuth: false,
     },
     {
-      name: 'Make TÜV',
-      to: {
-        name: 'me forms tuv',
-      },
+      name: 'TÜV Application',
+      to: '/me/forms/tuv',
       requiredPermissions: [UserPermissions.ACCESS_FORM, UserPermissions.CREATE_RESPONSE],
     },
     {
       name: 'My TÜVs',
-      to: {
-        name: 'tuvs overview',
-      },
+      to: '/me/tuvs',
       requiredPermissions: [],
     },
     {
       name: 'Check TÜV',
-      to: {
-        name: 'check tuv',
-      },
+      to: '/check/tuv',
       requiredPermissions: [],
       requiresAuth: false,
     },
     {
       name: 'Manage TÜVs',
-      to: {
-        name: 'admin tuvs',
-      },
+      to: '/admin/tuvs',
       requiredPermissions: [UserPermissions.VIEW_FORM_RESPONSES, UserPermissions.MANAGE_FORM_RESPONSES],
     },
     {
       name: 'Manage Users',
-      to: {
-        name: 'admin users',
-      },
+      to: '/admin/users',
       requiredPermissions: [UserPermissions.MANAGE_USERS],
     },
     {
-      name: 'Form builder',
-      to: {
-        name: 'form builder',
-      },
-      requiredPermissions: [UserPermissions.VIEW_FORM_RESPONSES],
+      name: 'Feedback',
+      to: '/me/feedback',
+      requiredPermissions: [],
+      requiresAuth: true,
     },
   ];
   private menuOpen = false;

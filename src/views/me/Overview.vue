@@ -72,7 +72,6 @@ import { RawLocation } from 'vue-router';
 import feathersClient, { AuthObject } from '@/helpers/feathers-client';
 import User from '@/helpers/interfaces/user';
 import { NavbarItem } from '@/components/Navbar.vue';
-import { Ad } from '@/helpers/generic';
 import AdBanner from '@/components/AdBanner.vue';
 import { BeamMPServer, Wallet } from '@/helpers/interfaces/apis';
 
@@ -112,9 +111,6 @@ export default class Overview extends Vue {
       workInProgress: true,
     },
   ];
-  private ad: Ad = {
-    show: false,
-  };
 
   async mounted (): Promise<void> {
     // Get vehicle count
