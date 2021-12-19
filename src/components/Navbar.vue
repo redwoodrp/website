@@ -100,7 +100,7 @@ export default class Navbar extends Vue {
     type: Array,
   }) private readonly items!: NavbarItem[];
   @Prop({
-    default: 700,
+    default: 1100,
     type: Number,
   }) private readonly minSize!: number;
   private showItems = false;
