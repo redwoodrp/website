@@ -4,7 +4,7 @@
 
     <div class="flex flex-col items-center height mx-3 md:mx-0">
       <router-view
-        :class="$route.name === 'admin users' || $route.name === 'admin tuvs' ? 'md:max-w-7/8' : 'md:max-w-2/5 md:w-2/5'"
+        :class="$route.name === 'admin users' || $route.name === 'admin tuvs' ? 'md:max-w-7/8' : 'md:max-w-3/5 md:w-3/5 lg:max-w-2/5 lg:w-2/5'"
         class="w-full" />
     </div>
 
@@ -29,25 +29,13 @@ export default class App extends Vue {
   private feathersClient = feathersClient;
   private items: NavbarItem[] = [
     {
-      name: 'About',
-      to: '/#about',
-      requiredPermissions: [],
-      requiresAuth: false,
-    },
-    {
-      name: 'Rules',
-      to: '/#rules',
-      requiredPermissions: [],
-      requiresAuth: false,
-    },
-    {
       name: 'Dashboard',
       to: '/me',
       requiredPermissions: [],
       requiresAuth: false,
     },
     {
-      name: 'TÜV Application',
+      name: 'TÜV Form',
       to: '/me/forms/tuv',
       requiredPermissions: [UserPermissions.ACCESS_FORM, UserPermissions.CREATE_RESPONSE],
     },
