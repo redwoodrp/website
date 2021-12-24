@@ -40,11 +40,6 @@ export default class App extends Vue {
       requiredPermissions: [UserPermissions.ACCESS_FORM, UserPermissions.CREATE_RESPONSE],
     },
     {
-      name: 'My TÜVs',
-      to: '/me/tuvs',
-      requiredPermissions: [],
-    },
-    {
       name: 'Check TÜV',
       to: '/check/tuv',
       requiredPermissions: [],
@@ -65,12 +60,6 @@ export default class App extends Vue {
       name: 'Manage Users',
       to: '/admin/users',
       requiredPermissions: [UserPermissions.MANAGE_USERS],
-    },
-    {
-      name: 'Feedback',
-      to: '/me/feedback',
-      requiredPermissions: [],
-      requiresAuth: true,
     },
   ];
   private menuOpen = false;
