@@ -9,7 +9,10 @@
               @click="$toast.show('Refreshed!'); populate()">
         Refresh
       </button>
-      <div class="text-gray-400">Last Updated: {{ lastUpdated }}</div>
+      <div class="text-gray-400">
+        Last Updated: {{ lastUpdated }} (Next in
+        {{ this.refreshInterval / 1000 - this.sinceRefresh / 1000 }}s)
+      </div>
     </div>
 
     <div class="border border-gray-400 rounded-lg my-2 mt-5 p-2 flex flex-row justify-around">
@@ -45,7 +48,7 @@
         </thead>
         <tbody>
         <tr v-for="(response, i) in responses" :key="i">
-          <td>
+          <td class="whitespace-nowrap">
             <button class="btn bg-green-600 hover:bg-green-900 text-xs ml-0.5"
                     @click="approve(response.id, response.owner);">
               Approve
@@ -139,10 +142,20 @@ export default class Overview extends Vue {
     showSearchBar: false,
   };
   private search = '';
+  private refreshInterval = 30_000;
+  private sinceRefresh = 0;
 
   async mounted (): Promise<void> {
     this.user = (await feathersClient.get('authentication') as AuthObject).user;
     await this.populate();
+
+    setInterval(async () => {
+      await this.populate();
+    }, this.refreshInterval);
+
+    setInterval(() => {
+      this.sinceRefresh += 1_000;
+    }, 1_000);
   }
 
   async populate (): Promise<void> {
@@ -183,6 +196,7 @@ export default class Overview extends Vue {
         .format(0)
         .match(/\s/),
     });
+    this.sinceRefresh = 0;
   }
 
   private tryFormatBool (field: string, val: string): string {
