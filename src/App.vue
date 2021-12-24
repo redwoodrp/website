@@ -51,6 +51,12 @@ export default class App extends Vue {
       requiresAuth: false,
     },
     {
+      name: 'Check Driverslicense',
+      to: '/check/driverslicense',
+      requiredPermissions: [],
+      requiresAuth: false,
+    },
+    {
       name: 'Manage TÜVs',
       to: '/admin/tuvs',
       requiredPermissions: [UserPermissions.VIEW_FORM_RESPONSES, UserPermissions.MANAGE_FORM_RESPONSES],

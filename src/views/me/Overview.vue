@@ -57,7 +57,7 @@
       </div>
 
       <div class="mt-8 border border-gray-400 rounded-lg" v-if="driversLicense && user">
-        <img :src="`${config.backend}/images/${user.discordId}/driverslicense.jpg`"  alt="Drivers license picture"/>
+        <img :src="`${config.backend}/images/${user.discordId}/driverslicense.jpg`"  alt="Drivers license picture" />
       </div>
 
       <!--   AD    -->

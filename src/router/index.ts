@@ -31,6 +31,14 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
+    path: '/check/driverslicense',
+    name: 'check driverslicense',
+    component: () => import('@/views/CheckDriversLicenses.vue'),
+    meta: {
+      title: 'check driverslicense',
+    },
+  },
+  {
     path: '/invite',
     alias: ['/discord', '/i', '/quickinvite'],
     beforeEnter () {
