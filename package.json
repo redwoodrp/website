@@ -13,6 +13,7 @@
     "@feathersjs/socketio-client": "^4.5.11",
     "core-js": "^3.6.5",
     "request": "^2.88.2",
+    "signature_pad": "^4.0.0",
     "socket.io": "^4.1.2",
     "socket.io-client": "^2.4.0",
     "uuid": "^8.3.2",

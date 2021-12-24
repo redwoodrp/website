@@ -76,6 +76,16 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
+    path: '/me/forms/driverslicense',
+    name: 'me forms driverslicense',
+    component: () => import('@/views/me/forms/DriversLicense.vue'),
+    meta: {
+      title: 'Create drivers license',
+      requiresAuth: true,
+      requiredPermissions: [UserPermissions.ACCESS_FORM],
+    },
+  },
+  {
     path: '/me/feedback',
     name: 'feedback',
     component: () => import('@/views/me/Feedback.vue'),
@@ -95,9 +105,29 @@ const routes: Array<RouteConfig> = [
   {
     path: '/admin/tuvs',
     name: 'admin tuvs',
-    component: () => import(/* webpackChunkName: "dashboard" */ '../views/admin/Forms.vue'),
+    component: () => import(/* webpackChunkName: "dashboard" */ '../views/admin/Tuvs.vue'),
     meta: {
       title: 'manage TÜVs',
+      requiredPermissions: [UserPermissions.MANAGE_FORM_RESPONSES, UserPermissions.VIEW_FORM_RESPONSES],
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/admin/driverslicenses',
+    name: 'admin driverslicenses',
+    component: () => import('../views/admin/DriversLicenses.vue'),
+    meta: {
+      title: 'manage drivers licenses',
+      requiredPermissions: [UserPermissions.MANAGE_FORM_RESPONSES, UserPermissions.VIEW_FORM_RESPONSES],
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/admin/revokelicenses',
+    name: 'admin revokelicenses',
+    component: () => import('../views/admin/RevokeDriversLicenses.vue'),
+    meta: {
+      title: 'revoke drivers licenses',
       requiredPermissions: [UserPermissions.MANAGE_FORM_RESPONSES, UserPermissions.VIEW_FORM_RESPONSES],
       requiresAuth: true,
     },

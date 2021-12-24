@@ -80,3 +80,10 @@ export interface Fields {
   description: string;
   fields: NewField[];
 }
+
+export enum FormState {
+  ACTIVE,
+  UPLOADING,
+  SUBMITTED,
+  ERROR,
+}

@@ -12,11 +12,19 @@ export function hasOwn (thisArg: unknown, prop: string): boolean {
   return Object.prototype.hasOwnProperty.call(thisArg, prop);
 }
 
-export interface TuvFormData {
+export interface BaseDB {
   id: number;
   createdAt: string;
   updatedAt: string;
+}
 
+export interface NullableBaseDB {
+  id?: number;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface TuvFormData extends BaseDB {
   checked: boolean | null;
   inspector: string | null;
   approved: boolean | null;

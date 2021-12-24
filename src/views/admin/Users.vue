@@ -201,13 +201,6 @@ export default class Users extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
-table > thead > tr > th,
-table > tbody > tr > td {
-  @apply border border-gray-400 rounded m-2 p-1.5;
-}
-</style>
-
 <style>
 .max-w {
   max-width: 230px;

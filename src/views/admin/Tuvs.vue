@@ -228,10 +228,3 @@ export default class Overview extends Vue {
   }
 }
 </script>
-
-<style scoped>
-table > thead > tr > th,
-table > tbody > tr > td {
-  @apply border border-gray-400 rounded m-2 p-1.5;
-}
-</style>

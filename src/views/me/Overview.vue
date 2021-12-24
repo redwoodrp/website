@@ -56,6 +56,10 @@
         </div>
       </div>
 
+      <div class="mt-8 border border-gray-400 rounded-lg" v-if="driversLicense && user">
+        <img :src="`${config.backend}/images/${user.discordId}/driverslicense.jpg`"  alt="Drivers license picture"/>
+      </div>
+
       <!--   AD    -->
       <AdBanner />
 
@@ -74,6 +78,8 @@ import User from '@/helpers/interfaces/user';
 import { NavbarItem } from '@/components/Navbar.vue';
 import AdBanner from '@/components/AdBanner.vue';
 import { BeamMPServer, Wallet } from '@/helpers/interfaces/apis';
+import DriversLicenses from '@/views/admin/DriversLicenses.vue';
+import config from '../../../config';
 
 interface QuickNavItem extends Omit<NavbarItem, 'requiredPermissions' | 'requiresAuth'> {
   workInProgress?: boolean;
@@ -98,8 +104,7 @@ export default class Overview extends Vue {
     },
     {
       name: 'DRIVERS LICENSE',
-      to: '/me/license',
-      workInProgress: true,
+      to: '/me/forms/driverslicense',
     },
     {
       name: 'CHECK TÜV',
@@ -111,6 +116,8 @@ export default class Overview extends Vue {
       workInProgress: true,
     },
   ];
+  private driversLicense: DriversLicenses | null = null;
+  private config = config;
 
   async mounted (): Promise<void> {
     // Get vehicle count
@@ -127,6 +134,19 @@ export default class Overview extends Vue {
       this.playerCount += parseInt(s.players, 10);
     });
     this.wallet = await this.getWallet();
+
+    // Drivers license
+    const license: DriversLicenses[] = await feathersClient.service('drivers-license')
+      .find({
+        query: {
+          owner: this.user.discordId,
+        },
+      });
+
+    if (license.length !== 0) {
+      // eslint-disable-next-line prefer-destructuring
+      this.driversLicense = license[0];
+    }
   }
 
   private async getVehicleCount (): Promise<number> {
