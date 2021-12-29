@@ -1,13 +1,16 @@
 <template>
-  <div class="text-center flex items-center flex-col h-4/5 justify-between">
-    <div/>
-    <div>
+  <div class="h-full flex flex-col">
+    <div class="flex flex-col items-center h-full justify-center">
       <div class="text-8xl font-bold text-gray-700 mt-5">{{ code }}</div>
-      <div class="text-gray-500 mt-3 text-xl font-medium">
+      <div class="text-gray-500 mt-3 text-xl font-medium text-center">
         {{ errorMap[code] === undefined ? errorMap.default : errorMap[code] }}
       </div>
     </div>
-    <router-link class="transition-all cursor-pointer text-gray-400 font-bold hover:text-gray-600" to="/">Back home</router-link>
+
+    <router-link class="transition-all cursor-pointer text-gray-400 font-bold hover:text-gray-600 flex flex-col mb-16 items-center"
+                 to="/">
+      Back home
+    </router-link>
   </div>
 </template>
 
@@ -25,6 +28,7 @@ export default class Error extends Vue {
     429: 'Too many requests',
     418: 'I\'m a teapot',
     500: 'Internal server error',
+    11000: 'Authentication is currently disabled while we finish this website. For the time being, you cannot get a fine for not having a TÜV or a driver\'s license.',
     default: 'Something unexpected just happened',
   };
 }

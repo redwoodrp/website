@@ -170,6 +170,10 @@ const router = new VueRouter({
 
 router.beforeEach(async (to, from, next) => {
   if ((to.meta && to.meta.requiresAuth)) {
+    next({
+      path: '/error/11000',
+    });
+
     await feathersClient.authenticate()
       .then(() => {
         // Success

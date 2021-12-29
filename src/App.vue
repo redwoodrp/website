@@ -4,7 +4,7 @@
 
     <div class="flex flex-col items-center height mx-3 md:mx-0">
       <router-view
-        :class="$route.name === 'admin users' || $route.name === 'admin tuvs' ? 'md:max-w-7/8' : 'md:max-w-3/4 md:w-3/4 lg:max-w-7/12 lg:w-7/12 2xl:max-w-2/5 2xl:w-2/5'"
+        :class="getContainerWidth()"
         class="w-full" />
     </div>
 
@@ -26,7 +26,6 @@ import Navbar, { NavbarItem } from '@/components/Navbar.vue';
   },
 })
 export default class App extends Vue {
-  private feathersClient = feathersClient;
   private items: NavbarItem[] = [
     {
       name: 'Dashboard',
@@ -62,8 +61,6 @@ export default class App extends Vue {
       requiredPermissions: [UserPermissions.MANAGE_USERS],
     },
   ];
-  private menuOpen = false;
-  private showItems = false;
 
   mounted (): void {
     // Authenticate
@@ -87,6 +84,13 @@ export default class App extends Vue {
     const el = (this.$refs.toast as Toast);
     if (!el) return;
     Vue.prototype.$toast = el;
+  }
+
+  private getContainerWidth (): string {
+    if (this.$route.name === 'home') return '';
+    if (this.$route.name === 'admin users' || this.$route.name === 'admin tuvs') return 'md:max-w-7/8';
+
+    return 'md:max-w-3/4 md:w-3/4 lg:max-w-7/12 lg:w-7/12 2xl:max-w-2/5 2xl:w-2/5';
   }
 }
 </script>
