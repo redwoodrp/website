@@ -12,6 +12,10 @@
     <div class="flex flex-col items-center mb-16 text-gray-400 opacity-50">
       This website is still in the works. Please stay tuned for updates!
     </div>
+
+    <div class="flex flex-col items-center mb-4 text-gray-400 opacity-50">
+      © Image: Sprudelwasser#2376
+    </div>
   </div>
 </template>
 
