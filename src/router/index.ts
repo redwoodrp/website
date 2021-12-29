@@ -42,7 +42,7 @@ const routes: Array<RouteConfig> = [
     path: '/invite',
     alias: ['/discord', '/i', '/quickinvite'],
     beforeEnter () {
-      window.location.href = 'https://discord.gg/gV8NbGgw';
+      window.location.href = 'https://discord.gg/vnk39meb9A';
     },
   },
   {
