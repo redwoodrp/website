@@ -6,11 +6,14 @@
       You can close this tab now.
       </span>
     </div>
-    <div v-else>
-      <span class="text-4xl font-bold ">Authentication failed</span>
-      <span>
-      Something went wrong trying to authenticate you. Please try again!
-      </span>
+    <div v-else class="flex flex-col">
+      <div class="text-4xl font-bold ">Authentication failed</div>
+      <div class="text-lg text-gray-600">
+        Something went wrong trying to authenticate you. Please try again!
+      </div>
+      <div class="rounded-lg bg-gray-700 border-gray-900 border text-gray-200 p-1 text-lg font-normal mt-4" v-if="$route.hash">
+        {{ decodeURIComponent($route.hash).split('=')[1] }}
+      </div>
     </div>
   </div>
 </template>

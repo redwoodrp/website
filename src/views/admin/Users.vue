@@ -118,6 +118,7 @@ export default class Users extends Vue {
   async mounted (): Promise<void> {
     const service = feathersClient.service('users');
     const res = await service.find();
+    console.log(res);
 
     this.permissions = Object.values(UserPermissions) as unknown as string[];
     console.log(Object.values(UserPermissions));
@@ -130,14 +131,15 @@ export default class Users extends Vue {
         tmpPermissions: [],
       };
 
+      console.log('Users.vue', user.permissions);
+
       newUser.createdAt = (new Date(this.toISO(newUser.createdAt))).toDateString();
       newUser.updatedAt = (new Date(this.toISO(newUser.updatedAt))).toDateString();
       newUser.avatarURI = 'hidden';
       newUser.verified = Boolean(newUser.verified);
       newUser.mfaEnabled = Boolean(newUser.mfaEnabled);
-      newUser.permissions = newUser.permissions.length !== 0 ? (user.permissions as unknown as string).split(',')
-        .map((p) => parseInt(p, 10)) : [];
-      newUser.strPermissions = newUser.permissions.length !== 0 ? this.permissionsToString(newUser.permissions as unknown as string[]) : [];
+      newUser.permissions = newUser.permissions.length === 0 ? [] : user.permissions;
+      newUser.strPermissions = newUser.permissions.length === 0 ? [] : this.permissionsToString(newUser.permissions as unknown as string[]);
       newUser.tmpPermissions = newUser.permissions;
 
       this.users.push(newUser);

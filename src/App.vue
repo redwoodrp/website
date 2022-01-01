@@ -61,6 +61,7 @@ export default class App extends Vue {
       requiredPermissions: [UserPermissions.MANAGE_USERS],
     },
   ];
+  private feathersClient = feathersClient;
 
   mounted (): void {
     // Authenticate

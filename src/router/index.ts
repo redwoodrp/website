@@ -7,20 +7,11 @@ import { UserPermissions } from '@/helpers/interfaces/user';
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
+  // Public stuff
   {
     path: '/',
     name: 'home',
     component: Home,
-  },
-  {
-    path: '/login',
-    name: 'login',
-    component: () => import('@/views/oauth/Login.vue'),
-  },
-  {
-    path: '/login/done',
-    name: 'oauth done',
-    component: () => import('@/views/oauth/Done.vue'),
   },
   {
     path: '/check/tuv',
@@ -45,6 +36,20 @@ const routes: Array<RouteConfig> = [
       window.location.href = 'https://discord.gg/vnk39meb9A';
     },
   },
+
+  // Auth flow
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/oauth/Login.vue'),
+  },
+  {
+    path: '/login/done',
+    name: 'oauth done',
+    component: () => import('@/views/oauth/Done.vue'),
+  },
+
+  // User related stuff
   {
     path: '/me',
     name: 'me overview',
@@ -110,6 +115,38 @@ const routes: Array<RouteConfig> = [
       requiresAuth: true,
     },
   },
+
+  // Business stuff
+  {
+    path: '/business/:id/dashboard',
+    name: 'business overview',
+    component: () => import('@/views/business/Overview.vue'),
+    meta: {
+      title: 'business dashboard',
+      requiredPermissions: [UserPermissions.MANAGE_FORM_RESPONSES, UserPermissions.VIEW_FORM_RESPONSES],
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/business/apply',
+    name: 'business apply',
+    component: () => import('@/views/business/Apply.vue'),
+    meta: {
+      title: 'business apply',
+      requiredPermissions: [UserPermissions.MANAGE_FORM_RESPONSES, UserPermissions.VIEW_FORM_RESPONSES],
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/business/amst',
+    name: 'business page amst',
+    component: () => import('@/views/business/pages/AMSTBusiness.vue'),
+    meta: {
+      title: 'AMST Performance',
+    },
+  },
+
+  // Admin stuff
   {
     path: '/admin/tuvs',
     name: 'admin tuvs',
@@ -151,6 +188,18 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
+    path: '/admin/businesses',
+    name: 'admin business application',
+    component: () => import(/* webpackChunkName: "dashboard" */ '../views/admin/BusinessApplications.vue'),
+    meta: {
+      title: 'manage business applications',
+      requiredPermissions: [UserPermissions.MANAGE_USERS],
+      requiresAuth: true,
+    },
+  },
+
+  // Error pages
+  {
     path: '/error/:code',
     name: 'error',
     props: true,
@@ -170,9 +219,9 @@ const router = new VueRouter({
 
 router.beforeEach(async (to, from, next) => {
   if ((to.meta && to.meta.requiresAuth)) {
-    next({
-      path: '/error/11000',
-    });
+    // next({
+    // path: '/error/11000',
+    // });
 
     await feathersClient.authenticate()
       .then(() => {
@@ -200,9 +249,7 @@ router.beforeEach(async (to, from, next) => {
     const auth: AuthObject = await feathersClient.get('authentication');
     if (auth) {
       (to.meta.requiredPermissions as UserPermissions[]).forEach((permission) => {
-        if (!(auth.user.permissions as unknown as string).split(',')
-          .includes(permission.toString())) {
-          console.log((auth.user.permissions as unknown as string).split(','), permission.toString());
+        if (!auth.user.permissions.includes(permission as UserPermissions)) {
           console.log('[Router] 403 Insufficient permissions. Redirecting to error page!');
           next({ path: '/error/403' });
         }
