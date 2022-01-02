@@ -36,7 +36,7 @@ export default class App extends Vue {
     {
       name: 'TÜV Form',
       to: '/me/forms/tuv',
-      requiredPermissions: [UserPermissions.ACCESS_FORM, UserPermissions.CREATE_RESPONSE],
+      requiredPermissions: [UserPermissions.ACCESS_TUV_FORM],
     },
     {
       name: 'Check TÜV',
@@ -53,7 +53,7 @@ export default class App extends Vue {
     {
       name: 'Manage TÜVs',
       to: '/admin/tuvs',
-      requiredPermissions: [UserPermissions.VIEW_FORM_RESPONSES, UserPermissions.MANAGE_FORM_RESPONSES],
+      requiredPermissions: [UserPermissions.MANAGE_TUV_RESPONSES],
     },
     {
       name: 'Manage Users',
