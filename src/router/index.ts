@@ -84,7 +84,7 @@ const routes: Array<RouteConfig> = [
     component: () => import('@/views/me/forms/TuvForm.vue'),
     meta: {
       title: 'create TÜV',
-      requiredPermissions: [UserPermissions.ACCESS_FORM],
+      requiredPermissions: [UserPermissions.ACCESS_TUV_FORM],
       requiresAuth: true,
     },
   },
@@ -95,7 +95,7 @@ const routes: Array<RouteConfig> = [
     meta: {
       title: 'Create drivers license',
       requiresAuth: true,
-      requiredPermissions: [UserPermissions.ACCESS_FORM],
+      requiredPermissions: [UserPermissions.ACCESS_DRIVERS_LICENSE_FORM],
     },
   },
   {
@@ -111,7 +111,7 @@ const routes: Array<RouteConfig> = [
     name: 'form builder',
     component: () => import('@/views/admin/FormBuilder.vue'),
     meta: {
-      requiredPermissions: [UserPermissions.ACCESS_FORM],
+      requiredPermissions: [UserPermissions.MANAGE_FORMS],
       requiresAuth: true,
     },
   },
@@ -123,7 +123,7 @@ const routes: Array<RouteConfig> = [
     component: () => import('@/views/business/Overview.vue'),
     meta: {
       title: 'business dashboard',
-      requiredPermissions: [UserPermissions.MANAGE_FORM_RESPONSES, UserPermissions.VIEW_FORM_RESPONSES],
+      requiredPermissions: [UserPermissions.ACCESS_BUSINESS],
       requiresAuth: true,
     },
   },
@@ -133,7 +133,7 @@ const routes: Array<RouteConfig> = [
     component: () => import('@/views/business/Apply.vue'),
     meta: {
       title: 'business apply',
-      requiredPermissions: [UserPermissions.MANAGE_FORM_RESPONSES, UserPermissions.VIEW_FORM_RESPONSES],
+      requiredPermissions: [UserPermissions.ACCESS_BUSINESS_FORM],
       requiresAuth: true,
     },
   },
@@ -153,7 +153,7 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "dashboard" */ '../views/admin/Tuvs.vue'),
     meta: {
       title: 'manage TÜVs',
-      requiredPermissions: [UserPermissions.MANAGE_FORM_RESPONSES, UserPermissions.VIEW_FORM_RESPONSES],
+      requiredPermissions: [UserPermissions.MANAGE_TUV_RESPONSES],
       requiresAuth: true,
     },
   },
@@ -163,7 +163,7 @@ const routes: Array<RouteConfig> = [
     component: () => import('../views/admin/DriversLicenses.vue'),
     meta: {
       title: 'manage drivers licenses',
-      requiredPermissions: [UserPermissions.MANAGE_FORM_RESPONSES, UserPermissions.VIEW_FORM_RESPONSES],
+      requiredPermissions: [UserPermissions.MANAGE_DRIVERS_LICENSE_RESPONSES],
       requiresAuth: true,
     },
   },
@@ -173,7 +173,7 @@ const routes: Array<RouteConfig> = [
     component: () => import('../views/admin/RevokeDriversLicenses.vue'),
     meta: {
       title: 'revoke drivers licenses',
-      requiredPermissions: [UserPermissions.MANAGE_FORM_RESPONSES, UserPermissions.VIEW_FORM_RESPONSES],
+      requiredPermissions: [UserPermissions.MANAGE_DRIVERS_LICENSE_RESPONSES],
       requiresAuth: true,
     },
   },
@@ -193,7 +193,7 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "dashboard" */ '../views/admin/BusinessApplications.vue'),
     meta: {
       title: 'manage business applications',
-      requiredPermissions: [UserPermissions.MANAGE_USERS],
+      requiredPermissions: [UserPermissions.MANAGE_BUSINESS_RESPONSES],
       requiresAuth: true,
     },
   },
