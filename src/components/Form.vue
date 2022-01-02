@@ -16,11 +16,12 @@
          :class="{ 'red-outline': !field.components.some((comp) => comp.valid) && field.components.length !== 0 }"
          v-for="(field, i) in form.fields"
          :key="i">
-      <span class="field-title"
-            v-if="!editMode">{{ field.title }}
+      <div class="field-title"
+           v-if="!editMode">
+        {{ field.title }}
         <span class="required"
               v-show="field.required">*</span>
-      </span>
+      </div>
       <div v-else
            class="flex flex-row">
         <input class="field-title title-edit-input"
@@ -63,8 +64,49 @@
                :minlength="component.minLength"
                :maxlength="component.maxLength" />
 
+        <!--    ChipTextInput    -->
+        <div v-if="component.type === ComponentType.ChipInputComponent">
+          <div
+            class="transition-all ease-in-out outline-none mt-1 flex flex-row overflow-x-auto scroll-thin"
+            :class="{
+               'border-b-2 w-1/2 border-gray-300': !component.focused,
+               'border-b-2 w-3/4 border-blue-500': component.focused,
+             }">
+            <div class="my-1 px-1.5 rounded-md mr-2 text-white flex justify-center items-center whitespace-nowrap"
+                 :class="component.color"
+                 v-for="(value, idx) in component.values" :key="idx">
+              {{ value }}
+              <div class="transition-all text-white opacity-50 cursor-pointer hover:opacity-90"
+                   @click="component.values.splice(idx, 1)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                     class="transition-all transform scale-75 fill-current hover:scale-100">
+                  <path
+                    d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+                </svg>
+              </div>
+            </div>
+
+            <input type="text"
+                   :placeholder="component.placeholder"
+                   v-model="component.tmpValue"
+                   @keyup.delete="removeLastChip(i, componentIndex)"
+                   @keyup.space="makeChip(i, componentIndex)"
+                   @blur="validateField($event, i, componentIndex); focusChipTextInput(i, componentIndex)"
+                   @focus="focusChipTextInput(i, componentIndex)"
+                   :id="`input-${i}-${componentIndex}`"
+                   class="text-input border-none"
+                   :class="{ 'text-gray-500': component.disabled }"
+                   :minlength="component.minLength"
+                   :maxlength="component.maxLength" />
+          </div>
+
+          <div class="text-sm text-gray-400 ml-1">
+            Separate words by space
+          </div>
+        </div>
+
         <!--   FileInput   -->
-        <div v-if="component.type === ComponentType.FileUpload" class="flex flex-row">
+        <div v-else-if="component.type === ComponentType.FileUpload" class="flex flex-row">
           <label :for="`file-upload-${i}-${componentIndex}`"
                  class="custom-file-upload flex flex-row justify-between text-gray-400 border-gray-300 border-b-2 pb-1 mt-1 h-8 w-1/2 cursor-pointer">
             <div class="flex flex-row">
@@ -242,6 +284,7 @@ import {
   Watch,
 } from 'vue-property-decorator';
 import {
+  ChipInputComponent,
   Components,
   ComponentType,
   DateInputComponent,
@@ -331,6 +374,14 @@ export default class Form extends Vue {
                 component.failHint = 'This is a required field.';
               }
 
+              break;
+
+            case ComponentType.ChipInputComponent:
+              if ((component as ChipInputComponent).values.length === 0) {
+                valid = false;
+                component.valid = false;
+                component.failHint = 'This is a required field!';
+              }
               break;
 
             default:
@@ -444,6 +495,46 @@ export default class Form extends Vue {
     return valid;
   }
 
+  private focusChipTextInput (index: number, componentIndex: number): void {
+    const component = this.form.fields[index].components[componentIndex] as ChipInputComponent;
+    if (component.type !== ComponentType.ChipInputComponent) return;
+
+    component.focused = !component.focused;
+  }
+
+  private removeLastChip (index: number, componentIndex: number): void {
+    const component = this.form.fields[index].components[componentIndex] as ChipInputComponent;
+    if (component.type !== ComponentType.ChipInputComponent) return;
+
+    if (component.values.length === 0) return;
+    component.values.pop();
+  }
+
+  private makeChip (index: number, componentIndex: number): void {
+    const component = this.form.fields[index].components[componentIndex] as ChipInputComponent;
+    if (component.type !== ComponentType.ChipInputComponent) return;
+
+    const name = component.tmpValue.trim();
+    if (name.length === 0) {
+      this.$toast.show('Can\' insert empty chip!');
+      component.tmpValue = '';
+      return;
+    }
+
+    if (component.maxChips === component.values.length) {
+      this.$toast.show(`Can't have more than ${component.maxChips} chips.`);
+      return;
+    }
+
+    if (component.maxChipLength <= component.tmpValue.length) {
+      this.$toast.show(`Chip can't be longer than ${component.maxChipLength}chars.`);
+      return;
+    }
+
+    component.values.push(name);
+    component.tmpValue = '';
+  }
+
   private deleteField (index: number) {
     if (!this.editMode) return;
     this.form.fields.splice(index, 1);
@@ -555,5 +646,9 @@ input[type=number] {
 
 .trash-btn {
   @apply transition-all h-10 w-10 flex justify-center items-center border border-gray-200 -mr-2 -mt-1 cursor-pointer hover:bg-gray-200 rounded;
+}
+
+.scroll-thin {
+  scrollbar-width: thin;
 }
 </style>

@@ -140,7 +140,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/business/amst',
     name: 'business page amst',
-    component: () => import('@/views/business/pages/AMSTBusiness.vue'),
+    component: () => import('@/views/business/pages/SUSPerformance.vue'),
     meta: {
       title: 'AMST Performance',
     },

@@ -6,6 +6,7 @@ export enum ComponentType {
   TextArea,
   NumberInputComponent,
   FileUpload,
+  ChipInputComponent
 }
 
 export interface BaseComponent {
@@ -67,7 +68,17 @@ export interface RadioButtonComponent extends BaseComponent {
   labels: string[];
 }
 
-export type Components = CheckboxComponent | TextInputComponent | NumberInputComponent | DateInputComponent | RadioButtonComponent | FileUploadComponent;
+export interface ChipInputComponent extends BaseComponent {
+  values: string[];
+  placeholder: string;
+  color: string;
+  focused: boolean;
+  tmpValue: string;
+  maxChips: number;
+  maxChipLength: number;
+}
+
+export type Components = CheckboxComponent | TextInputComponent | NumberInputComponent | DateInputComponent | RadioButtonComponent | FileUploadComponent | ChipInputComponent;
 
 export interface NewField {
   title: string;
