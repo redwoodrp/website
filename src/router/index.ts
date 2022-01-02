@@ -220,7 +220,7 @@ const router = new VueRouter({
 
 router.beforeEach(async (to, from, next) => {
   if ((to.meta && to.meta.requiresAuth)) {
-    if (config.authActive) {
+    if (!config.authActive) {
       next({
         path: '/error/11000',
       });
