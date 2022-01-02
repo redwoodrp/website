@@ -3,6 +3,7 @@ import VueRouter, { RouteConfig } from 'vue-router';
 import Home from '../views/Home.vue';
 import feathersClient, { AuthObject } from '@/helpers/feathers-client';
 import { UserPermissions } from '@/helpers/interfaces/user';
+import config from '../../config';
 
 Vue.use(VueRouter);
 
@@ -219,9 +220,11 @@ const router = new VueRouter({
 
 router.beforeEach(async (to, from, next) => {
   if ((to.meta && to.meta.requiresAuth)) {
-    // next({
-    // path: '/error/11000',
-    // });
+    if (config.authActive) {
+      next({
+        path: '/error/11000',
+      });
+    }
 
     await feathersClient.authenticate()
       .then(() => {
