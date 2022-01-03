@@ -119,7 +119,7 @@ const routes: Array<RouteConfig> = [
 
   // Business stuff
   {
-    path: '/business/:id/dashboard',
+    path: '/businesses/:id/dashboard',
     name: 'business overview',
     component: () => import('@/views/business/Overview.vue'),
     meta: {
@@ -129,7 +129,7 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
-    path: '/business/apply',
+    path: '/businesses/apply',
     name: 'business apply',
     component: () => import('@/views/business/Apply.vue'),
     meta: {
@@ -139,7 +139,7 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
-    path: '/business/amst',
+    path: '/businesses/amst',
     name: 'business page amst',
     component: () => import('@/views/business/pages/SUSPerformance.vue'),
     meta: {
