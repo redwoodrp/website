@@ -55,13 +55,15 @@ import {
   FormState,
   TextInputComponent,
 } from '@/helpers/formFields';
-import feathersClient from '@/helpers/feathers-client';
+import feathersClient, { AuthObject } from '@/helpers/feathers-client';
 import { BusinessRequest } from '@/helpers/interfaces/business';
+import User from '@/helpers/interfaces/user';
 
 @Component({
   components: { Form },
 })
 export default class Apply extends Vue {
+  private user: User | null = null;
   private form = {
     title: 'Register Your Business',
     description: 'We will reply in 1-7 business days. Have questions? DM JustMe#8491',
@@ -73,9 +75,9 @@ export default class Apply extends Vue {
           {
             type: 0,
             rules: [],
-            value: '',
+            value: 'Loading...',
             valid: true,
-            disabled: false,
+            disabled: true,
             failHint: '',
             maxLength: 36,
             minLength: 0,
@@ -141,14 +143,27 @@ export default class Apply extends Vue {
     ],
   };
   private formState = FormState.ACTIVE;
-  private error = { message: 'Unknown', code: Math.PI };
+  private error = {
+    message: 'Unknown',
+    code: Math.PI,
+  };
+
+  async mounted (): Promise<void> {
+    this.user = (await feathersClient.get('authentication') as AuthObject).user;
+    if (!this.user) return;
+    console.log(this.user);
+    (this.form.fields[0].components[0] as TextInputComponent).value = `${this.user.username}#${this.user.discriminator}`;
+  }
 
   private async submitForm (): Promise<void> {
     try {
+      if (!this.user) return;
+
       if ((this.$refs.form as Form).validateEverything()) {
         this.formState = FormState.UPLOADING;
         await feathersClient.service('business-request')
           .create({
+            ownerId: this.user.discordId,
             owner: (this.form.fields[0].components[0] as unknown as TextInputComponent).value,
             members: (this.form.fields[1].components[0] as unknown as ChipInputComponent).values
               .map((n: string) => n.trim()),

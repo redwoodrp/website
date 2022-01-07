@@ -29,6 +29,7 @@ export default class Error extends Vue {
     418: 'I\'m a teapot',
     500: 'Internal server error',
     11000: 'Authentication is currently disabled while we finish this website. For the time being, you cannot get a fine for not having a TÜV or a driver\'s license.',
+    11001: 'The requested page is currently undergoing maintenance.',
     default: 'Something unexpected just happened',
   };
 }

@@ -52,9 +52,17 @@ export interface TuvFormData extends BaseDB {
 
 export interface Ad {
   show: boolean;
-  business: number;
+  business: string;
   title: string;
   description: string;
   imageSource: string;
   to: string;
+  showTitle: boolean;
+  showDescription: boolean;
+}
+
+export enum BaseState {
+  LOADING,
+  DONE,
+  ERROR,
 }

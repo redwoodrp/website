@@ -27,6 +27,7 @@ module.exports = {
   variants: {
     extend: {
       width: ['focus'],
+      backgroundColor: ['active'],
       boxShadow: ['active'],
       textOverflow: ['hover'],
       overflow: ['hover'],

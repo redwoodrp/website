@@ -21,7 +21,7 @@
         <tr>
           <th>Actions</th>
           <th
-            v-for="(header, i) in Object.keys(headerRelationMap).filter((_, i) => i !== 0)"
+            v-for="(header, i) in Object.keys(headerRelationMap)"
             :key="i">
             <span v-if="header !== null">{{ header }}</span>
           </th>
@@ -41,9 +41,11 @@
             </button>
           </td>
           <td
-            v-for="(header, i) in Object.keys(headerRelationMap).filter((_, i) => i !== 0)"
+            v-for="(header, i) in Object.keys(headerRelationMap)"
             :key="i">
-            {{ Array.isArray(response[headerRelationMap[header]]) ? response[headerRelationMap[header]].join(', ') : response[headerRelationMap[header]] || '-' }}
+            {{
+              Array.isArray(response[headerRelationMap[header]]) ? response[headerRelationMap[header]].join(', ') : response[headerRelationMap[header]] || '-'
+            }}
           </td>
         </tr>
         </tbody>
@@ -96,6 +98,8 @@ export default class BusinessApplications extends Vue {
   private async deleteRequest (id: number): Promise<void> {
     await feathersClient.service('business-request')
       .remove(id);
+
+    await this.populate();
   }
 
   private async approve (response: BusinessRequest): Promise<void> {
@@ -106,9 +110,12 @@ export default class BusinessApplications extends Vue {
         bid: uuidv4(),
         name: response.name,
         abbreviation: response.abbreviation,
+        ownerId: response.ownerId,
         owner: response.owner,
         members: response.members,
       } as Business);
+
+    await this.populate();
   }
 }
 </script>
