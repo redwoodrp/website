@@ -14,8 +14,9 @@
     </div>
 
     <!-- Copyright -->
-    <div class="flex flex-col items-center">
+    <div class="flex flex-col items-center text-gray-400 mt-5">
       <div>© RedwoodRP 2021-{{ year }} — All rights reserved</div>
+      <div>Made by JustMe#8491 with ❤</div>
       <div class="font-medium">DO NOT COPY</div>
     </div>
   </div>
