@@ -8,6 +8,8 @@
         class="w-full" />
     </div>
 
+    <Footer></Footer>
+
     <Toast ref="toast" />
   </div>
 </template>
@@ -18,10 +20,12 @@ import feathersClient from '@/helpers/feathers-client';
 import Toast from '@/components/Toast.vue';
 import { UserPermissions } from '@/helpers/interfaces/user';
 import Navbar, { NavbarItem } from '@/components/Navbar.vue';
+import Footer from '@/components/Footer.vue';
 
 @Component({
   components: {
     Navbar,
+    Footer,
     Toast,
   },
 })
