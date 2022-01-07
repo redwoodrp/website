@@ -1,14 +1,16 @@
 <template>
   <div id="app">
-    <Navbar :items="items" />
+    <div class="flex flex-col">
+      <Navbar :items="items" />
 
-    <div class="flex flex-col items-center height mx-3 md:mx-0">
-      <router-view
-        :class="getContainerWidth()"
-        class="w-full" />
+      <div class="flex flex-col items-center height mx-3 md:mx-0">
+        <router-view
+          :class="getContainerWidth()"
+          class="w-full" />
+      </div>
+      <CookieNotice/>
+      <Footer/>
     </div>
-
-    <Footer></Footer>
 
     <Toast ref="toast" />
   </div>
@@ -21,11 +23,13 @@ import Toast from '@/components/Toast.vue';
 import { UserPermissions } from '@/helpers/interfaces/user';
 import Navbar, { NavbarItem } from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
+import CookieNotice from '@/components/CookieNotice.vue';
 
 @Component({
   components: {
     Navbar,
     Footer,
+    CookieNotice,
     Toast,
   },
 })
