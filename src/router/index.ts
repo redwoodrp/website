@@ -38,6 +38,32 @@ const routes: Array<RouteConfig> = [
     },
   },
 
+  // Legal Pages (Public)
+  {
+    name: 'legal ads',
+    path: '/legal/ads',
+    component: () => import('@/views/legal/Ads.vue'),
+    meta: {
+      title: 'Legal Information: Ads',
+    },
+  },
+  {
+    name: 'legal privacy',
+    path: '/legal/privacy',
+    component: () => import('@/views/legal/Privacy.vue'),
+    meta: {
+      title: 'Legal Information: Privacy',
+    },
+  },
+  {
+    name: 'legal tos',
+    path: '/legal/tos',
+    component: () => import('@/views/legal/Tos.vue'),
+    meta: {
+      title: 'Our terms of service',
+    },
+  },
+
   // Auth flow
   {
     path: '/login',
