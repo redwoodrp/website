@@ -61,7 +61,7 @@
       </div>
 
       <!--   AD    -->
-      <AdBanner />
+      <!-- <AdBanner /> -->
 
     </div>
     <div v-else>
