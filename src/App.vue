@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <div class="flex flex-col">
-      <Navbar :items="items" />
+    <Navbar :items="items" />
 
-      <div class="flex flex-col items-center height mx-3 md:mx-0">
-        <router-view
-          :class="getContainerWidth()"
-          class="w-full" />
-      </div>
-      <CookieNotice/>
-      <Footer/>
+    <div class="flex flex-col items-center height">
+      <router-view
+        :class="getContainerWidth()"
+        class="w-full" />
+
+      <Footer class="w-full mt-auto" />
     </div>
+
+    <CookieNotice />
 
     <Toast ref="toast" />
   </div>
@@ -112,6 +112,6 @@ body {
 }
 
 .height {
-  height: calc(100vh - 65px);
+  height: calc(100vh - 64px);
 }
 </style>
