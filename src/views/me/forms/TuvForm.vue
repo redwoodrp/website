@@ -14,12 +14,12 @@
         {{ illegal.error.message }} (Code: {{ illegal.error.code }})
       </div>
 
-      <button @click="formSubmitted = false"
+      <button @click="formSubmitted = false; illegal = { show: false, error: null }"
               class="btn bg-purple-500 hover:bg-purple-800 mt-4">
         Back to form (without resetting)
       </button>
 
-      <button @click="resetForm(); formSubmitted = false"
+      <button @click="resetForm(); formSubmitted = false; illegal = { show: false, error: null }"
               class="btn bg-indigo-500 hover:bg-indigo-800 mt-4">
         Back to form (reset)
       </button>
@@ -172,6 +172,24 @@ export default class TuvForm extends Vue {
             maxLength: 32,
             minLength: 1,
             placeholder: 'Your answer',
+          },
+        ],
+      },
+      {
+        title: 'Vehicle type',
+        required: true,
+        components: [
+          {
+            type: ComponentType.RadioButton,
+            valid: true,
+            failHint: '',
+            selected: 'Car',
+            labels: [
+              'Car',
+              'Van',
+              'Bus',
+              'Truck',
+            ],
           },
         ],
       },
@@ -480,7 +498,7 @@ export default class TuvForm extends Vue {
       fileData: string;
     }
 
-    const fileData = await this.readFile((this.form.fields[16].components[0] as FileUploadComponent).files[0]);
+    const fileData = await this.readFile((this.form.fields[17].components[0] as FileUploadComponent).files[0]);
 
     await service.create({
         owner: user.discordId,
@@ -489,17 +507,18 @@ export default class TuvForm extends Vue {
         firstRegistry: firstRegistryDate,
         vehicleBrand: (this.form.fields[3].components[0] as TextInputComponent).value,
         vehicleModel: (this.form.fields[4].components[0] as TextInputComponent).value,
-        engineType: (this.form.fields[5].components[0] as TextInputComponent).value,
-        engineHorsepower: parseInt((this.form.fields[6].components[0] as NumberInputComponent).value, 10),
-        engineCCM: parseInt((this.form.fields[7].components[0] as NumberInputComponent).value, 10),
-        fuelType: (this.form.fields[8].components[0] as RadioButtonComponent).selected,
-        transmission: (this.form.fields[9].components[0] as TextInputComponent).value,
-        bodyType: (this.form.fields[10].components[0] as RadioButtonComponent).selected,
-        vehicleColor: (this.form.fields[11].components[0] as TextInputComponent).value,
-        vehicleWeight: parseInt((this.form.fields[12].components[0] as NumberInputComponent).value, 10),
-        vehicleSeatsAmount: parseInt((this.form.fields[13].components[0] as RadioButtonComponent).selected, 10),
-        vehicleYear: (this.form.fields[14].components[0] as NumberInputComponent).value,
-        additionalInfos: (this.form.fields[15].components[0] as TextInputComponent).value,
+        vehicleCategory: (this.form.fields[5].components[0] as RadioButtonComponent).selected,
+        engineType: (this.form.fields[6].components[0] as TextInputComponent).value,
+        engineHorsepower: parseInt((this.form.fields[7].components[0] as NumberInputComponent).value, 10),
+        engineCCM: parseInt((this.form.fields[8].components[0] as NumberInputComponent).value, 10),
+        fuelType: (this.form.fields[9].components[0] as RadioButtonComponent).selected,
+        transmission: (this.form.fields[10].components[0] as TextInputComponent).value,
+        bodyType: (this.form.fields[11].components[0] as RadioButtonComponent).selected,
+        vehicleColor: (this.form.fields[12].components[0] as TextInputComponent).value,
+        vehicleWeight: parseInt((this.form.fields[13].components[0] as NumberInputComponent).value, 10),
+        vehicleSeatsAmount: parseInt((this.form.fields[14].components[0] as RadioButtonComponent).selected, 10),
+        vehicleYear: (this.form.fields[15].components[0] as NumberInputComponent).value,
+        additionalInfos: (this.form.fields[16].components[0] as TextInputComponent).value,
         tid: uuidv4(),
         fileData,
       } as TuvFormDataServer)
