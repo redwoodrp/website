@@ -179,7 +179,7 @@
           <div class="flex flex-col ml-5 items-start"
                v-for="(label, labelIndex) in component.labels"
                :key="labelIndex">
-            <div class="mb-1 flex flex-row w-full">
+            <div class="mb-1 flex flex-row w-full items-center">
               <input type="radio"
                      :name="`radio-${i}-${componentIndex}`"
                      :id="`radio-${i}-${componentIndex}-${labelIndex}`"

@@ -13,7 +13,7 @@
            class="text-blue-500 hover:text-blue-700 transition-all underline">link</a>)
       </div>
 
-      <table class="table-fixed rounded-lg w-full">
+      <table class="table-fixed rounded-lg w-full border-none">
         <tbody>
         <tr :class="{'bg-gray-200': i % 2 === 0}" v-for="(val, key, i) in headerMap"
             :key="i" v-show="headerMap[key]">
@@ -51,3 +51,10 @@ export default class DisplayTuv extends Vue {
   };
 }
 </script>
+
+<style scoped>
+table > thead > tr > th,
+table > tbody > tr > td {
+  @apply border-none rounded-none;
+}
+</style>

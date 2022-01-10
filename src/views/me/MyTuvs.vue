@@ -28,7 +28,8 @@ export default class Tuvs extends Vue {
   private user: User | null = null;
 
   async mounted (): Promise<void> {
-    this.user = await feathersClient.get('authentication');
+    this.user = await feathersClient.get('user');
+    console.log(this.user);
 
     if (!this.tid) {
       await this.searchQuery();
@@ -36,6 +37,8 @@ export default class Tuvs extends Vue {
     }
 
     if (!this.user) return;
+    console.log(this.user);
+
     const res = await feathersClient.service('tuv-forms')
       .find({
         query: {
@@ -64,6 +67,8 @@ export default class Tuvs extends Vue {
           },
         },
       });
+
+    console.log(res, this.user.discordId);
 
     this.tuvs = res.map((d: TuvFormData) => {
       const newData = d;

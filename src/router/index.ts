@@ -255,9 +255,10 @@ router.beforeEach(async (to, from, next) => {
     }
 
     await feathersClient.authenticate()
-      .then(() => {
+      .then(async () => {
         // Success
         console.log('[Auth] Successfully authenticated!');
+        await feathersClient.set('user', (await feathersClient.get('authentication') as AuthObject).user);
       })
       .catch(() => {
         // Error
