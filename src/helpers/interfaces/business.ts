@@ -1,5 +1,5 @@
-import { NullableBaseDB } from '@/helpers/generic';
-import User from '@/helpers/interfaces/user';
+import { NullableBaseDB } from '../generic';
+import User from './user';
 
 export interface BusinessRequest extends NullableBaseDB {
   ownerId: string;
