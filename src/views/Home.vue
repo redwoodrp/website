@@ -9,7 +9,7 @@
       </div>
     </div>
 
-    <div class="flex flex-col items-center mb-16 text-gray-400 opacity-50">
+    <div class="flex flex-col items-center mb-16 text-white opacity-30 text-center text-sm md:text-base">
       This website is still in the works. Please stay tuned for updates!
     </div>
 
