@@ -410,6 +410,7 @@ export default class TuvForm extends Vue {
     show: false,
     error: null,
   };
+  private vehicleCategoryMap = ['car', 'van', 'bus', 'truck'];
 
   async mounted (): Promise<void> {
     const { user }: AuthObject = await feathersClient.get('authentication');
@@ -500,6 +501,8 @@ export default class TuvForm extends Vue {
 
     const fileData = await this.readFile((this.form.fields[17].components[0] as FileUploadComponent).files[0]);
 
+    console.log((this.form.fields[5].components[0] as RadioButtonComponent).selected.toLowerCase());
+
     await service.create({
         owner: user.discordId,
         discordName: (this.form.fields[0].components[0] as TextInputComponent).value,
@@ -507,7 +510,7 @@ export default class TuvForm extends Vue {
         firstRegistry: firstRegistryDate,
         vehicleBrand: (this.form.fields[3].components[0] as TextInputComponent).value,
         vehicleModel: (this.form.fields[4].components[0] as TextInputComponent).value,
-        vehicleCategory: (this.form.fields[5].components[0] as RadioButtonComponent).selected,
+        vehicleCategory: (this.form.fields[5].components[0] as RadioButtonComponent).selected.toLowerCase(),
         engineType: (this.form.fields[6].components[0] as TextInputComponent).value,
         engineHorsepower: parseInt((this.form.fields[7].components[0] as NumberInputComponent).value, 10),
         engineCCM: parseInt((this.form.fields[8].components[0] as NumberInputComponent).value, 10),
@@ -523,13 +526,14 @@ export default class TuvForm extends Vue {
         fileData,
       } as TuvFormDataServer)
       .catch((e: FeathersError) => {
-        console.log('error while trying to create tuv: ', e.code);
-        if (e.code === 1000) {
-          this.illegal = {
-            show: true,
-            error: e,
-          };
-        }
+        throw e;
+        // console.log('error while trying to create tuv: ', e.code);
+        // if (e.code === 1000) {
+        //   this.illegal = {
+        //     show: true,
+        //     error: e,
+        //   };
+        // }
       });
 
     this.formSubmitted = true;
