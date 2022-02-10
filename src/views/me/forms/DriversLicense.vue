@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full">
+  <div>
     <div v-if="formState === 0 /* ACTIVE */">
       <Form v-model="form" ref="formElement" />
       <div class="element overflow-x-scroll">
