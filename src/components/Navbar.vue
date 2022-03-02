@@ -1,19 +1,27 @@
 <template>
   <div>
-    <div
+    <nav
       class="bg-gray-800 h-16 shadow-xl font-medium text-gray-200 text-lg px-4 flex flex-row items-center nav justify-between">
-      <div class="flex flex-row">
-        <router-link class="text-gray-100 font-bold mr-8" :to="{ name: 'home' }">
+      <div class="flex flex-row items-center">
+        <button class="text-gray-800 ml-2 mr-6 nav-button-base bg-gray-400 hover:bg-gray-100"
+                @click="$route.name !== 'home' ? $router.push({name: 'home'}) : null">
           RedwoodRP
-        </router-link>
+        </button>
 
         <div v-for="(item, i) in cleanedItems" :key="i"
              class="hover:font-bold transition-all cursor-pointer" v-show="showItems">
           <span v-if="hasPermissions(item.requiredPermissions)">
-          <router-link :to="item.to">{{ item.name }}</router-link>
-          <span class="text-gray-400 font-bold mx-6 select-none"
-                v-show="i !== cleanedItems.length - 1">|</span>
-          </span>
+            <button
+              @click="$route.path !== $router.match(item.to).path ? $router.push(item.to) : null"
+              class="nav-button-base"
+              :class="$route.path === $router.match(item.to).path ? 'bg-gray-700' : 'bg-gray-900 hover:bg-gray-700'"
+            >
+              {{ item.name }}
+            </button>
+            <!--          <span class="text-gray-400 font-bold mx-6 select-none"
+                            v-show="i !== cleanedItems.length - 1">|</span>
+                      </span>-->
+            </span>
         </div>
       </div>
 
@@ -44,7 +52,7 @@
           </svg>
         </div>
       </div>
-    </div>
+    </nav>
 
     <Modal v-model="menuOpen" :close-esc="true" :close-outside="true" max-width="400px"
            width="400px" @click="menuOpen = false">
@@ -187,3 +195,9 @@ export default class Navbar extends Vue {
   }
 }
 </script>
+
+<style>
+.nav-button-base {
+  @apply rounded transition-all transform hover:scale-110 hover:rotate-1 p-1 px-2 mr-5 ease-in-out shadow hover:shadow-none;
+}
+</style>
