@@ -2,8 +2,8 @@ import io from 'socket.io-client';
 import socketio from '@feathersjs/socketio-client';
 import feathers from '@feathersjs/feathers';
 import auth from '@feathersjs/authentication-client';
-import config from '../../config';
 import User from '@/helpers/interfaces/user';
+import config from '../../config';
 
 const socket = io(config.backend, { transports: ['websocket'] });
 
