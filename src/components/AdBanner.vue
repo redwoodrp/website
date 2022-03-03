@@ -1,9 +1,9 @@
 <template>
   <div
-    class="transition-all transform hover:scale-105 rounded-lg border border-gray-200 h-48 cursor-pointer hover:shadow-xl flex flex-row text-gray-800 static"
+    class="transition-all hover:scale-105 rounded-lg border border-gray-200 h-48 cursor-pointer hover:shadow-xl flex flex-row text-gray-800 static"
     :class="{'shadow-lg': shadow }"
     v-if="ad.show">
-    <div @click="bringToPage" v-if="!editMode" class="absolute w-full h-full"/>
+    <button @click="bringToPage" v-if="!editMode" class="absolute w-full h-full" />
 
     <router-link
       class="underline transition-colors hover:text-gray-600 text-xs text-gray-400 bottom-0 right-0 mx-0.5 mb-0.5 absolute select-none"
@@ -16,15 +16,15 @@
       class="h-48 rounded-l-lg w-full rounded-lg"
       :alt="editMode ? 'Here will be the uploaded image': 'Advertisement'" ref="img">
     <div v-if="editMode"
-         class="flex justify-center items-center w-full transition-all absolute text-center h-full"
-         @click.prevent="chooseImage">
-      <div
-        class="bg-black bg-opacity-20 p-3 rounded-xl text-center text-white flex justify-center items-center flex-col hover:bg-opacity-60 transition-all">
+         class="flex justify-center items-center w-full transition-all absolute text-center h-full">
+      <button
+        class="bg-black bg-opacity-20 p-3 rounded-xl text-center text-white flex justify-center items-center flex-col hover:bg-opacity-60 transition-all"
+        @click.prevent="chooseImage">
         Upload Image
         <svg style="width:24px;height:24px" viewBox="0 0 24 24">
           <path fill="currentColor" d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z" />
         </svg>
-      </div>
+      </button>
     </div>
     <div class="p-1 ml-2" v-if="ad.showDescription || ad.showTitle">
       <div class="text-2xl font-semibold" v-if="ad.showTitle">

@@ -215,7 +215,7 @@ export default class DriversLicense extends Vue {
           console.log('error');
           this.formState = FormState.ERROR;
           this.error = {
-            ...e,
+            ...(e as FeathersError),
             message: 'You already have that vehicle class!',
           };
         }

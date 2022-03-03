@@ -55,7 +55,7 @@ import {
   FormState,
   TextInputComponent,
 } from '@/helpers/formFields';
-import feathersClient, { AuthObject } from '@/helpers/feathers-client';
+import feathersClient, { AuthObject, FeathersError } from '@/helpers/feathers-client';
 import { BusinessRequest } from '@/helpers/interfaces/business';
 import User from '@/helpers/interfaces/user';
 
@@ -177,8 +177,8 @@ export default class Apply extends Vue {
       console.log('Error while uploading document: ', e);
       this.formState = FormState.ERROR;
       this.error = {
-        message: e.message,
-        code: e.code,
+        message: (e as FeathersError).message,
+        code: (e as FeathersError).code,
       };
     }
   }

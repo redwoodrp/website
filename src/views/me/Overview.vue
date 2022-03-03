@@ -76,7 +76,7 @@ import { RawLocation } from 'vue-router';
 import feathersClient, { AuthObject } from '@/helpers/feathers-client';
 import User from '@/helpers/interfaces/user';
 import { NavbarItem } from '@/components/Navbar.vue';
-import AdBanner from '@/components/AdBanner.vue';
+// import AdBanner from '@/components/AdBanner.vue';
 import { BeamMPServer, Wallet } from '@/helpers/interfaces/apis';
 import DriversLicenses from '@/views/admin/DriversLicenses.vue';
 import config from '../../../config';
@@ -86,7 +86,7 @@ interface QuickNavItem extends Omit<NavbarItem, 'requiredPermissions' | 'require
 }
 
 @Component({
-  components: { AdBanner },
+  // components: { AdBanner },
 })
 export default class Overview extends Vue {
   private wallet: Wallet | null = null;
@@ -224,6 +224,6 @@ export default class Overview extends Vue {
 }
 
 .outline-btn {
-  @apply transition-all w-full h-18 border-gray-800 text-gray-800 border-4 rounded-lg font-bold text-4xl shadow-lg hover:bg-gray-100 hover:shadow-xl transform hover:scale-105;
+  @apply transition-all w-full h-18 border-gray-800 text-gray-800 border-4 rounded-lg font-bold text-4xl shadow-lg hover:bg-gray-100 hover:shadow-xl hover:scale-105;
 }
 </style>

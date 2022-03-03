@@ -6,7 +6,7 @@
       {{ business.name }}
 
       <div class="flex flex-row mt-4 space-x-4">
-        <div class="juicy-btn"
+        <button class="juicy-btn"
              :class="btnActive(Page.CREATE_AD)"
              @click="currentPage = { name: 'Create ad', description: 'Create a new ad', page: Page.CREATE_AD }">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="mr-3">
@@ -15,9 +15,9 @@
               7 4.67 8.67 3l1.66 1.67L12 3l1.67 1.67L15.33 3 17 4.67 18.67 3l1.66 1.67L22 3v10.5c-1.07-.92-2.47-1.5-4-1.5-1.23 0-2.37.37-3.32 1H13m-2 6v-6H4v6h7z" />
           </svg>
           Create ad
-        </div>
+        </button>
 
-        <div class="juicy-btn"
+        <button class="juicy-btn"
              :class="btnActive(Page.VIEW_ADS)"
              @click="currentPage = { name: 'View my ads', description: 'View all the ads your business currently has online', page: Page.VIEW_ADS }">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="mr-3 mt-0.5"
@@ -38,9 +38,9 @@
                     .2-.17l.15-1.06a2.91 2.91 0 0 0 .67-.4l1 .4c.09.04.2 0 .24-.08l.8-1.38a.2.2 0 0 0-.05-.26l-.84-.66z" />
           </svg>
           View ads
-        </div>
+        </button>
 
-        <div class="juicy-btn"
+        <button class="juicy-btn"
              :class="btnActive(Page.MANAGE_BUSINESSES)"
              @click="currentPage = { name: 'Manage business', description: 'Change data about your business', page: Page.MANAGE_BUSINESSES }">
           <svg style="width:24px;height:24px" viewBox="0 0 24 24" class="mr-3">
@@ -48,7 +48,7 @@
             11H8V9H10M10,15H8V13H10M10,19H8V17H10M6,7H4V5H6M6,11H4V9H6M6,15H4V13H6M6,19H4V17H6M12,7V3H2V21H22V7H12Z" />
           </svg>
           Manage business
-        </div>
+        </button>
       </div>
 
       <div class="border border-gray-100 rounded-xl shadow p-4 mt-2">

@@ -71,6 +71,6 @@ export default class Modal extends Vue {
 
 .size {
   @extend .fade;
-  @apply top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2;
+  @apply top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2;
 }
 </style>

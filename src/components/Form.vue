@@ -76,14 +76,14 @@
                  :class="component.color"
                  v-for="(value, idx) in component.values" :key="idx">
               {{ value }}
-              <div class="transition-all text-white opacity-50 cursor-pointer hover:opacity-90"
+              <button class="transition-all text-white opacity-50 cursor-pointer hover:opacity-90"
                    @click="component.values.splice(idx, 1)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                     class="transition-all transform scale-75 fill-current hover:scale-100">
+                     class="transition-all scale-75 fill-current hover:scale-100">
                   <path
                     d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
                 </svg>
-              </div>
+              </button>
             </div>
 
             <input type="text"
@@ -125,13 +125,13 @@
               </span>
             </div>
 
-            <span class="transition-colors cursor-pointer hover:text-red-400 text-gray-300"
+            <button class="transition-colors cursor-pointer hover:text-red-400 text-gray-300"
                   @click.prevent="component.files = []">
               <svg style="width:24px; height:24px" viewBox="0 0 24 24">
                   <path fill="currentColor"
                         d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
               </svg>
-            </span>
+            </button>
           </label>
           <input
             type="file"
@@ -168,7 +168,7 @@
           <label :for="`checkbox-component-${i}-${componentIndex}`"></label>
           <input :id="`checkbox-component-${i}-${componentIndex}`"
                  type="checkbox"
-                 class="transform scale-125 w-6 cursor-pointer h-4" />
+                 class="scale-125 w-6 cursor-pointer h-4" />
 
           <input class="title-edit-input" v-if="editMode" v-model="component.label">
           <span v-if="!editMode">{{ component.label }}</span>
@@ -622,7 +622,7 @@ input[type=checkbox] {
 }
 
 input[type=radio] {
-  @apply transform scale-125 cursor-pointer;
+  @apply scale-125 cursor-pointer;
 }
 
 textarea {

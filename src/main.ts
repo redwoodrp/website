@@ -1,9 +1,8 @@
 import Vue from 'vue';
-import VueGtag from 'vue-gtag';
+import Toast from '@/components/Toast.vue';
 import App from './App.vue';
 import router from './router';
 import './index.css';
-import Toast from '@/components/Toast.vue';
 
 Vue.config.productionTip = false;
 

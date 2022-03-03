@@ -12,6 +12,7 @@ module.exports = {
   ],
   parserOptions: {
     ecmaVersion: 2020,
+    parser: '@typescript-eslint/parser',
   },
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
@@ -22,10 +23,14 @@ module.exports = {
     'class-methods-use-this': 'off',
     'lines-between-class-members': 'off',
     'no-plusplus': 'off',
-    'indent': 'off',
+    indent: 'off',
     'no-shadow': 'off',
     '@typescript-eslint/no-shadow': ['error'],
-    'semi': 'off',
+    semi: 'off',
     '@typescript-eslint/semi': ['error'],
+    'linebreak-style': 'off',
+    'vue/multi-word-component-names': 'off',
+    'vuejs-accessibility/form-control-has-label': 'off',
+    'vuejs-accessibility/label-has-for': 'off',
   },
 };

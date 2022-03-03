@@ -38,7 +38,7 @@
               v-else />
           </svg>
         </button>
-        <div class="rounded bg-gray-700 w-10 h-10 flex justify-center items-center cursor-pointer"
+        <button class="rounded bg-gray-700 w-10 h-10 flex justify-center items-center cursor-pointer"
              :class="{ 'hidden': showItems }"
              @click="menuOpen = !menuOpen">
           <svg style="width:24px;height:24px" viewBox="0 0 24 24"
@@ -50,7 +50,7 @@
             <path fill="currentColor"
                   d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
           </svg>
-        </div>
+        </button>
       </div>
     </nav>
 
@@ -86,7 +86,7 @@ import { RawLocation } from 'vue-router';
 import User, { UserPermissions } from '@/helpers/interfaces/user';
 import { debounce } from '@/helpers/generic';
 import Modal from '@/components/Modal.vue';
-import feathersClient, { AuthObject } from '@/helpers/feathers-client';
+import feathersClient, { AuthObject, FeathersError } from '@/helpers/feathers-client';
 
 export interface NavbarItem {
   name: string;
@@ -121,7 +121,7 @@ export default class Navbar extends Vue {
     try {
       await feathersClient.authenticate();
     } catch (e) {
-      if (e.code === 401) {
+      if ((e as FeathersError).code === 401) {
         this.loggedIn = false;
       }
     }
@@ -198,6 +198,6 @@ export default class Navbar extends Vue {
 
 <style>
 .nav-button-base {
-  @apply rounded transition-all transform hover:scale-110 hover:rotate-1 p-1 px-2 mr-5 ease-in-out shadow hover:shadow-none;
+  @apply rounded transition-all hover:scale-110 hover:rotate-1 p-1 px-2 mr-5 ease-in-out shadow hover:shadow-none;
 }
 </style>
