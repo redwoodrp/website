@@ -1,6 +1,6 @@
 <template>
   <div
-    class="fixed bottom-0 right-0 size bg-gray-800 mr-5 mb-5 rounded-lg shadow-lg flex items-center px-3.5 text-gray-100 flex justify-between hidden py-0.5"
+    class="fixed bottom-0 right-0 size bg-neutral-800 mr-5 mb-5 rounded shadow-lg flex items-center px-3.5 text-gray-100 flex justify-between hidden py-0.5"
     ref="mainContainer">
     <span class="py-1.5 break-words" style="hyphens: auto">{{ message }}</span>
     <button

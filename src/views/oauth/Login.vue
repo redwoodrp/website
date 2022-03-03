@@ -1,8 +1,9 @@
 <template>
   <div class="h-full flex items-center justify-center">
     <div class="flex flex-col items-center justify-center space-y-3">
-      <span class="font-bold text-gray-700 text-3xl">Login with Discord</span>
-      <button class="btn bg-blue-600 hover:bg-blue-900" @click="performLogin">Bring me to Discord
+      <span class="font-bold text-gray-700 dark:text-neutral-300 text-3xl">Login with Discord</span>
+      <button class="btn bg-blue-600 hover:bg-blue-900" @click="performLogin">
+        Bring me to Discord
       </button>
     </div>
   </div>

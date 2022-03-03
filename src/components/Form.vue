@@ -1,10 +1,10 @@
 <template>
   <div class="w-full">
-    <div class="element mt-6">
+    <div class="form-element mt-6">
       <div v-if="!editMode" class="flex flex-col">
         <span class="title">{{ form.title }}</span>
-        <span class="text-gray-600">{{ form.description }}</span>
-        <span class="text-red-500 text-sm mt-4">* Required</span>
+        <span class="text-gray-600 dark:text-neutral-500">{{ form.description }}</span>
+        <span class="text-red-500 dark:text-opacity-75 text-sm mt-4">* Required</span>
       </div>
       <div v-else>
         <input class="title-edit-input -ml-1.5 text-2xl font-semibold" v-model="form.title">
@@ -12,7 +12,7 @@
       </div>
     </div>
 
-    <div class="element mt-5"
+    <div class="form-element mt-5"
          :class="{ 'red-outline': !field.components.some((comp) => comp.valid) && field.components.length !== 0 }"
          v-for="(field, i) in form.fields"
          :key="i">
@@ -176,7 +176,7 @@
 
         <!--   Radio Button     -->
         <div v-else-if="component.type === ComponentType.RadioButton">
-          <div class="flex flex-col ml-5 items-start"
+          <div class="flex flex-col ml-5 items-start dark:text-neutral-200"
                v-for="(label, labelIndex) in component.labels"
                :key="labelIndex">
             <div class="mb-1 flex flex-row w-full items-center">
@@ -226,7 +226,7 @@
 
         <!--    DateInput    -->
         <div v-else-if="component.type === ComponentType.DateInput"
-             class="flex flex-row space-x-2 items-center text-gray-300">
+             class="flex flex-row space-x-2 items-center text-gray-300 dark:text-neutral-300">
           <input :placeholder="component.placeholders[0]"
                  class="date-input w-9"
                  v-model="component.values[0]"
@@ -572,16 +572,8 @@ export default class Form extends Vue {
 
 <style lang="scss"
        scoped>
-.element {
-  @apply shadow-lg w-full rounded-lg border-t-4 border-blue-500 p-4 flex flex-col mb-8;
-  border-right: 1px solid theme('colors.gray.300') !important;
-  border-left: 1px solid theme('colors.gray.300') !important;
-  border-bottom: 1px solid theme('colors.gray.300') !important;
-  border-top: 4px solid theme('colors.blue.500') !important;
-}
-
 .title {
-  @apply text-2xl font-semibold text-gray-800;
+  @apply text-2xl font-semibold text-gray-800 dark:text-neutral-300;
 }
 
 .red-outline {
@@ -592,7 +584,7 @@ export default class Form extends Vue {
 }
 
 .field-title {
-  @apply font-medium text-xl text-gray-800 mb-2;
+  @apply font-medium text-xl text-gray-800 dark:text-neutral-300 mb-2;
 }
 
 .title-edit-input {
@@ -614,7 +606,7 @@ export default class Form extends Vue {
 }
 
 .date-input {
-  @apply p-1 border-b-2 border-gray-300 focus:border-blue-500 outline-none text-gray-700 mx-1;
+  @apply p-1 border-b-2 border-gray-300 focus:border-blue-500 outline-none text-gray-700 dark:text-neutral-200 dark:bg-neutral-800 mx-1;
 }
 
 input[type=checkbox] {

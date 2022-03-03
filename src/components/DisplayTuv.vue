@@ -1,11 +1,11 @@
 <template>
-  <div class="flex flex-col space-y-4">
+  <div class="flex flex-col space-y-4 dark:text-neutral-300">
     <span class="text-gray-400 text-center" v-show="data.length === 0">No results.</span>
-    <div class="rounded-2xl border border-gray-300" v-for="tuv in data" :key="tuv.tid">
+    <div class="rounded-2xl border border-gray-300 dark:border-none dark:bg-neutral-800" v-for="tuv in data" :key="tuv.tid">
       <img :src="`${config.backend}/images/${tuv.owner}/${tuv.tid}.jpg`" alt="TÜV Card Image"
            class="rounded-t-2xl">
 
-      <div class="text-xl text-gray-700 font-semibold p-3">
+      <div class="text-xl text-gray-700 font-semibold p-3 dark:text-neutral-300">
         {{
           `${tuv.vehicleBrand} ${tuv.vehicleModel} (${tuv.engineHorsepower} hp; ${tuv.engineCCM} ccm; `
         }}
@@ -15,7 +15,7 @@
 
       <table class="table-fixed rounded-lg w-full border-none">
         <tbody>
-        <tr :class="{'bg-gray-200': i % 2 === 0}" v-for="(val, key, i) in headerMap"
+        <tr :class="{'bg-gray-200 dark:bg-neutral-700': i % 2 === 0}" v-for="(val, key, i) in headerMap"
             :key="i" v-show="headerMap[key]">
           <td class="py-1 px-3">{{ val }}</td>
           <td>{{ tuv[key] }}</td>

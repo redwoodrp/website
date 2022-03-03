@@ -1,16 +1,16 @@
 <template>
-  <div class="w-4/5">
-    <div class="mt-11 font-bold text-4xl text-gray-800">Manage Users</div>
-    <div class="mb-2 mt-0.5 font-medium text-gray-500">
+  <div class="w-4/5 dark:text-neutral-300">
+    <div class="mt-11 font-bold text-4xl text-gray-800 dark:text-neutral-300">Manage Users</div>
+    <div class="mb-2 mt-0.5 font-medium text-gray-500 dark:text-neutral-500">
       Values here are temporary and only saved once you press 'save'!
     </div>
     <div v-if="users.length !== 0">
-      <button class="w-full btn bg-green-500 hover:bg-green-800 mb-3"
+      <button class="w-full btn bg-green-500 dark:bg-green-700 hover:bg-green-800 mb-3"
               @click="saveDialog = true;">
         Save
       </button>
 
-      <table class="table-auto">
+      <table class="table-auto w-full overflow-auto">
         <thead>
         <tr>
           <th>actions</th>
@@ -24,7 +24,7 @@
         <tbody>
         <tr v-for="(user, i) in users" :key="i">
           <td>
-            <button class="btn bg-green-500 hover:bg-green-800 whitespace-nowrap"
+            <button class="btn bg-green-500 dark:bg-green-700 hover:bg-green-800 whitespace-nowrap text-sm"
                     @click="permissionDialog.show = true; permissionDialog.workIndex = i">
               Mod. perms
             </button>

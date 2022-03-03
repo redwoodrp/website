@@ -4,7 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 
-  html, body, #app {
+html, body, #app {
     font-family: Poppins, Arial, sans-serif;
     min-height: 100vh;
     height: 100vh;
@@ -19,25 +19,53 @@
         @apply transition-colors p-2 cursor-pointer rounded mr-2 text-white;
     }
 
+    .big-form-submit-btn {
+        @apply transition-all hover:shadow-xl h-20 bg-white dark:bg-neutral-800 dark:text-neutral-300 rounded-lg w-full mt-4 flex flex-row items-center px-3 flex justify-center items-center text-lg
+        font-medium hover:bg-green-100 dark:hover:bg-green-500 active:shadow-none;
+        border-right: 1px solid theme('colors.green.500') !important;
+        border-left: 1px solid theme('colors.green.500') !important;
+        border-bottom: 1px solid theme('colors.green.500') !important;
+        border-top: 4px solid theme('colors.green.500') !important;
+    }
+
+    .form-element {
+        @apply shadow-lg w-full rounded-lg border border-gray-300 dark:border-none dark:bg-neutral-800 p-4 flex flex-col mb-8;
+        border-top: 4px solid theme('colors.blue.500') !important;
+    }
+
+    .app-height {
+        height: calc(100vh - 64px);
+    }
+
+    .app-content-height {
+        height: calc(100vh - 64px - 112px);
+    }
+
     .modal-title {
-        @apply font-bold text-gray-800 text-xl;
+        @apply font-bold text-gray-800 dark:text-neutral-300 text-xl;
     }
 
     .modal-description {
-        @apply font-medium text-gray-600;
+        @apply font-medium text-gray-600 dark:text-neutral-500;
     }
 
     .text-input {
-        @apply border-b-2 border-gray-300 focus:border-blue-500 outline-none mt-1 h-8 p-1.5 w-1/2 focus:w-3/4; /* w-1/2 focus:w-3/4 */
+        @apply border-b-2 border-gray-300 disabled:border-gray-400 focus:border-blue-500 dark:bg-neutral-800 dark:text-neutral-200 outline-none mt-1 h-8 p-1.5 w-1/2 focus:w-3/4;
+        /* w-1/2 focus:w-3/4 */
         transition: all 180ms ease-in-out;
     }
 
     .textarea {
-        @apply border-2 border-black rounded w-full resize-y mt-1 mb-3 p-0.5 px-1 max-h-36 min-h-14 h-14;
+        @apply border-2 border-black dark:bg-neutral-800 dark:border-none dark:text-neutral-200 rounded w-full resize-y mt-1 mb-3 p-0.5 px-1 max-h-36 min-h-14 h-14;
+    }
+
+    .round-text-input {
+        @apply transition-all duration-300 mt-6 rounded-full px-6 py-3 border hover:shadow-lg focus:shadow-lg border-gray-300 dark:border-neutral-800
+        bg-white dark:bg-neutral-800 dark:text-neutral-300 text-lg mb-4;
     }
 
     table > thead > tr > th,
     table > tbody > tr > td {
-        @apply border border-gray-400 rounded m-2 p-1.5;
+        @apply border border-gray-400 dark:border-neutral-600 rounded m-2 p-1.5;
     }
 }

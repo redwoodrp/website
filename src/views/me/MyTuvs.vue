@@ -1,11 +1,11 @@
 <template>
   <div class="flex justify-center flex-col mt-8">
-    <div class="text-5xl text-gray-800 font-bold">My TÜVs</div>
+    <div class="text-3xl text-gray-800 dark:text-neutral-300 font-bold">My TÜVs</div>
     <input type="search"
-           class="transition-all duration-300 mt-6 rounded-full px-6 py-3 border hover:shadow-lg focus:shadow-lg border-gray-300 bg-white text-lg mb-4"
+           class="round-text-input"
            placeholder="Search..." v-model="search" @change="searchQuery">
 
-    <DisplayTuv :data="tuvs"></DisplayTuv>
+    <DisplayTuv :data="tuvs" class="mb-16"></DisplayTuv>
   </div>
 </template>
 

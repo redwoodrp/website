@@ -2,7 +2,8 @@
   <div id="app">
     <Navbar :items="items" />
 
-    <div class="flex flex-col items-center height">
+    <div class="flex flex-col items-center dark:bg-neutral-900"
+         :class="{ 'app-height': !($route.name === 'me forms tuv' || $route.name === 'me forms driverslicense' || $route.name === 'tuvs overview' || $route.name === 'tuvs view specific') }">
       <router-view
         :class="getContainerWidth()"
         class="w-full" />
@@ -109,9 +110,5 @@ html,
 #app,
 body {
   scroll-behavior: smooth;
-}
-
-.height {
-  height: calc(100vh - 64px);
 }
 </style>

@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="text-4xl font-bold text-gray-800 mt-4">
+    <div class="text-4xl font-bold text-gray-800 dark:text-neutral-300 mt-4">
       Data Privacy
     </div>
 
-    <div class="mt-1">
+    <div class="mt-1 dark:text-neutral-300">
       RedwoodRP ("we", "our", "Redwood") uses your Discord account for login.
       <br />
       Information we store about you:
@@ -35,8 +35,10 @@
         </li>
       </ul>
 
-      We store your data in a safe and encrypted SQLite3 database on our server. We do not store
-      your email address or password and we do not leak out any information. By creating an account
+      We store your data in a safe and encrypted PostgresSQL database on our server. We do not store
+      your email address or password (in fact, we do not even get it from Discord; We use the
+      official Oauth flow Discord provides) and we do not
+      leak out any information. By creating an account
       you agree to us tracking what you do on our website (On which page you are). We do not send
       any data to any third parties. All the data we have about you, will be deleted on demand. If
       you want to know what data we have stored about you: Contact JustMe#8491 on Discord to get a

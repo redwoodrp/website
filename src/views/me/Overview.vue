@@ -1,11 +1,11 @@
 <template>
   <div class="mt-4">
     <div v-if="user">
-      <div class="text-gray-800 text-4xl font-bold">Hello, {{ user.username }}</div>
+      <div class="text-gray-800 dark:text-gray-300 text-4xl font-bold">Hello, {{ user.username }}</div>
       <div class="text-gray-400 font-medium">What do you wanna do today?</div>
 
       <div class="flex flex-col md:flex-row w-full justify-between mt-8">
-        <div class="flex flex-col space-y-6 rounded-xl shadow-lg p-5 border border-gray-300">
+        <div class="flex flex-col space-y-6 rounded-xl shadow-lg p-5 border border-gray-300 dark:border-neutral-800 dark:bg-neutral-800 dark:text-gray-300">
           <div class="flex flex-col">
             <div class="value" v-if="wallet">
               ${{ wallet.total ? formatBalance(wallet.total || 0) : '-' }}
@@ -224,6 +224,7 @@ export default class Overview extends Vue {
 }
 
 .outline-btn {
-  @apply transition-all w-full h-18 border-gray-800 text-gray-800 border-4 rounded-lg font-bold text-4xl shadow-lg hover:bg-gray-100 hover:shadow-xl hover:scale-105;
+  @apply transition-all w-full h-18 border-gray-800 dark:border-none dark:bg-neutral-800 text-gray-800 dark:text-gray-300 border-4
+  rounded-lg font-bold text-4xl shadow-lg hover:bg-gray-100 dark:hover:bg-neutral-400 dark:hover:text-neutral-800 hover:shadow-xl hover:scale-105;
 }
 </style>

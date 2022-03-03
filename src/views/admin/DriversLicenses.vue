@@ -1,11 +1,11 @@
 <template>
-  <div v-if="user">
-    <div class="text-4xl text-gray-800 mt-8 mb-1 font-bold">
+  <div v-if="user" class="dark:text-neutral-300">
+    <div class="text-4xl text-gray-800 mt-8 mb-1 font-bold dark:text-neutral-300">
       Manage driving license requests
     </div>
 
     <div class="flex flex-row items-center mt-3 mb-1">
-      <button class="btn bg-blue-400 hover:bg-blue-600 text-xs mr-2"
+      <button class="btn bg-blue-400 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-800 text-xs mr-2"
               @click="$toast.show('Refreshed!'); populate()">
         Refresh
       </button>
@@ -44,7 +44,7 @@
             v-for="(header, i) in Object.keys(headerRelationMap).filter((_, i) => i !== 0)"
             :key="i">
             <img v-if="isDataUrl(response[headerRelationMap[header]])"
-                 :src="response[headerRelationMap[header]]" alt="signature image" class="w-52">
+                 :src="response[headerRelationMap[header]]" alt="signature image" class="w-52 dark:bg-neutral-700 rounded">
             <span v-else>
             {{ response[headerRelationMap[header]] || '-' }}
             </span>

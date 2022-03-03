@@ -1,7 +1,7 @@
 <template>
   <div class="container" v-if="!formSubmitted">
     <Form v-model="form" ref="formElement" />
-    <button class="submit mt-5 mb-96" @click="submitForm">Submit (can't be edited)</button>
+    <button class="big-form-submit-btn mt-5 mb-96" @click="submitForm">Submit (can't be edited)</button>
   </div>
 
   <div v-else-if="illegal.show" class="container h-full mb-24">
@@ -26,10 +26,10 @@
     </div>
   </div>
 
-  <div v-else class="container h-full mb-24">
+  <div v-else class="container app-content-height">
     <div>
-      <div class="text-5xl text-gray-800 font-bold">Thanks!</div>
-      <div class="text-gray-700 text-lg font-medium mt-2">
+      <div class="text-5xl text-gray-800 font-bold dark:text-neutral-300">Thanks!</div>
+      <div class="text-gray-700 text-lg font-medium mt-2 dark:text-neutral-500">
         You will receive an answer per Discord in 1-7 work days. If you don't receive a message in
         the
         given time, you won't have to pay for the TÜV. Please remember: Driving without a <span
@@ -554,14 +554,6 @@ export default class TuvForm extends Vue {
 
 <style lang="scss"
        scoped>
-.submit {
-  @apply transition-all hover:shadow-xl h-20 bg-white rounded-lg w-full mt-4 flex flex-row items-center px-3 flex justify-center items-center text-lg font-medium hover:bg-green-100 active:shadow-none;
-  border-right: 1px solid theme('colors.green.500') !important;
-  border-left: 1px solid theme('colors.green.500') !important;
-  border-bottom: 1px solid theme('colors.green.500') !important;
-  border-top: 4px solid theme('colors.green.500') !important;
-}
-
 .container {
   @apply mt-8 flex justify-center items-center flex-col;
 }

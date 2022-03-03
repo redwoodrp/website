@@ -1,10 +1,10 @@
 <template>
   <div class="mt-8 flex flex-col">
-    <div class="text-4xl text-gray-800 font-bold">License Plate Check</div>
-    <div class="text-gray-600">Check license plates for valid tuvs.</div>
+    <div class="text-4xl text-gray-800 dark:text-neutral-300 font-bold">License Plate Check</div>
+    <div class="text-gray-600 dark:text-neutral-500">Check license plates for valid tuvs.</div>
 
     <input type="search"
-           class="transition-all duration-300 mt-6 rounded-full px-6 py-3 border hover:shadow-lg focus:shadow-lg border-gray-300 bg-white text-lg mb-4"
+           class="round-text-input"
            placeholder="Enter license plate here..." v-model="search" @change="searchQuery()">
 
     <DisplayTuv :data="tuvs"></DisplayTuv>

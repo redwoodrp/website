@@ -1,15 +1,15 @@
 <template>
   <div class="mt-8 flex flex-col">
-    <div class="text-4xl text-gray-800 font-bold">Revoke drivers licenses</div>
-    <div class="text-gray-600">Enter username below, click revoke, select class, accept
+    <div class="text-4xl text-gray-800 dark:text-neutral-300 font-bold">Revoke drivers licenses</div>
+    <div class="text-gray-600 dark:text-neutral-500">Enter username below, click revoke, select class, accept
       confirmation.
     </div>
 
     <input type="search"
-           class="transition-all duration-300 mt-6 rounded-full px-6 py-3 border hover:shadow-lg focus:shadow-lg border-gray-300 bg-white text-lg mb-4"
+           class="round-text-input"
            placeholder="Enter username..." v-model="search" @change="searchQuery()">
 
-    <div class="mt-5 overflow-x-auto">
+    <div class="mt-5 overflow-x-auto text-gray-300">
       <table class="table-auto border-collapse border border-green-800 text-sm">
         <thead>
         <tr>

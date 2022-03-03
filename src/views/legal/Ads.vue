@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="text-4xl font-bold text-gray-800 mt-4">
+    <div class="text-4xl font-bold text-gray-800 dark:text-neutral-300 mt-4">
       Ads on our site
     </div>
 
-    <div class="mt-1">
+    <div class="mt-1 dark:text-neutral-300">
       RedwoodRP ("we", "our", "Redwood") only shows you fake ads for fake in-game companies that do
       not exist in the real world. Our ads are moderated so they contain content friendly for all
       age classes. If you ever find inappropriate ads, please contact us.
@@ -24,7 +24,7 @@
         with, for example selling cars or food.
       </div>
 
-      <div class="mt-5 text-gray-600 text-sm">
+      <div class="mt-5 text-gray-600 dark:text-neutral-400 text-sm">
         Any more questions? Visit our other legal pages:
         <router-link to="/legal/privacy" class="l">Data Privacy</router-link>
         ,

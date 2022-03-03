@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="text-4xl font-bold text-gray-800 mt-4">
+    <div class="text-4xl font-bold text-gray-800 dark:text-neutral-300 mt-4">
       Our terms of service
     </div>
 
-    <div class="mt-1">
+    <div class="mt-1 dark:text-neutral-300">
       Once you sign up, you agree to us, RedwoodRP ("we", "our", "us", "Redwood") storing your data
       (
       <router-link to="/legal/privacy" class="l">What we store</router-link>

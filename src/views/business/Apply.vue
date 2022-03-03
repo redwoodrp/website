@@ -2,7 +2,7 @@
   <div class="h-full">
     <div v-if="formState === 0 /* ACTIVE */" class="mt-8">
       <Form v-model="form" ref="form"></Form>
-      <button class="submit mt-5 mb-96" @click="submitForm">Submit</button>
+      <button class="big-form-submit-btn mt-5 mb-96" @click="submitForm">Submit</button>
     </div>
 
     <div v-else-if="formState === 1 /* UPLOADING */"
@@ -186,7 +186,7 @@ export default class Apply extends Vue {
 </script>
 
 <style scoped>
-.submit {
+.big-form-submit-btn {
   @apply transition-all hover:shadow-xl h-20 bg-white rounded-lg w-full mt-4 flex flex-row items-center px-3 flex justify-center items-center text-lg font-medium hover:bg-green-100 active:shadow-none;
   border-right: 1px solid theme('colors.green.500') !important;
   border-left: 1px solid theme('colors.green.500') !important;

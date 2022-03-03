@@ -2,25 +2,26 @@
   <div>
     <div v-if="formState === 0 /* ACTIVE */">
       <Form v-model="form" ref="formElement" />
-      <div class="element overflow-x-scroll">
+      <div class="form-element overflow-x-scroll">
         <div class="field-title">Signature</div>
         <canvas height="140" width="720"
-                class="border rounded-lg border-gray-400 overflow-x-auto"
+                class="border rounded-lg border-gray-400 dark:border-none dark:bg-neutral-600 overflow-x-auto"
                 ref="canvas" />
         <button class="btn bg-gray-400 hover:bg-gray-700 w-full mt-2 mr-0"
                 @click="signaturePad.clear()">
           Clear
         </button>
       </div>
-      <button class="submit mt-5 mb-96" @click="submitForm">Submit (can't be edited)</button>
+      <button class="big-form-submit-btn mt-5 mb-96" @click="submitForm">Submit (can't be edited)
+      </button>
     </div>
 
     <div v-else-if="formState === 1 /* UPLOADING */"
-         class="flex justify-center items-center h-screen">
+         class="flex justify-center items-center h-screen dark:text-neutral-500">
       Uploading...
     </div>
 
-    <div v-else class="container h-full mb-24">
+    <div v-else class="container app-content-height">
       <div>
         <div v-if="formState !== 3 /* ERROR */">
           <div class="text-5xl text-gray-800 font-bold">Thanks!</div>
@@ -36,13 +37,14 @@
           <div class="text-5xl text-gray-800 font-bold">Error</div>
           <div class="text-gray-700 text-lg font-medium mt-2">
             Something went wrong trying to upload the information. Response from server:
-            <div class="text-gray-200 p-2 mt-2 bg-gray-600 rounded-lg w-full border border-gray-800">
+            <div
+              class="text-gray-200 p-2 mt-2 bg-gray-600 rounded-lg w-full border border-gray-800">
               {{ error.message }} (Code: {{ error.code }})
             </div>
           </div>
         </div>
 
-        <button @click="initialize();"
+        <button @click="reloadPage();"
                 class="btn bg-gray-200 text-gray-600 hover:bg-gray-500 hover:text-gray-200 mt-4">
           Back to form
         </button>
@@ -225,6 +227,10 @@ export default class DriversLicense extends Vue {
       this.formState = FormState.SUBMITTED;
     }
   }
+
+  private reloadPage (): void {
+    window.location.reload();
+  }
 }
 </script>
 
@@ -238,23 +244,7 @@ canvas {
 }
 
 .field-title {
-  @apply font-medium text-xl text-gray-800 mb-2;
-}
-
-.element {
-  @apply shadow-lg w-full rounded-lg border-t-4 border-blue-500 p-4 flex flex-col mb-8;
-  border-right: 1px solid theme('colors.gray.300') !important;
-  border-left: 1px solid theme('colors.gray.300') !important;
-  border-bottom: 1px solid theme('colors.gray.300') !important;
-  border-top: 4px solid theme('colors.blue.500') !important;
-}
-
-.submit {
-  @apply transition-all hover:shadow-xl h-20 bg-white rounded-lg w-full mt-4 flex flex-row items-center px-3 flex justify-center items-center text-lg font-medium hover:bg-green-100 active:shadow-none;
-  border-right: 1px solid theme('colors.green.500') !important;
-  border-left: 1px solid theme('colors.green.500') !important;
-  border-bottom: 1px solid theme('colors.green.500') !important;
-  border-top: 4px solid theme('colors.green.500') !important;
+  @apply font-medium text-xl text-gray-800 dark:text-neutral-300 mb-2;
 }
 
 .container {

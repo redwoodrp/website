@@ -1,11 +1,11 @@
 <template>
-  <div v-if="user">
-    <div class="text-4xl text-gray-800 mt-8 mb-1 font-bold">
+  <div v-if="user" class="dark:text-neutral-300">
+    <div class="text-4xl text-gray-800 dark:text-neutral-300 mt-8 mb-1 font-bold">
       Approve/Decline incoming TÜV
     </div>
 
     <div class="flex flex-row items-center mt-3 mb-1">
-      <button class="btn bg-blue-400 hover:bg-blue-600 text-xs mr-2"
+      <button class="btn bg-blue-400 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-800 text-xs mr-2"
               @click="$toast.show('Refreshed!'); populate()">
         Refresh
       </button>
@@ -15,7 +15,7 @@
       </div>
     </div>
 
-    <div class="border border-gray-400 rounded-lg my-2 mt-5 p-2 flex flex-row justify-around">
+    <div class="border border-gray-400 dark:border-none dark:bg-neutral-800 rounded-lg my-2 mt-5 p-2 flex flex-row justify-around">
       <div>
         <input type="checkbox" v-model="filters.showChecked" @change="populate"
                id="filter-show-approved" class="w-8">
@@ -35,7 +35,7 @@
            v-show="filters.showSearchBar">
 
     <div class="mt-5 overflow-x-auto">
-      <table class="table-auto border-collapse border border-green-800 text-sm">
+      <table class="table-auto border-collapse text-sm w-full">
         <thead>
         <tr>
           <th>Actions</th>
@@ -79,12 +79,12 @@
         class="textarea"
         placeholder="Description" v-model="declineReason" />
       <div class="flex flex-row space-x-2">
-        <button class="btn bg-gray-400 hover:bg-gray-700"
+        <button class="btn bg-gray-400 dark:bg-neutral-800 hover:bg-gray-700 dark:hover:bg-neutral-900"
                 @click="declineDialog.show = false;">
           Cancel
         </button>
         <button
-          class="btn bg-green-600 w-full flex flex-row justify-center items-center hover:bg-green-900"
+          class="btn bg-green-600 dark:bg-green-700 w-full flex flex-row justify-center items-center hover:bg-green-900"
           @click="decline(declineDialog.id, declineDialog.owner); declineDialog.show = false">
           Send
         </button>
