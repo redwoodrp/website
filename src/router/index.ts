@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
-import Home from '../views/Home.vue';
 import feathersClient, { AuthObject } from '@/helpers/feathers-client';
 import { UserPermissions } from '@/helpers/interfaces/user';
 import config from '../../config';
+import Home from '../views/Home.vue';
 
 Vue.use(VueRouter);
 
