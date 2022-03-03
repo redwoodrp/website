@@ -1,6 +1,6 @@
 module.exports = {
-  purge: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
-  darkMode: false, // or 'media' or 'class'
+  content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
+  darkMode: 'media', // or 'media' or 'class'
   theme: {
     maxWidth: {
       '1/4': '25%',
@@ -22,17 +22,9 @@ module.exports = {
         '3/4': '75%',
         14: '3.5rem',
       },
-    },
-  },
-  variants: {
-    extend: {
-      width: ['focus'],
-      backgroundColor: ['active'],
-      boxShadow: ['active'],
-      textOverflow: ['hover'],
-      overflow: ['hover'],
-      whitespace: ['hover'],
-      fontWeight: ['hover', 'focus'],
+      colors: {
+        darkest: '#151515',
+      },
     },
   },
   plugins: [],
