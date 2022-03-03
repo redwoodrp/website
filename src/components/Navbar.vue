@@ -1,9 +1,9 @@
 <template>
   <div>
     <nav
-      class="bg-gray-800 h-16 shadow-xl font-medium text-gray-200 text-lg px-4 flex flex-row items-center nav justify-between">
+      class="bg-slate-800 dark:bg-black h-16 shadow-xl font-medium text-gray-200 text-lg px-4 flex flex-row items-center nav justify-between">
       <div class="flex flex-row items-center">
-        <button class="text-gray-800 ml-2 mr-6 nav-button-base bg-gray-400 hover:bg-gray-100"
+        <button class="text-gray-100 ml-2 mr-6 nav-button-base bg-gray-600 hover:bg-gray-900"
                 @click="$route.name !== 'home' ? $router.push({name: 'home'}) : null">
           RedwoodRP
         </button>
@@ -13,8 +13,8 @@
           <span v-if="hasPermissions(item.requiredPermissions)">
             <button
               @click="$route.path !== $router.match(item.to).path ? $router.push(item.to) : null"
-              class="nav-button-base"
-              :class="$route.path === $router.match(item.to).path ? 'bg-gray-700' : 'bg-gray-900 hover:bg-gray-700'"
+              class="nav-button-base text-gray-200"
+              :class="$route.path === $router.match(item.to).path ? 'bg-transparent' : 'bg-slate-700 hover:bg-slate-900'"
             >
               {{ item.name }}
             </button>
@@ -26,7 +26,7 @@
       </div>
 
       <div class="flex flex-row">
-        <button class="bg-gray-700 btn hover:bg-gray-900 shadow-lg"
+        <button class="bg-slate-700 btn hover:bg-slate-900 shadow-lg"
                 :class="{'-mr-1.5': showItems}"
                 title="logout" @click="user === null ? login() : logout()">
           <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" fill="white">
@@ -38,7 +38,7 @@
               v-else />
           </svg>
         </button>
-        <button class="rounded bg-gray-700 w-10 h-10 flex justify-center items-center cursor-pointer"
+        <button class="rounded bg-slate-700 w-10 h-10 flex justify-center items-center cursor-pointer"
              :class="{ 'hidden': showItems }"
              @click="menuOpen = !menuOpen">
           <svg style="width:24px;height:24px" viewBox="0 0 24 24"
