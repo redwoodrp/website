@@ -34,11 +34,7 @@ html, body, #app {
     }
 
     .app-height {
-        height: calc(100vh - 64px);
-    }
-
-    .app-content-height {
-        height: calc(100vh - 64px - 112px);
+        min-height: calc(100vh - 64px);
     }
 
     .modal-title {

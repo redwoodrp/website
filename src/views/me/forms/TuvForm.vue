@@ -26,7 +26,7 @@
     </div>
   </div>
 
-  <div v-else class="container app-content-height">
+  <div v-else class="container">
     <div>
       <div class="text-5xl text-gray-800 font-bold dark:text-neutral-300">Thanks!</div>
       <div class="text-gray-700 text-lg font-medium mt-2 dark:text-neutral-500">

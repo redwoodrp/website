@@ -21,7 +21,7 @@
       Uploading...
     </div>
 
-    <div v-else class="container app-content-height">
+    <div v-else class="container">
       <div>
         <div v-if="formState !== 3 /* ERROR */">
           <div class="text-5xl text-gray-800 font-bold">Thanks!</div>
