@@ -50,7 +50,7 @@
           <div class="text-gray-700 dark:text-neutral-500 text-lg font-medium mt-2">
             Something went wrong trying to upload the information. Response from server:
             <div
-              class="text-gray-200 p-2 mt-2 bg-gray-600 rounded-lg w-full border border-gray-800">
+              class="text-gray-200 p-2 mt-2 bg-gray-600 rounded-lg w-full border border-gray-800" v-if="error">
               {{ error.message }} (Code: {{ error.code }})
             </div>
           </div>
