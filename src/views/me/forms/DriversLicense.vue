@@ -185,6 +185,8 @@ export default class DriversLicense extends Vue {
   }
 
   private async initialize (): Promise<void> {
+    this.formState = FormState.ACTIVE;
+
     this.user = (await feathersClient.get('authentication') as AuthObject).user;
 
     const myDriversLicenseRequests = await feathersClient.service('drivers-license-request')
@@ -197,8 +199,6 @@ export default class DriversLicense extends Vue {
       this.formState = FormState.DONT_SUBMIT_AGAIN;
       return;
     }
-
-    this.formState = FormState.ACTIVE;
 
     const canvas = this.$refs.canvas as HTMLCanvasElement;
     if (!canvas) return;
