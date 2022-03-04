@@ -7,7 +7,8 @@ import './index.css';
 Vue.config.productionTip = false;
 
 if (process.env.NODE_ENV === 'production') {
-  console.log = () => undefined;
+  // console.log = () => undefined;
+  Vue.config.devtools = true;
 }
 
 declare module 'vue/types/vue' {

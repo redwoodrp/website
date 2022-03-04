@@ -38,7 +38,7 @@
           </div>
         </div>
 
-        <div v-if="formState === FormState.DONT_SUBMIT_AGAIN">
+        <div v-else-if="formState === FormState.DONT_SUBMIT_AGAIN">
           <div class="text-5xl text-gray-800 dark:text-neutral-300 font-bold">Sorry</div>
           <div class="text-gray-700 dark:text-neutral-500 text-lg font-medium mt-2">
             You can only have one active driver license class request at a time!
