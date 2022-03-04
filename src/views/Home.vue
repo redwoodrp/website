@@ -1,6 +1,6 @@
 <template>
   <div class="background h-full flex flex-col bg-white dark:bg-neutral-900 overflow-auto">
-    <div class="flex flex-col h-full justify-center items-center">
+    <div class="flex flex-col h-full justify-center items-center flex-grow">
       <div class="text-slate-900 dark:text-gray-100 font-bold text-3xl">
         Welcome home
       </div>

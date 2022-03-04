@@ -6,8 +6,9 @@
 
 html, body, #app {
     font-family: Poppins, Arial, sans-serif;
-    min-height: 100vh;
-    height: 100vh;
+    /*min-height: 100vh;*/
+    /*height: 100vh;*/
+    height: 100%;
 }
 
 @layer components {

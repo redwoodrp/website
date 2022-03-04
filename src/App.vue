@@ -2,13 +2,21 @@
   <div id="app">
     <Navbar :items="items" />
 
-    <div class="flex flex-col items-center dark:bg-neutral-900 app-height">
-      <router-view
-        :class="getContainerWidth()"
-        class="w-full" />
+    <!--    <div class="flex flex-col items-center dark:bg-neutral-900 app-height">-->
+    <!--      <router-view-->
+    <!--        :class="getContainerWidth()"-->
+    <!--        class="w-full h-full" />-->
 
-      <Footer class="w-full mt-auto" />
-    </div>
+    <!--&lt;!&ndash;      <Footer class="w-full mt-auto" />&ndash;&gt;-->
+    <!--    </div>-->
+
+    <main class="flex flex-col items-center dark:bg-neutral-900 app-height">
+      <router-view :class="getContainerWidth()" class="w-full app-height"></router-view>
+    </main>
+
+    <footer>
+      <Footer class="w-full mt-auto"></Footer>
+    </footer>
 
     <CookieNotice />
 
