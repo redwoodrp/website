@@ -50,7 +50,8 @@
           <div class="text-gray-700 dark:text-neutral-500 text-lg font-medium mt-2">
             Something went wrong trying to upload the information. Response from server:
             <div
-              class="text-gray-200 p-2 mt-2 bg-gray-600 rounded-lg w-full border border-gray-800" v-if="error">
+              class="text-gray-200 p-2 mt-2 bg-gray-600 rounded-lg w-full border border-gray-800"
+              v-if="error">
               {{ error.message }} (Code: {{ error.code }})
             </div>
           </div>
@@ -180,29 +181,28 @@ export default class DriversLicense extends Vue {
   private error: FeathersError | null = null;
 
   async mounted (): Promise<void> {
-    const res = await feathersClient.service('drivers-license-request')
+    await this.initialize();
+  }
+
+  private async initialize (): Promise<void> {
+    this.user = (await feathersClient.get('authentication') as AuthObject).user;
+
+    const myDriversLicenseRequests = await feathersClient.service('drivers-license-request')
       .find({
         query: {
           owner: this.user?.discordId.toString(),
         },
       });
-    if (res.length > 0) {
+    if (myDriversLicenseRequests.length > 0) {
       this.formState = FormState.DONT_SUBMIT_AGAIN;
       return;
     }
 
     this.formState = FormState.ACTIVE;
-    await this.initialize();
-  }
-
-  private async initialize (): Promise<void> {
-    this.formState = FormState.ACTIVE;
 
     const canvas = this.$refs.canvas as HTMLCanvasElement;
     if (!canvas) return;
     this.canvas = canvas;
-
-    this.user = (await feathersClient.get('authentication') as AuthObject).user;
 
     this.signaturePad = new SignaturePad(this.canvas, {
       throttle: 0,
