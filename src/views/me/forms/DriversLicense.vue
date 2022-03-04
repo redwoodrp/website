@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div v-if="formState === FormState.LOADING_FORM" class="h-full flex flex-col justify-center items-center w-full dark:text-neutral-500">
+    <div v-if="formState === FormState.LOADING_FORM"
+         class="h-full flex flex-col justify-center items-center w-full dark:text-neutral-500">
       Loading...
     </div>
 
@@ -189,6 +190,8 @@ export default class DriversLicense extends Vue {
       this.formState = FormState.DONT_SUBMIT_AGAIN;
       return;
     }
+
+    this.formState = FormState.ACTIVE;
     await this.initialize();
   }
 
