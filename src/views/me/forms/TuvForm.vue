@@ -526,14 +526,14 @@ export default class TuvForm extends Vue {
         fileData,
       } as TuvFormDataServer)
       .catch((e: FeathersError) => {
-        throw e;
-        // console.log('error while trying to create tuv: ', e.code);
-        // if (e.code === 1000) {
-        //   this.illegal = {
-        //     show: true,
-        //     error: e,
-        //   };
-        // }
+//        throw e;
+        console.log('error while trying to create tuv: ', e.code);
+        if (e.code === 1000) {
+          this.illegal = {
+            show: true,
+            error: e,
+          };
+        }
       });
 
     this.formSubmitted = true;

@@ -1,6 +1,10 @@
 <template>
   <div>
-    <div v-if="formState === 0 /* ACTIVE */">
+    <div v-if="formState === FormState.LOADING_FORM" class="h-full flex flex-col justify-center items-center w-full dark:text-neutral-500">
+      Loading...
+    </div>
+
+    <div v-if="formState === FormState.ACTIVE">
       <Form v-model="form" ref="formElement" />
       <div class="form-element overflow-x-scroll">
         <div class="field-title">Signature</div>
@@ -16,16 +20,16 @@
       </button>
     </div>
 
-    <div v-else-if="formState === 1 /* UPLOADING */"
+    <div v-else-if="formState === FormState.UPLOADING"
          class="flex justify-center items-center h-screen dark:text-neutral-500">
       Uploading...
     </div>
 
-    <div v-else class="container">
+    <div v-else class="container h-full flex justify-center items-center">
       <div>
-        <div v-if="formState !== 3 /* ERROR */">
-          <div class="text-5xl text-gray-800 font-bold">Thanks!</div>
-          <div class="text-gray-700 text-lg font-medium mt-2">
+        <div v-if="formState === FormState.SUBMITTED">
+          <div class="text-5xl text-gray-800 dark:text-neutral-300 font-bold">Thanks!</div>
+          <div class="text-gray-700 dark:text-neutral-500 text-lg font-medium mt-2">
             You will receive an answer by one of our driver license instructors in 1-7 business
             days.
             Remember: Just submitting this form does <span class="font-bold">not</span> allow you to
@@ -33,9 +37,16 @@
           </div>
         </div>
 
+        <div v-if="formState === FormState.DONT_SUBMIT_AGAIN">
+          <div class="text-5xl text-gray-800 dark:text-neutral-300 font-bold">Sorry</div>
+          <div class="text-gray-700 dark:text-neutral-500 text-lg font-medium mt-2">
+            You can only have one active driver license class request at a time!
+          </div>
+        </div>
+
         <div v-else>
-          <div class="text-5xl text-gray-800 font-bold">Error</div>
-          <div class="text-gray-700 text-lg font-medium mt-2">
+          <div class="text-5xl text-gray-800 dark:text-neutral-300 font-bold">Error</div>
+          <div class="text-gray-700 dark:text-neutral-500 text-lg font-medium mt-2">
             Something went wrong trying to upload the information. Response from server:
             <div
               class="text-gray-200 p-2 mt-2 bg-gray-600 rounded-lg w-full border border-gray-800">
@@ -152,7 +163,8 @@ export default class DriversLicense extends Vue {
       },
     ],
   };
-  private formState: FormState = FormState.ACTIVE;
+  private formState: FormState = FormState.LOADING_FORM;
+  private FormState = FormState;
   private canvas: HTMLCanvasElement | null = null;
   private signaturePad: SignaturePad | null = null;
   private user: User | null = null;
@@ -167,6 +179,16 @@ export default class DriversLicense extends Vue {
   private error: FeathersError | null = null;
 
   async mounted (): Promise<void> {
+    const res = await feathersClient.service('drivers-license-request')
+      .find({
+        query: {
+          owner: this.user?.discordId.toString(),
+        },
+      });
+    if (res.length > 0) {
+      this.formState = FormState.DONT_SUBMIT_AGAIN;
+      return;
+    }
     await this.initialize();
   }
 
@@ -219,6 +241,12 @@ export default class DriversLicense extends Vue {
           this.error = {
             ...(e as FeathersError),
             message: 'You already have that vehicle class!',
+          };
+        } else if ((e as FeathersError).code === 400 && (e as FeathersError).message === 'Validation error') {
+          this.formState = FormState.ERROR;
+          this.error = {
+            ...(e as FeathersError),
+            message: 'You can only request one driver license class at a time!',
           };
         }
         return;

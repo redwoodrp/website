@@ -97,4 +97,6 @@ export enum FormState {
   UPLOADING,
   SUBMITTED,
   ERROR,
+  DONT_SUBMIT_AGAIN,
+  LOADING_FORM,
 }
