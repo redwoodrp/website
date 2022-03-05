@@ -33,7 +33,10 @@ export default class CheckTuvs extends Vue {
         query: {
           approved: true,
           checked: true,
-          licensePlate: { $like: q },
+          $or: {
+            licensePlate: { $like: q },
+            discordName: { $like: q },
+          },
         },
       });
 

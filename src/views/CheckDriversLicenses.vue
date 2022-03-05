@@ -8,7 +8,7 @@
            placeholder="Enter username here..." v-model="search" @change="searchQuery()">
 
     <img :src="`${config.backend}/images/${result.owner}/driverslicense.jpg`" alt="Drivers license"
-         v-for="(result, i) in results" :key="i" class="rounded-lg">
+         v-for="(result, i) in results" :key="i" class="rounded-lg mb-4">
   </div>
 </template>
 
