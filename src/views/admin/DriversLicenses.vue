@@ -5,8 +5,9 @@
     </div>
 
     <div class="flex flex-row items-center mt-3 mb-1">
-      <button class="btn bg-blue-400 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-800 text-xs mr-2"
-              @click="$toast.show('Refreshed!'); populate()">
+      <button
+        class="btn bg-blue-400 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-800 text-xs mr-2"
+        @click="$toast.show('Refreshed!'); populate()">
         Refresh
       </button>
       <div class="text-gray-400">
@@ -44,7 +45,8 @@
             v-for="(header, i) in Object.keys(headerRelationMap).filter((_, i) => i !== 0)"
             :key="i">
             <img v-if="isDataUrl(response[headerRelationMap[header]])"
-                 :src="response[headerRelationMap[header]]" alt="signature image" class="w-52 dark:bg-neutral-700 rounded">
+                 :src="response[headerRelationMap[header]]" alt="signature image"
+                 class="w-52 dark:bg-neutral-700 rounded">
             <span v-else>
             {{ response[headerRelationMap[header]] || '-' }}
             </span>
@@ -122,7 +124,7 @@ export default class DriversLicenses extends Vue {
     const existing: DriversLicense[] = await feathersClient.service('drivers-license')
       .find({
         query: {
-          owner: this.user.discordId,
+          owner: data.owner,
         },
       });
 
@@ -137,7 +139,7 @@ export default class DriversLicenses extends Vue {
           signature: data.signature,
         } as DriversLicense);
     } else {
-      const classes = (existing[0].classes as unknown as string).split(',');
+      const { classes } = existing[0];
       classes.push(data.class);
       console.log(classes);
 
