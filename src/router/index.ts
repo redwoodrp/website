@@ -157,7 +157,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/businesses/apply',
     name: 'business apply',
-    redirect: '/error/11001',
+    // redirect: '/error/11001',
     component: () => import('@/views/business/Apply.vue'),
     meta: {
       title: 'business apply',
@@ -168,7 +168,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/businesses/sus',
     name: 'business page sus',
-    redirect: '/error/11001',
+    // redirect: '/error/11001',
     component: () => import('@/views/business/pages/SUSPerformance.vue'),
     meta: {
       title: 'SUS Performance',

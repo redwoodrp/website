@@ -32,5 +32,7 @@ module.exports = {
     'vue/multi-word-component-names': 'off',
     'vuejs-accessibility/form-control-has-label': 'off',
     'vuejs-accessibility/label-has-for': 'off',
+    'import/no-unresolved': 'off',
+    'import/extensions': 'off',
   },
 };
